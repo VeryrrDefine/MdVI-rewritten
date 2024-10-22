@@ -76,6 +76,87 @@ const automationTypes = {
             return player.PL2times.gte(90)
         },
     },
+    "dimboost3": {
+        time() {return 0},
+        action(){dimBoost3()},
+        canAction(){return player.auto.includes(12)},
+        text: "自动维度提升^3",
+        unlocked() {
+            return player.PL2reaUpg.includes(1);
+        }
+    },
+    "buy5dim1": {
+        time(){return 0},
+        action(){buymm5dim(1+8)},
+        canAction(){return buyable(1) && player.auto.includes(13)},
+        text: "自动购买维度9",
+        unlocked(){
+            return player.PL2xiaopengyouMK2milestone1Reached
+        }
+    },
+    "buy5dim2": {
+        time(){return 0},
+        action(){buymm5dim(2+8)},
+        canAction(){return buyable(2) && player.auto.includes(14)},
+        text: "自动购买维度10",
+        unlocked(){
+            return player.PL2xiaopengyouMK2milestone1Reached
+        }
+    },
+    "buy5dim3": {
+        time(){return 0},
+        action(){buymm5dim(3+8)},
+        canAction(){return buyable(3) && player.auto.includes(15)},
+        text: "自动购买维度11",
+        unlocked(){
+            return player.PL2xiaopengyouMK2milestone1Reached
+        }
+    },
+    "buy5dim4": {
+        time(){return 0},
+        action(){buymm5dim(4+8)},
+        canAction(){return buyable(4) && player.auto.includes(16)},
+        text: "自动购买维度12",
+        unlocked(){
+            return player.PL2xiaopengyouMK2milestone1Reached
+        }
+    },
+    "buy5dim5": {
+        time(){return 0},
+        action(){buymm5dim(5+8)},
+        canAction(){return buyable(5) && player.auto.includes(17)},
+        text: "自动购买维度13",
+        unlocked(){
+            return player.PL2xiaopengyouMK2milestone1Reached
+        }
+    },
+    "buy5dim6": {
+        time(){return 0},
+        action(){buymm5dim(6+8)},
+        canAction(){return buyable(6) && player.auto.includes(18)},
+        text: "自动购买维度14",
+        unlocked(){
+            return player.PL2xiaopengyouMK2milestone1Reached
+        }
+    },
+    "buy5dim7": {
+        time(){return 0},
+        action(){buymm5dim(7+8)},
+        canAction(){return buyable(7) && player.auto.includes(19)},
+        text: "自动购买维度15",
+        unlocked(){
+            return player.PL2xiaopengyouMK2milestone1Reached
+        }
+    },
+    "buy5dim8": {
+        time(){return 0},
+        action(){buymm5dim(8+8)},
+        canAction(){return buyable(8) && player.auto.includes(20)},
+        text: "自动购买维度16",
+        unlocked(){
+            return player.PL2xiaopengyouMK2milestone1Reached
+        }
+    },
 }
 function getAutomationTabDetail(){
     let result = ""

@@ -1,7 +1,8 @@
 loadScriptFile("PL2/mm5dimensions.js")
 loadScriptFile("PL2/upgradetower.js")
 loadScriptFile("PL2/reactor.js")
-function norewardMM5reset(){
+loadScriptFile("PL2/compress.js")
+function norewardMM5reset(isenteringCompress=false){
     norewardMM3reset();
     player.PL1Timespent = 0;
     player.PL2Timespent = 0
@@ -23,15 +24,15 @@ function norewardMM5reset(){
     player.PL1buyable1 = E(0);
     player.PL1times = E(0);
     player.PL1buyable2 = E(0);
-    if (player.PL2times.lt(6)) player.PL1xiaopengyouPoints = E(0);
+    if (player.PL2times.lt(6) ) player.PL1xiaopengyouPoints = E(0);
     else if (player.PL2times.lt(160)) player.PL1xiaopengyouPoints = player.PL1xiaopengyouPoints.root(2);
 
     if (player.PL2times.lt(6)) player.PL1xiaopengyouUnl = false;
 
     player.PL1points = E(0);
-    if (player.PL2times.lt(400)) player.dimBoost = E(0);
+    if (isenteringCompress || player.PL2times.lt(400)) player.dimBoost = E(0);
 
-    if (player.PL2times.lt(6)) player.dimBoost2 = E(0);
+    if (isenteringCompress || player.PL2times.lt(6)) player.dimBoost2 = E(0);
     player.PL2dimensionalEnergy = PowiainaNum.ZERO.clone();
     for (let i = 8; i<16; i++){
         player.dimensions[DIMENSIONS_POINTS][i] = player.dimensions[DIMENSIONS_BOUGHT][i].mul(10);
@@ -102,4 +103,6 @@ function mm5Loop(){
     if (hasTheorie(31) && hasTheorie(32)){
         player.isUnlockedDimBoost3 = true
     }
+    reactorLoop();
+    xiaopengyouMK2loop();
 }

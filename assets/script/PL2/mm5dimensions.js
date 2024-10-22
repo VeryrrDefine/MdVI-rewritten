@@ -70,7 +70,7 @@ function calculatemm5Dimensions(){
             player.dimensions[DIMENSIONS_POINTS][i] = E(0);
         }
         player.dimensions[DIMENSIONS_MULTI][i] = tmp.mm5.getDimMultiplierafter8(i+1);
-        player.dimensions[DIMENSIONS_EXPONENT][i] = PowiainaNum(1);
+        player.dimensions[DIMENSIONS_EXPONENT][i] = tmp.mm5.getDimExponentplierafter8(i+1);
         player.dimensions[DIMENSIONS_COST][i] = mm5dimCost(i+1,)
     }
     player.PL2dimensionalEnergy = player.PL2dimensionalEnergy.add(

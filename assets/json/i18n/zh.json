@@ -16,5 +16,22 @@
     "tabReset": "重置",
     "tabOfflinedTime": "离线时间",
 
-    "resetPL1layer": "重置1-8维度，4维体积，维度提升，获得"
+    "resetPL1layer": "重置1-8维度，4维体积，维度提升，获得",
+
+    "reachedCurrentEndgame": "已达到当前版本终点！",
+    "dimensionsBoughtTimes": "购买次数：%n",
+    "automation": "自动",
+    "automationcolon": "自动：",
+    "此种类维度每次购买乘数": "此种类维度每次购买乘数：",
+    "pricecolon": "价格：",
+    "resetDimensionBoost": "重置4维体积，1-8维度，但进行一次维度提升",
+    "resetDimensionBoost2": "重置4维体积，1-8维度，和维度提升但进行一次维度提升^2",
+    "resetDimensionBoost3": "进行一次mm<sup>5</sup>重置，获得维度提升^3",
+    "hardReset": "硬重置",
+    "import": "导入",
+    "importFromFile": "以文件导入",
+    "export": "导出",
+    "exportToFile": "导出到文件",
+    "dimensionBoost": "维度提升",
+    "dimensionBoost2": "维度提升^2"
 }

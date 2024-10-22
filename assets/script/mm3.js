@@ -180,8 +180,15 @@ function getXiaopengyouGain(){
     if (hasBattleUpgrade(1)){
         temp1 = temp1.mul(getBattleUpgradeEffect(1));
     }
+    temp1 = temp1.mul(player.PL2reaUpg.includes(2) ? getReacUpgEffect2() : 1);
     if (player.PL1xiaopengyouPoints.gte(tmp.mm3.xiaopengyouCap())){
         temp1 = E(0)
+    }
+    if (player.PL2reaUpg.includes(4)){
+        temp1 = temp1.pow(1.2)
+    }
+    if (player.PL2isunlockedCompress){
+        temp1 = temp1.pow(xiaopengyouExponentMore())
     }
     return temp1
 }

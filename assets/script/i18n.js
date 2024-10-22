@@ -1,6 +1,6 @@
 var I18Ntext = {};
 var languageName = [];
-var currentLanguage = 0;
+var currentLanguage = Date().toString().includes("中国") ? 0 : 1;
 var comma = 1000 .toLocaleString()[1];
 var period = 1000.1.toLocaleString()[5];
 async function loadI18N(){

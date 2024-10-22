@@ -113,7 +113,7 @@ const dimBoostReward=[
 ]
 
 function dimBoostDescription(){
-    let a =  `重置4维体积，1-8维度，但进行一次维度提升<br>价格：${format(tmp.dimensionBoost.require())} mm<sup>4</sup>`
+    let a =  `${glt("resetDimensionBoost")}<br>${glt("pricecolon")}${format(tmp.dimensionBoost.require())} mm<sup>4</sup>`
     let x = getRealDimBoost();
     if (x.lt(dimBoostReward[dimBoostReward.length-1].req)){
         for (let i=0;i<dimBoostReward.length;i++){
@@ -245,7 +245,7 @@ function dimBoost2(){
 
 
 function dimBoost2Description(){
-    let a =  `重置4维体积，1-8维度，和维度提升但进行一次维度提升<br>价格：${format(tmp.dimensionBoost.require2())} mm<sup>4</sup>`
+    let a =  `${glt("resetDimensionBoost2")}<br>价格：${format(tmp.dimensionBoost.require2())} mm<sup>4</sup>`
     let x = player.dimBoost2;
     if (x.lt(dimBoostReward2[dimBoostReward2.length-1].req)){
         for (let i=0;i<dimBoostReward2.length;i++){
@@ -265,7 +265,7 @@ function dimBoost2Description(){
     return a
 }
 function dimBoost3Description(){
-    let a =  `进行一次mm<sup>5</sup>重置，获得维度提升^3<br> 需要: ${format(tmp.dimensionBoost.require3())} 维度提升^2`
+    let a =  `${glt("resetDimensionBoost3")}<br> 需要: ${format(tmp.dimensionBoost.require3())} 维度提升^2`
     let x = player.dimBoost3;
     if (x.lt(dimBoostReward3[dimBoostReward3.length-1].req)){
         for (let i=0;i<dimBoostReward3.length;i++){
@@ -288,9 +288,10 @@ function dimBoost3Description(){
 function dimBoost3(){
     if (player.dimBoost2.gte(tmp.dimensionBoost.require3())){
         player.dimBoost3 = player.dimBoost3.add(1)
-        player.dimBoostTimespent = 0;
-        doMM5reset();
-
+        if (!player.PL2reaUpg.includes(1)){
+            player.dimBoostTimespent = 0;
+            doMM5reset();
+        }
     }
 
 }

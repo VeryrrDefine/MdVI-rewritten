@@ -29,7 +29,7 @@ var tabShow = {
     inPrimaryTab(primaryTab) {
         let subtabIDList = [];
         for (const key in this[primaryTab]){
-            if (key === "text" || key === "class" || key === "unlocked" || key === "firstTabID"){
+            if (key === "text" || key === "class" || key === "unlocked" || key === "firstTabID" || key === "style"){
                 
             }else{
                 subtabIDList.push(this[primaryTab][key].id)
@@ -155,6 +155,11 @@ var tabShow = {
             class: "mm5btn",
             text: "反应堆"
         },
+        volumeDilate: {
+            id: 18,
+            class: "mm5btn",
+            text: "体积"/*反向*/+"膨胀"
+        },
         class: "mm5btn",
         unlocked() {
             if (showAllPrestigeLayers){
@@ -215,16 +220,30 @@ var tabShow = {
         }
     },
     mm11evolution: {
-        text: "11维体积",
-        firstTabID: 11870502,
-        evolue:{
-            id: 11870502,
+        get text() {
+            let progress = Math.min(player.volumes.slog(10).log10().sub(
+                Math.log10(Number.MAX_SAFE_INTEGER)
+            ).div(Math.log10(Number.MAX_VALUE)-Math.log10(Number.MAX_SAFE_INTEGER)).toNumber(),1)
+            return progress >= 1 ? "11维体积" : ""
+        },
+        firstTabID: 999999999-11870502,
+        /*evolue:{
+            id: 9999999999-11870502,
             text: "商店",
             class: "evolue",
+        },*/
+        get style(){
+            if (player.volumes.lt(PowiainaNum.TETRATED_MAX_SAFE_INTEGER)){
+                return "display: none;"
+            }
+            let progress = Math.min(player.volumes.slog(10).log10().sub(
+                Math.log10(Number.MAX_SAFE_INTEGER)
+            ).div(Math.log10(Number.MAX_VALUE)-Math.log10(Number.MAX_SAFE_INTEGER)).toNumber(),1)
+            return `opacity: ${progress}; width: ${progress*69.132}px; white-space: nowarp;`
         },
         class: "evolue",
         unlocked() {
-            return showAllPrestigeLayers
+            return true;
         }
     },
     settings: {
@@ -287,7 +306,7 @@ function secondaryTabSort() {
     for (const key in tabShow){
         if (tabShow.inPrimaryTab(key)){
             for (const subtabKey in tabShow[key]){
-                if (subtabKey === "firstTabID" || subtabKey === "text" || subtabKey==="unlocked" || subtabKey === "class"){continue;}else{
+                if (subtabKey === "firstTabID" || subtabKey === "text" || subtabKey==="unlocked" || subtabKey === "class"|| subtabKey === "style"){continue;}else{
                     let showThisSubTab = true;
                     if (tabShow[key][subtabKey].unlocked === void 0){
                         showThisSubTab = true;
@@ -351,12 +370,15 @@ function formatHardcap(){
 }
 function display4DDimCost(dimid) {
     if (player.PL1breakedPL1limit  && (player.PL1inchal!=1)){
-        return `购买次数：${format(player.dimensions[DIMENSIONS_BOUGHT][dimid - 1 ])}`
+        return glt("dimensionsBoughtTimes").replace("%n", format(player.dimensions[DIMENSIONS_BOUGHT][dimid - 1 ])) 
     }else{
-        return `价格: ${format(player.dimensions[DIMENSIONS_COST][dimid - 1 ])} mm<sup>4</sup>`
+        return `${glt("pricecolon")} ${format(player.dimensions[DIMENSIONS_COST][dimid - 1 ])} mm<sup>4</sup>`
     }
 }
 
 function dimensionsLabel(dimid){
+    if (currentLanguage == 1){
+        return `${getEnglishNumberOrdinal(+dimid)} Dimension`
+    }
     return `第${dimid}维度`
 }

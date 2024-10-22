@@ -126,11 +126,11 @@ function format(num, precision=4, small=false){
             let x = new PowiainaNum();
             x.array = array;
             x.normalize();
-            return "f".repeat(rep) + format(x, precision)
+            return "f".repeat(rep) + format(x, precision2)
         }
         let n = arraySearch(array, 1) + 1
         if (num.gte("10^^" + (n + 1))) n += 1
-        return "f" + format(n, precision)
+        return "f" + format(n, precision2)
     }
     else if (num.lt("10^^^1000000")) { // 1G5 ~ G1,000,000
         let pol = polarizeE(array)
@@ -143,7 +143,7 @@ function format(num, precision=4, small=false){
             let x = new PowiainaNum();
             x.array = array;
             x.normalize();
-            return "g".repeat(rep) + format(x, precision)
+            return "g".repeat(rep) + format(x, precision2)
         }
         let n = arraySearch(array, 2) + 1
         if (num.gte("10^^^" + (n + 1))) n += 1
@@ -159,7 +159,7 @@ function format(num, precision=4, small=false){
             let x = new PowiainaNum();
             x.array = array;
             x.normalize();
-            return "h".repeat(rep) + format(x, precision)
+            return "h".repeat(rep) + format(x, precision2)
         }
         let n = arraySearch(array, 3) + 1
         if (num.gte("10^^^^" + (n + 1))) n += 1
@@ -177,7 +177,7 @@ function format(num, precision=4, small=false){
         let rep = num.operator("x")
         if (rep >= 1) {
             num.operatorE("x", 0);
-            return "J".repeat(rep) + format(num, precision)
+            return "J".repeat(rep) + format(num, precision2)
         }
         let n = array[array.length-1][num.getMaxFirstOperatorIndex()];
         if (num.gte("J" + (n + 1))) n += 1

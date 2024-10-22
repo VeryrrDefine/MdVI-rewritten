@@ -15,3 +15,5 @@ const mm3Require = E("e200");
 const K9E15 = ExpantaNum.expansion(10,2**53-1)
 
 const F10 = PowiainaNum.tetrate(10,10);
+
+const FE30825 = PowiainaNum.tetrate(10,Number.MAX_VALUE);

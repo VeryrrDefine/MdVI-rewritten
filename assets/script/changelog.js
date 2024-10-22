@@ -1,5 +1,11 @@
 const changelog = [
     {
+        version: "2.2.2.2-E", title: "I18N",
+        changes: [
+            "added English Language(Not Full)<button class=\"btn\" onclick=\"currentLanguage = 1\">Set</button>"
+        ]
+    },
+    {
         version: "2.2.2.1", title: "",
         changes: [
             "修复了因为区分大小写导致的报错"

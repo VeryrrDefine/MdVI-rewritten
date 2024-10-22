@@ -57,7 +57,8 @@ var tmp = {
             if (player.dimBoost2.gte(1)){
                 temp1 = temp1.add(0.01)
             }
-
+            temp1 = temp1.add(player.PL2reaUpg.includes(3) ? getReacUpgEffect3A() : 0);
+            temp1 = temp1.add(MM5buyable3Effect().max(0))
             return temp1
         },
         getBoughtMultiplier() {
@@ -111,6 +112,8 @@ var tmp = {
             if (player.PL2times.eq(1)){
                 temp1 = softcap(temp1,this.softcap1start,this.softcap1power)
             }
+
+            if (player.PL2incompress) temp1 = temp1.max(1).logBase(1.2);
             return temp1
         },
         get softcapped1(){
@@ -133,6 +136,7 @@ var tmp = {
 
 
         xiaopengyouCap(){
+            if (player.PL2reaUpg.includes(4)) return PowiainaNum.POSITIVE_INFINITY.clone();
             let temp1 = new PowiainaNum(264454438000);
 
             if (hasBattleUpgrade(1)){
@@ -155,6 +159,13 @@ var tmp = {
             return temp1
             
         },
+        getDimExponentplierafter8(id){
+            let temp1 = PowiainaNum(1);
+            
+            temp1 = temp1.add(player.PL2reaUpg.includes(3) ? getReacUpgEffect3B() : 0);
+            temp1 = temp1.add(MM5buyable4Effect().max(0))
+            return temp1;
+        },
         getBoughtMultiplierafter8() {
             let temp1 = E(2)
             return temp1
@@ -166,6 +177,9 @@ var tmp = {
             let temp1 =  PowiainaNum(1200)
             if (hasTheorie(32)) temp1 = PowiainaNum(1500)
             return temp1;
+        },
+        getMM59count(){
+            return player.PL2highestVolumeInCompress.root(2).mul(2)
         }
     },
     battle: {

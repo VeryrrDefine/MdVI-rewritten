@@ -102,8 +102,29 @@ function hardReset() {
 
         PL2theoChoose: [],
 
+        PL2reactorStates: [],
+        PL2reactors: PowiainaNum.ZERO.clone(),
+        PL2mm53: PowiainaNum.ZERO.clone(),
+        PL2mm54: PowiainaNum.ZERO.clone(),
+        PL2mm55: PowiainaNum.ZERO.clone(),
+        PL2mm56: PowiainaNum.ZERO.clone(),
+        PL2mm57: PowiainaNum.ZERO.clone(),
+
+        PL2reaUpg: [],
         isUnlockedDimBoost3: false,
         dimBoost3: PowiainaNum.ZERO,
+
+        PL2isunlockedCompress: false,
+        PL2incompress: false,
+        PL2highestVolumeInCompress: PowiainaNum.ZERO.clone(),
+        PL2xiaopengyouMK2: PowiainaNum.ZERO.clone(),
+
+        PL2buyable1: PowiainaNum.ZERO.clone(),
+        PL2buyable2: PowiainaNum.ZERO.clone(),
+        PL2buyable3: PowiainaNum.ZERO.clone(),
+        PL2buyable4: PowiainaNum.ZERO.clone(),
+
+        PL2xiaopengyouMK2milestone1Reached: false,
         //#endregion
 
         //#region Battle

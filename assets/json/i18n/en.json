@@ -1,5 +1,38 @@
+
 {
     "title": "M-dimensional Volume Incremental Rewritten",
-    "tabDimensions": "Dimensions",
-    "tabDimensionBoost": "Dimension Boost"
+    "youhave": "You have",
+    "4dvolumes": "4D Volumes",
+    "currentglobalspeed": "Current global speed: ×",
+    "youneedsomethingtogofurther": "You need ?? to go further!",
+
+    "3dvolumes": "3D volumes",
+    "5dvolumes": "5D volumes",
+
+    "tabMain": "main",
+    "tabDimensionsonetoeight": "1-8th Dimensions",
+    "tabDimensionBoost": "Dimension Boost",
+
+    "tabAutomation": "Automation",
+    "tabReset": "Reset",
+    "tabOfflinedTime": "Offlined Time",
+
+    "resetPL1layer": "Reset 1-8th Dimensions, 4D Volumes and Dimension Boost to gain",
+
+    "reachedCurrentEndgame": "You've reached current Endgame!",
+    "dimensionsBoughtTimes": "Purchased %n times",
+    "automation": "Auto",
+    "automationcolon": "Auto: ",
+    "此种类维度每次购买乘数": "Buy one multiplier in this dimension type: ",
+    "pricecolon": "Price: ",
+    "resetDimensionBoost": "Reset 1-8th Dimensions and 4D volumes, but Dimension Boost up.",
+    "resetDimensionBoost2": "Reset 1-8th Dimensions, 4D volumes and Dimension Boosts, but DB^2 up.",
+    "resetDimensionBoost3": "mm<sup>5</sup> reset, but DB^3 up.",
+    "hardReset": "Hard Reset",
+    "import": "Import",
+    "importFromFile": "Import from file",
+    "export": "Export",
+    "exportToFile": "Export to file",
+    "dimensionBoost": "Dimension Boost",
+    "dimensionBoost2": "DB^2"
 }
