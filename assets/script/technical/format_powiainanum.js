@@ -92,7 +92,7 @@ function format(num, precision=4, small=false){
         a = num.log10().floor().toNumber();
         b = num.div(10**a).toNumber();
         return `${format(b,precision2)}e${a}`;
-    }else if (num.lt("1e1e8")){
+    }else if (num.lt("1e1e6")){
         let a = Math.floor(num.array[0])
         let b = 10**(num.array[0]-a)
         return `${format(b,precision2)}e${a}`;
@@ -101,7 +101,7 @@ function format(num, precision=4, small=false){
         a = num.log10().log10().floor().toNumber();
         b = num.log10().div(10**a).toNumber();
         return `e${format(b,precision2)}e${a}`;
-    }else if (num.lt("ee1e8")){
+    }else if (num.lt("ee1e6")){
         let a = Math.floor(num.array[0])
         let b = 10**(num.array[0]-a)
         return `e${format(b,precision2)}e${a}`;
@@ -110,7 +110,7 @@ function format(num, precision=4, small=false){
         a = num.log10().log10().log10().floor().toNumber();
         b = num.log10().log10().div(10**a).toNumber();
         return `ee${format(b,precision2)}e${a}`;
-    }else if (num.lt("eee1e8")){
+    }else if (num.lt("eee1e6")){
         let a = Math.floor(num.array[0])
         let b = 10**(num.array[0]-a)
         return `ee${format(b,precision2)}e${a}`;

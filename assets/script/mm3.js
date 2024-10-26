@@ -81,7 +81,7 @@ function mm3Loop(){
             player.PL1points = player.PL1points.add(tmp.mm3.gain.pow(0.5).mul(globalDiff))
         }
     }
-    if (player.PL2times.gte(15)){
+    if (player.PL2times.gte(10)){
         if (player.PL1points.gte(getBuyableCost(1))) buyBuyable(1);
         if (player.PL1xiaopengyouPoints.gte(getBuyableCost(2))) buyBuyable(2);
     }
@@ -136,7 +136,7 @@ function buyBuyable(x){
         case 1:
             if (player.PL1buyable1.lt(softcap(player.PL1points,7**18,0.5,"pow").logarithm(7).ceil())){
                 player.PL1buyable1 = softcap(player.PL1points,7**18,0.5,"pow").logarithm(7).floor();
-                if (player.PL2times.lt(15)) player.PL1points = player.PL1points.sub(getBuyableCost(1))
+                if (player.PL2times.lt(10)) player.PL1points = player.PL1points.sub(getBuyableCost(1))
                 player.PL1buyable1 = player.PL1buyable1.add(1);
 
             }
@@ -145,7 +145,7 @@ function buyBuyable(x){
             
         case 2:
             if (player.PL1xiaopengyouPoints.gte(getBuyableCost(2))){
-                if (player.PL2times.lt(15)) player.PL1xiaopengyouPoints = player.PL1xiaopengyouPoints.sub(getBuyableCost(2))
+                if (player.PL2times.lt(10)) player.PL1xiaopengyouPoints = player.PL1xiaopengyouPoints.sub(getBuyableCost(2))
                 player.PL1buyable2 = player.PL1buyable2.add(1);
                 
             }

@@ -22,11 +22,14 @@ function xiaopengyouMK2loop(){
     if (player.PL2isunlockedCompress){
         player.PL2xiaopengyouMK2 = player.PL2xiaopengyouMK2.add(xiaopengyouMK2gain().mul(globalDiff))
     }
-    if (player.PL2points.gte("1e2000")){
+    if (player.PL2points.gte("1e1100")){
         player.PL2isunlockedCompress = true;
-        if (!player.PL2xiaopengyouMK2milestone1Reached && player.PL2xiaopengyouMK2.gte(1e16)){
+        if (!player.PL2xiaopengyouMK2milestone1Reached && player.PL2xiaopengyouMK2.gte(1e10)){
             player.PL2xiaopengyouMK2milestone1Reached = true;
         }
+    }
+    if (player.PL2xiaopengyouMK2.gte("1e11")){
+        player.PL2moreRPgenerated = player.PL2moreRPgenerated.add(PowiainaNum(player.PL2xiaopengyouMK2.max(0).root(2).mul(globalDiff)))
     }
 }
 function xiaopengyouMK2exponent(){

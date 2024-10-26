@@ -23,7 +23,7 @@ function getRealDimBoost(){
     if (player.PL1inchal==2){
         temp1 = temp1.mul(0.1)
     }
-    temp1 = softcap(temp1,5e4,hasTheorie(21) ? 0.7:0.5,"pow")
+    temp1 = softcap(temp1,5e4,hasTheorie(21) ? (hasTheorie(81)? 0.9 :0.7):0.5,"pow")
 
     if (player.PL2times.gte(400)) temp1 = temp1.mul(1.05)
     if (hasTheorie(31)) temp1 = temp1.mul(1.5)

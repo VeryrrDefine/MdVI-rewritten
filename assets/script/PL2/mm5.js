@@ -77,7 +77,6 @@ function getRealPL2resetTimes(){
 }
 function buyPL2Upg(id){
     if (getRealPL2resetTimes().gte(PL2UpgCost(id))){
-        player.PL2resetTimesSpent = player.PL2resetTimesSpent.add(PL2UpgCost(id))
         if (id == 1) player.PL2RTupgrade1 = player.PL2RTupgrade1.add(1)
         if (id == 2) player.PL2RTupgrade2 = player.PL2RTupgrade2.add(1)
     }
@@ -99,10 +98,14 @@ function mm5Loop(){
     if (player.PL2times.gte(250000)){
         player.XP = player.XP.add(PowiainaNum.mul(10,globalDiff))
     }
+    if (player.PL2times.gte(8)){
+        player.XP = player.XP.add(PowiainaNum.mul(0.1,globalDiff))
+    }
     player.PL2theoChoose = [...(new Set(player.PL2theoChoose))];
     if (hasTheorie(31) && hasTheorie(32)){
         player.isUnlockedDimBoost3 = true
     }
+    player.PL2resetTimesSpent = PowiainaNum.ZERO.clone();
     reactorLoop();
     xiaopengyouMK2loop();
 }

@@ -21,7 +21,7 @@ function getReactor(){
     }
 }
 function reactorCost(){
-    return PowiainaNum.pow(10,PowiainaNum.mul(50,PowiainaNum.pow(2,player.PL2reactors)));
+    return PowiainaNum.pow(10,PowiainaNum.mul(50,PowiainaNum.pow(1.1,player.PL2reactors)));
 }
 function reactorSpeed(){
     return player.PL2reactors.mul(3)
@@ -62,7 +62,7 @@ function buyReacUpg(x){
     if (x==1 && player.PL2mm54.gte(128) && !player.PL2reaUpg.includes(1)) player.PL2reaUpg.push(1)
     if (x==2 && player.PL2mm55.gte(256) && !player.PL2reaUpg.includes(2)) player.PL2reaUpg.push(2)
     if (x==3 && player.PL2mm56.gte(512) && !player.PL2reaUpg.includes(3)) player.PL2reaUpg.push(3)
-    if (x==4 && player.PL2mm57.gte(1024) && !player.PL2reaUpg.includes(4)) player.PL2reaUpg.push(4)
+    if (x==4 && player.PL2mm57.gte(256) && !player.PL2reaUpg.includes(4)) player.PL2reaUpg.push(4)
 }
 function getReacUpgEffect2(){
     return player.PL2reaUpg.includes(2) ? player.PL2mm55.max(1).pow(1.2) : PowiainaNum.ONE.clone();

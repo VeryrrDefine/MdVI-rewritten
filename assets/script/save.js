@@ -125,6 +125,8 @@ function hardReset() {
         PL2buyable4: PowiainaNum.ZERO.clone(),
 
         PL2xiaopengyouMK2milestone1Reached: false,
+
+        PL2moreRPgenerated: PowiainaNum.ZERO.clone(),
         //#endregion
 
         //#region Battle
