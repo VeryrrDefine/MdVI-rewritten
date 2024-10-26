@@ -1,5 +1,12 @@
 const changelog = [
     {
+        version: "2.2.4", title: "Rebalance-2",
+        changes: [
+            "Balance the content before the third prestige layer reset.",
+            "Done all content of second prestige layer"
+        ]
+    },
+    {
         version: "2.2.3", title: "Rebalance",
         changes: [
             "Balance the content before the second prestige layer reset."
