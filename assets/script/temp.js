@@ -3,7 +3,7 @@ var tmp = {
         getDimScale(dim) {
             // dim = 1-8
             return ExpantaNum.pow(49,dim).pow(
-                player.PL1inchal==1 ? 2 : 1
+                player.PL1inchal==1 ? 1.2 : 1
             )
         },
         getBoughtDimsAftere400(dim){
@@ -39,7 +39,7 @@ var tmp = {
             if (getRealDimBoost().gte(10) && i > 4-1 && i < 9-1){
                 result = result.mul(dimBoostReward[5].effect())
             }
-            if (getRealDimBoost().gte(23)){
+            if (getRealDimBoost().gte(4)){
                 result = result.mul(dimBoostReward[7].effect())
             }
             if (hasMM3Upg(1)){
@@ -76,9 +76,7 @@ var tmp = {
     dimensionBoost: {
         require(){
             let req =  E.pow(hasTheorie(11) ? 3.205 : 7,E.add(E.mul(player.dimBoost,4),36));
-            if (hasMM3Upg(1)){
-                req = req.div(tmp.dimensionBoost.requireDivision())
-            }
+            req = req.div(tmp.dimensionBoost.requireDivision())
             return req;
         },
         require2(){
@@ -97,7 +95,7 @@ var tmp = {
         },
         requireDivision(){
             
-            return E(1).mul(hasMM3Upg(1) ? "e10" : 1).mul(E.max(1,hasMM3Upg(16) ? player.PL1xiaopengyouPoints.pow(10) : 1)).mul(
+            return E(1e10).mul(hasMM3Upg(1) ? "e10" : 1).mul(E.max(1,hasMM3Upg(16) ? player.PL1xiaopengyouPoints.pow(10) : 1)).mul(
                 hasTheorie(41) ? "1e10000" : 1
 
             )

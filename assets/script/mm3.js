@@ -1,10 +1,10 @@
 const mm3UpgradeCost = [
-    1, 1, 3, 10, 15, 25, 40, 60, 95, 240, 0, "J^114514 19",
-    2000, 10000, 50000, 300000, 700000, "1e6", "2e6", "7e9"
+    1, 1, 3, 6, 10, 20, 35, 55, 95, 240, 0, "J^114514 19",
+    50, 300, 1000, 5000, 20000, "1e5", "2e5", "7e8"
 ]
 
 const mm3ChallengeGoal = [
-    E("1e200"), E("1e200"), E("1e700")
+    E("1e200"), E("1e200"), E("1e400")
 ]
 function hasMM3Upg(x){
     return player.PL1upgrades.includes(x)
@@ -12,7 +12,6 @@ function hasMM3Upg(x){
 function buyMM3Upg(x){
     if (x <= 12 && player.PL1points.gte(mm3UpgradeCost[x-1]) && !hasMM3Upg(x)){
         player.PL1upgrades.push(x);
-        player.PL1points = player.PL1points.sub(mm3UpgradeCost[x-1])
     }
     if (x <= 22 && player.PL1xiaopengyouPoints.gte(mm3UpgradeCost[x-1]) && !hasMM3Upg(x)){
         player.PL1upgrades.push(x);
@@ -155,7 +154,7 @@ function buyBuyable(x){
 }
 
 function unlockXiaopengyou(){
-    if (player.PL1points.gte(player.PL2times.gte(1) ? "1e3" : "1e6")){
+    if (player.PL1points.gte(player.PL2times.gte(1) ? "1e3" : "1e4")){
         player.PL1xiaopengyouUnl = true
     }
 }
@@ -173,6 +172,9 @@ function getXiaopengyouGain(){
     )
     temp1 = temp1.mul(
         hasMM3Upg(19) ? player.PL1points.log10().div(10).max(1) : 1
+    )
+    temp1 = temp1.mul(
+        hasMM3Upg(19) ? 512 : 1
     )
     if (player.PL2times.gte(1)){
         temp1 = temp1.mul(3.2050)
@@ -207,7 +209,7 @@ function xiaopengyouEffect1(){
 }
 
 function xiaopengyouEffect2(){
-    return softcap(player.PL1xiaopengyouPoints.gte(1000) ? (
+    return softcap(player.PL1xiaopengyouPoints.gte(500) ? (
 
         player.PL1chal.includes(2) ?
         player.PL1xiaopengyouPoints.root(5)  :

@@ -81,10 +81,10 @@ const dimBoostReward=[
     },
     {
         req: E(14),
-        desc: "重置时保留7<sup>log<sub>7</sub>(x)×0.5</sup> 4维体积",
+        desc: "重置时保留x^0.5 4维体积",
         effect() {
             if (player.volumes.gte(7)){
-                return E.pow(7,player.volumes.logarithm(7).mul(0.5)).max(7)
+                return player.volumes.root(2).max(7)
             }else{
                 return E(7)
             }
@@ -94,7 +94,7 @@ const dimBoostReward=[
         }
     },
     {//[7]
-        req: E(23),
+        req: E(15),
         get desc(){ 
             return "每一个维度提升使所有维度×"+format(this.base) 
         },

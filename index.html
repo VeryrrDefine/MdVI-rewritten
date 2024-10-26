@@ -273,7 +273,7 @@
         <div v-if="player.currentPage == 10">
             <div class="text-center" v-if="!player.PL1xiaopengyouUnl"><button class="btn mm3btn" @click="unlockXiaopengyou()">
                 解锁小朋友<br>
-                需要{{player.PL2times.gte(1) ? "1,000" : "1,000,000"}} mm<sup>3</sup>
+                需要{{player.PL2times.gte(1) ? "1,000" : "10,000"}} mm<sup>3</sup>
             </button></div>
             <div v-else>
                 <div class="text-center">
@@ -281,7 +281,7 @@
                     <p>已解锁一个新的购买项在"升级"选项卡</p>
                 </div>
                 <p class="mm3text text-center">
-                    在1000小朋友，基于小朋友数量获得额外的{{glt("dimensionBoost")}}<br>
+                    在500小朋友，基于小朋友数量获得额外的{{glt("dimensionBoost")}}<br>
                     当前：+{{format(xiaopengyouEffect2())}}
                 </p>
             </div>
@@ -291,8 +291,8 @@
             <p class="text-center"><button class="btn mm3btn" @click="exitChal()">退出挑战</button></p>
             <table>
                 <tr>
-                    <td><button class="chalpl0" @click="enterNorChal(1)" :class="getChalClass(1)">挑战1<br>1-8维度的增长速度为原来的^2<br>目标: 1.000e200 mm<sup>4</sup><br>奖励：获得×1.02多的购买次数</button></td>
-                    <td><button class="chalpl1" @click="enterNorChal(2)" :class="getChalClass(2)" v-if="hasMM3Upg(14)">挑战2<br>{{glt("dimensionBoost")}}实际数量为原来的0.1倍<br>目标: 1.000e700 mm<sup>4</sup><br>奖励：小朋友再次提升{{glt("dimensionBoost")}}实际数量</button></td>
+                    <td><button class="chalpl0" @click="enterNorChal(1)" :class="getChalClass(1)">挑战1<br>1-8维度的增长速度为原来的^1.2<br>目标: 1.000e200 mm<sup>4</sup><br>奖励：获得×1.02多的购买次数</button></td>
+                    <td><button class="chalpl1" @click="enterNorChal(2)" :class="getChalClass(2)" v-if="hasMM3Upg(14)">挑战2<br>{{glt("dimensionBoost")}}实际数量为原来的0.1倍<br>目标: 1.000e400 mm<sup>4</sup><br>奖励：小朋友再次提升{{glt("dimensionBoost")}}实际数量</button></td>
                     
                 </tr>
             </table>
@@ -310,49 +310,50 @@
             </button>
         </div>
         <div v-if="player.currentPage == 6" class="text-center">
+            Because rebalance, so 1-9 mm3 upgrade don't 消耗 anything.
             <table>
                 <tr>
                     <td><button class="mm3upg" :class="{unlocked: hasMM3Upg(1)}" @click="buyMM3Upg(1)">基于重置数量提升1-8维度，{{glt("dimensionBoost")}}价格/1.000e10<br>花费：1 mm<sup>3</sup></button></td>
                     <td><button class="mm3upg" :class="{unlocked: hasMM3Upg(2)}" @click="buyMM3Upg(2)">解锁自动<br>花费：1 mm<sup>3</sup></button></td>
                     <td><button class="mm3upg" :class="{unlocked: hasMM3Upg(3)}" @click="buyMM3Upg(3)">解锁自动{{glt("dimensionBoost")}}<br>花费：3 mm<sup>3</sup></button></td>
-                    <td><button class="mm3upg" :class="{unlocked: hasMM3Upg(4)}" @click="buyMM3Upg(4)">解锁挑战<br>花费：10 mm<sup>3</sup></button></td>
+                    <td><button class="mm3upg" :class="{unlocked: hasMM3Upg(4)}" @click="buyMM3Upg(4)">解锁挑战<br>花费：6 mm<sup>3</sup></button></td>
                 </tr>
                 <tr>
-                    <td><button class="mm3upg" :class="{unlocked: hasMM3Upg(5)}" @click="buyMM3Upg(5)">你可以最大化{{glt("dimensionBoost")}}<br>花费：15 mm<sup>3</sup></button></td>
-                    <td><button class="mm3upg" :class="{unlocked: hasMM3Upg(6)}" @click="buyMM3Upg(6)">每次重置开始于10{{glt("dimensionBoost")}}<br>花费：25 mm<sup>3</sup></button></td>
-                    <td><button class="mm3upg" :class="{unlocked: hasMM3Upg(7)}" @click="buyMM3Upg(7)">每次重置开始于35{{glt("dimensionBoost")}}，解锁自动mm<sup>3</sup>重置<br>花费：40 mm<sup>3</sup></button></td>
-                    <td><button class="mm3upg" :class="{unlocked: hasMM3Upg(8)}" @click="buyMM3Upg(8)">解锁一个双倍mm<sup>3</sup>获取的可购买<br>花费：60 mm<sup>3</sup></button></td>
+                    <td><button class="mm3upg" :class="{unlocked: hasMM3Upg(5)}" @click="buyMM3Upg(5)">你可以最大化{{glt("dimensionBoost")}}<br>花费：10 mm<sup>3</sup></button></td>
+                    <td><button class="mm3upg" :class="{unlocked: hasMM3Upg(6)}" @click="buyMM3Upg(6)">每次重置开始于10{{glt("dimensionBoost")}}<br>花费：20 mm<sup>3</sup></button></td>
+                    <td><button class="mm3upg" :class="{unlocked: hasMM3Upg(7)}" @click="buyMM3Upg(7)">每次重置开始于35{{glt("dimensionBoost")}}，解锁自动mm<sup>3</sup>重置<br>花费：35 mm<sup>3</sup></button></td>
+                    <td><button class="mm3upg" :class="{unlocked: hasMM3Upg(8)}" @click="buyMM3Upg(8)">解锁一个双倍mm<sup>3</sup>获取的可购买<br>花费：55 mm<sup>3</sup></button></td>
                 </tr>
                 <tr>
                     <td><button class="mm3upg" :class="{unlocked: hasMM3Upg(9)}" @click="buyMM3Upg(9)">{{glt("dimensionBoost")}}不重置任何东西<br>花费：95 mm<sup>3</sup></button></td>
                </tr>
                 <tr v-if="player.PL1xiaopengyouUnl">
                     <td>
-                        <button class="mm3upg" :class="{unlocked: hasMM3Upg(13)}" @click="buyMM3Upg(13)">在"{{glt("dimensionBoost")}}"页面解锁"{{glt("dimensionBoost2")}}"<br>花费：2,000 小朋友</button>
+                        <button class="mm3upg" :class="{unlocked: hasMM3Upg(13)}" @click="buyMM3Upg(13)">在"{{glt("dimensionBoost")}}"页面解锁"{{glt("dimensionBoost2")}}"<br>花费：50 小朋友</button>
                     </td>
                     <td>
-                        <button class="mm3upg" :class="{unlocked: hasMM3Upg(14)}" @click="buyMM3Upg(14)">解锁挑战2<br>花费：10,000 小朋友</button>
+                        <button class="mm3upg" :class="{unlocked: hasMM3Upg(14)}" @click="buyMM3Upg(14)">解锁挑战2<br>花费：300 小朋友</button>
                     </td>
                     <td>
-                        <button class="mm3upg" :class="{unlocked: hasMM3Upg(15)}" @click="buyMM3Upg(15)">基于小朋友数量提升小朋友获取<br>花费：50,000 小朋友</button>
+                        <button class="mm3upg" :class="{unlocked: hasMM3Upg(15)}" @click="buyMM3Upg(15)">基于小朋友数量提升小朋友获取<br>花费：1,000 小朋友</button>
                     </td>
                     <td>
-                        <button class="mm3upg" :class="{unlocked: hasMM3Upg(16)}" @click="buyMM3Upg(16)">基于小朋友数量减少{{glt("dimensionBoost")}}的价格<br>花费：300,000 小朋友</button>
+                        <button class="mm3upg" :class="{unlocked: hasMM3Upg(16)}" @click="buyMM3Upg(16)">基于小朋友数量减少{{glt("dimensionBoost")}}的价格<br>花费：5,000 小朋友</button>
                     </td>
                 </tr>
                 <tr v-if="hasMM3Upg(16)">
                     
                     <td>
-                        <button class="mm3upg" :class="{unlocked: hasMM3Upg(17)}" @click="buyMM3Upg(17)">小朋友加成{{glt("dimensionBoost")}}23的效果<br>花费：700,000 小朋友</button>
+                        <button class="mm3upg" :class="{unlocked: hasMM3Upg(17)}" @click="buyMM3Upg(17)">小朋友加成{{glt("dimensionBoost")}}23的效果<br>花费：20,000 小朋友</button>
                     </td>
                     <td>
-                        <button class="mm3upg" :class="{unlocked: hasMM3Upg(18)}" @click="buyMM3Upg(18)">基于4维体积加成小朋友获取<br>花费：1.000e6 小朋友</button>
+                        <button class="mm3upg" :class="{unlocked: hasMM3Upg(18)}" @click="buyMM3Upg(18)">基于4维体积加成小朋友获取<br>花费：100,000 小朋友</button>
                     </td>
                     <td>
-                        <button class="mm3upg" :class="{unlocked: hasMM3Upg(19)}" @click="buyMM3Upg(19)">基于3维体积加成小朋友获取<br>花费：2.000e6 小朋友</button>
+                        <button class="mm3upg" :class="{unlocked: hasMM3Upg(19)}" @click="buyMM3Upg(19)">基于3维体积加成小朋友获取，获得×512多小朋友<br>花费：200,000 小朋友</button>
                     </td>
                     <td>
-                        <button class="mm3upg" :class="{unlocked: hasMM3Upg(20)}" @click="buyMM3Upg(20)">解锁下一个声望层<br>花费：7.000e9 小朋友</button>
+                        <button class="mm3upg" :class="{unlocked: hasMM3Upg(20)}" @click="buyMM3Upg(20)">解锁下一个声望层<br>花费：7.000e8 小朋友</button>
                     </td>
                 </tr>
                 <tr>
@@ -691,6 +692,7 @@
                 
                 
             </div>
+            Because rebalance, 15 DimensionBoost effect has been moved to 4 DB.
             <div v-html="statBoosts()"></div>
 
         </div>

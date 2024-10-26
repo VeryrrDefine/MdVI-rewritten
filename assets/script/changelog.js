@@ -1,5 +1,11 @@
 const changelog = [
     {
+        version: "2.2.3", title: "Rebalance",
+        changes: [
+            "Balance the content before the second prestige layer reset."
+        ]
+    },
+    {
         version: "2.2.2.2-E", title: "I18N",
         changes: [
             "added English Language(Not Full)<button class=\"btn\" onclick=\"currentLanguage = 1\">Set</button>"
