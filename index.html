@@ -55,7 +55,6 @@
             <div class="text-center">
                 {{glt("youhave")}} <span class="vol-dis">{{formatWhole(player.volumes)}}</span> mm<sup>4</sup> {{glt("4dvolumes")}}
             </div>
-            <div class="text-center" v-html="get_pts_volume(player.volumes)"></div>
             <div v-if="player.timeSpeed != 1" class="text-center">{{glt("currentglobalspeed")+format(player.timeSpeed)}}</div>
             <div v-if="player.volumes.gte('1e200') && !player.isPL1unlocked" class="text-center">{{glt("youneedsomethingtogofurther")}}</div>
             <div class="text-center"></div>
