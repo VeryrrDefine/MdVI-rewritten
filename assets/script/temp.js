@@ -1,3 +1,5 @@
+
+
 var tmp = {
     dimension: {
         getDimScale(dim) {
@@ -5,6 +7,33 @@ var tmp = {
             return ExpantaNum.pow(49,dim).pow(
                 player.PL1inchal==1 ? 1.2 : 1
             )
+        },
+        getSuperDimState(dim){
+            // param dim 1-8
+            let basebought = player.volumes.div(dimBasePrice[dim-1]).logarithm(this.getDimScale(dim));
+            let finbought = E(1);
+            let e400Bought = ExpantaNum.div("1e400",dimBasePrice[dim-1]).logarithm(this.getDimScale(dim));
+            finbought = softcap(basebought, e400Bought, hasTheorie(61) ? 0.6 : 0.5, "pow");
+
+            finbought = finbought.add(1)
+
+            if (player.PL1chal.includes(1)){
+                finbought = finbought.mul(1.02)
+            }
+            finbought = finbought.mul(PL2UpgEffect1().max(1))
+
+
+            finbought = softcap(finbought, 1.57e9, 0.3, "pow")
+
+
+            let superdimState = "";
+            if (basebought.gte(e400Bought)){
+                superdimState = "一阶折算"
+            }
+            if (finbought.gte(1.57e9)){
+                superdimState = "二阶折算"
+            }
+            return superdimState;
         },
         getBoughtDimsAftere400(dim){
             // param dim 1-8
@@ -20,6 +49,9 @@ var tmp = {
                 finbought = finbought.mul(1.02)
             }
             finbought = finbought.mul(PL2UpgEffect1().max(1))
+
+            finbought = softcap(finbought, 1.57e9, 0.3, "pow")
+
             return finbought
 
         },
@@ -54,11 +86,14 @@ var tmp = {
         },
         getDimExponentplier(dim){
             let temp1 = ExpantaNum(1);
+            temp1 = temp1.add(this.getBoughtExponentplierAdd(dim).mul(player.dimensions[DIMENSIONS_BOUGHT][dim]));
             if (player.dimBoost2.gte(1)){
                 temp1 = temp1.add(0.01)
             }
             temp1 = temp1.add(player.PL2reaUpg.includes(3) ? getReacUpgEffect3A() : 0);
             temp1 = temp1.add(MM5buyable3Effect().max(0))
+            if (player.PL3xpyrep.gte(150)) temp1 = temp1.add(0.05)
+            if (player.PL3xpyrep.gte(160)) temp1 = temp1.add(getxpyrepEff1())
             return temp1
         },
         getBoughtMultiplier() {
@@ -71,6 +106,11 @@ var tmp = {
             if (player.dimBoost3.gte(2)) temp1 = temp1.add(dimBoostReward3[1].effect())
 
             return temp1
+        },
+        getBoughtExponentplierAdd(dim){
+            let temp1 = E(0);
+
+            return temp1;
         }
     },
     dimensionBoost: {
@@ -81,16 +121,25 @@ var tmp = {
         },
         require2(){
             let req = E.pow(10,E.add(900,E.pow(E.mul(hasTheorie(51) ? 2 :15,player.dimBoost2),2)))
-
+            if (player.dimBoost2.gte(this.DB2cap())) req = req.div(0)
             return req
+        },
+        DB2cap(){
+            let base = PowiainaNum("3e11");
+            base = base.add(PowiainaNum.mul(5e13,getxpyrepgalcount()));
+            return base;
         },
         require3(){
             let req = E.add(200,player.dimBoost3.mul(20))
 
             return req
         },
+        bulkDB3(){
+            let bulk = player.dimBoost2.sub(200).div(20).floor();
+            return bulk  
+        },
         bulkDB2(){
-            let bulk = player.volumes.log10().sub(900).pow(0.5).div(hasTheorie(51) ? 2 :15).ceil();
+            let bulk = player.volumes.log10().sub(900).pow(0.5).div(hasTheorie(51) ? 2 :15).ceil().max(3e11);
             return bulk
         },
         requireDivision(){
@@ -112,6 +161,46 @@ var tmp = {
             }
 
             if (player.PL2incompress) temp1 = temp1.max(1).logBase(1.2);
+            //temp1 = temp1.pow(tmp.mm6.effectTo4Dvolumesgain);
+            if (player.PL3materialupg5.eq(PowiainaNum.ONE)) temp1 = temp1.pow(materialEffect(7))
+
+            temp1 = temp1.pow(getxpyrepto4dv())
+
+            //#region calculate overflow
+                /*
+                let o = x
+			let os = tmp.c16.in ? E('ee5') : E('ee69').pow(tmp.chal.eff[15])
+			let op = E(.5)
+			let os2 = tmp.c16.in ? E('ee11') : E('ee279')
+			let op2 = E(.25)
+
+			x = overflow(x,os,op)
+			x = overflow(x,os2,op2)
+
+			tmp.overflowBefore.mass = o
+			tmp.overflow.mass = calcOverflow(o,x,os)
+			tmp.overflow_start.mass = [os,os2]
+			tmp.overflow_power.mass = [op,op2]
+             */
+
+            let o = temp1.clone();
+            let os = PowiainaNum(this.overflow1Position);
+            let op = E(this.overflow1Power);
+
+            let os2 = PowiainaNum(this.overflow2Position);
+            let op2 = E(this.overflow2Power);
+
+            temp1 = overflow(temp1, os, op, 2);
+            temp1 = overflow(temp1, os2, op2, 2);
+
+            temp1 = temp1.pow(mm6buyableEffect(2));
+            if (player.PL3xpyrep.gte(1.5e156)) temp1 = temp1.pow(1e16)
+            tmp.overflowBefore.mm4 = o;
+            tmp.overflow.mm4 = calcOverflow(o,temp1,os,2);
+            tmp.overflow_start.mm4 = [os, os2];
+            tmp.overflow_power.mm4 = [op, op2];
+            //#endregion
+
             return temp1
         },
         get softcapped1(){
@@ -122,7 +211,29 @@ var tmp = {
         },
         get softcap1start(){
             return new PowiainaNum("3.2050e1050")
-        }
+        },
+
+        get overflow1Position(){
+            return PowiainaNum("ee50")
+        },
+        get overflow1Power(){
+            return .5
+        },
+        get inOverflow(){
+            return this.gain.gte(this.overflow1Position);
+        },
+
+        get overflow2Position(){
+            return PowiainaNum("ee200")
+        },
+        get overflow2Power(){
+            return .025
+        },
+        get inOverflow2(){
+            return this.gain.gte(this.overflow2Position);
+        },
+
+        
     },
     mm3: {
         get gain(){
@@ -144,7 +255,17 @@ var tmp = {
                 temp1 = temp1.pow(2)
             }
             return temp1;
-        }
+        },
+
+        get xiaopengyouOverflow1Position(){
+            return PowiainaNum("e400")
+        },
+        get xiaopengyouOverflow1Power(){
+            return .25
+        },
+        get xiaopengyouinOverflow(){
+            return getXiaopengyouGain().gte(this.xiaopengyouOverflow1Position);
+        },
     },
     mm5: {
         get gain(){
@@ -159,9 +280,12 @@ var tmp = {
         },
         getDimExponentplierafter8(id){
             let temp1 = PowiainaNum(1);
+            temp1 = temp1.add(this.getBoughtExponentplierAdd(id).mul(player.dimensions[DIMENSIONS_BOUGHT][id-1]));
             
             temp1 = temp1.add(player.PL2reaUpg.includes(3) ? getReacUpgEffect3B() : 0);
             temp1 = temp1.add(MM5buyable4Effect().max(0))
+            if (player.PL3xpyrep.gte(150)) temp1 = temp1.add(0.05)
+            if (player.PL3xpyrep.gte(160)) temp1 = temp1.add(getxpyrepEff1())
             return temp1;
         },
         getBoughtMultiplierafter8() {
@@ -177,7 +301,18 @@ var tmp = {
             return temp1;
         },
         getMM59count(){
-            return player.PL2highestVolumeInCompress.root(2).mul(2)
+            return player.PL2highestVolumeInCompress.max("1e12").root(2).mul(2).max(researchLevel(9) ? "1e20" : "0").min("1e40")
+        },
+        getBoughtExponentplierAdd(dim){
+            let temp1 = E(0);
+
+            return temp1;
+        }
+    },
+    mm6: {
+        get gain(){
+            return player.volumes.log10().div("1.3e12").floor()
+
         }
     },
     battle: {
@@ -192,5 +327,30 @@ var tmp = {
         get feature3Effect(){
             return player.fillFeatureProgress3.max(1).logarithm(10).max(0).min(100000);
         }
+    },
+
+    overflow: {
+        mm4: PowiainaNum.POSITIVE_INFINITY.clone(),
+        xiaopengyou: PowiainaNum.POSITIVE_INFINITY.clone(),
+    },
+    overflowBefore: {
+        mm4: PowiainaNum.POSITIVE_INFINITY.clone(),
+        xiaopengyou: PowiainaNum.POSITIVE_INFINITY.clone(),
+    },
+    overflow_start: {
+        mm4: [
+            PowiainaNum.POSITIVE_INFINITY.clone()
+        ],
+        xiaopengyou: [
+            PowiainaNum.POSITIVE_INFINITY.clone()
+        ],
+    },
+    overflow_power: {
+        mm4: [
+            PowiainaNum.ONE.clone()
+        ],
+        xiaopengyou: [
+            PowiainaNum.ONE.clone()
+        ],
     }
 }

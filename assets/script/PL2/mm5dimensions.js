@@ -62,7 +62,7 @@ function calculatemm5Dimensions(){
                     player.dimensions[DIMENSIONS_POINTS][i + 1]
                         .mul(player.dimensions[DIMENSIONS_MULTI][i + 1])
                         .pow(player.dimensions[DIMENSIONS_EXPONENT][i + 1])
-                        .mul(globalDiff)
+                        .mul(timeDifferences[0])
                 );
             
         }
@@ -78,7 +78,7 @@ function calculatemm5Dimensions(){
             player.dimensions[DIMENSIONS_POINTS][8]
             .mul(player.dimensions[DIMENSIONS_MULTI][8])
             .pow(player.dimensions[DIMENSIONS_EXPONENT][8])
-            .mul(globalDiff))
+            .mul(timeDifferences[0]))
         )
 
         if (player.dimBoost3.gte(1)){
@@ -87,7 +87,7 @@ function calculatemm5Dimensions(){
                     player.dimensions[DIMENSIONS_POINTS][8]
                         .mul(player.dimensions[DIMENSIONS_MULTI][8])
                         .pow(player.dimensions[DIMENSIONS_EXPONENT][8])
-                        .mul(globalDiff)
+                        .mul(timeDifferences[0])
                 );
     
         }

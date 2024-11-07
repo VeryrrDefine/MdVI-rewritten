@@ -65,7 +65,7 @@ class formatTime {
       if (this._ms.isneg()) return new formatTime(this._ms.neg()).milliseconds.neg()
       return ExpantaNum.floor(this.totalMilliseconds.sub(this.totalMilliseconds.div(1e3).floor().times(1e3)));
     }
-    toString() {
+    toString(noMillSecond = false) {
       if (this.totalMilliseconds.lt(1)) return '0毫秒'
       let string = ''
       if (this.years.neq(0)) string = string + (formatWhole(this.years) + '年')
@@ -73,7 +73,7 @@ class formatTime {
       if (this.hours.neq(0) && this.years.lt(4e12)) string = string + (formatWhole(this.hours) + '时')
       if (this.minutes.neq(0) && this.years.lt(5e10)) string = string + (formatWhole(this.minutes) + '分')
       if (this.seconds.neq(0) && this.years.lt(1e9)) string = string + (formatWhole(this.seconds) + '秒')
-      if (this.milliseconds.neq(0) &&  this.years.lt(4e7)) string = string + (formatWhole(this.milliseconds) + '毫秒')
+      if (!noMillSecond && this.milliseconds.neq(0) &&  this.years.lt(4e7)) string = string + (formatWhole(this.milliseconds) + '毫秒')
       return string
     }
     toJSON() {

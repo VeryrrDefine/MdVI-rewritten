@@ -10,6 +10,10 @@ function hasMM3Upg(x){
     return player.PL1upgrades.includes(x)
 }
 function buyMM3Upg(x){
+    if (researchLevel(5) == 1 && x >= 1 && x <= 9 && player.PL1points.gte(0) && !hasMM3Upg(x)){
+        player.PL1upgrades.push(x);
+        return;
+    }
     if (x <= 12 && player.PL1points.gte(mm3UpgradeCost[x-1]) && !hasMM3Upg(x)){
         player.PL1upgrades.push(x);
     }
@@ -73,12 +77,12 @@ function mm3Loop(){
     player.PL1upgrades = [...(new Set(player.PL1upgrades))]
     if (player.PL2times.gte(50)){
         if (tmp.mm3.gain.gt(1)){
-            player.PL1points = player.PL1points.add(tmp.mm3.gain.pow(1).mul(globalDiff))
+            player.PL1points = player.PL1points.add(tmp.mm3.gain.pow(1).mul(timeDifferences[0]))
         }
     }
     else if (player.PL2times.gte(3)){
         if (tmp.mm3.gain.gt(1)){
-            player.PL1points = player.PL1points.add(tmp.mm3.gain.pow(0.5).mul(globalDiff))
+            player.PL1points = player.PL1points.add(tmp.mm3.gain.pow(0.5).mul(timeDifferences[0]))
         }
     }
     if (player.PL2times.gte(10)){
@@ -144,10 +148,11 @@ function buyBuyable(x){
 
             
         case 2:
-            if (player.PL1xiaopengyouPoints.gte(getBuyableCost(2))){
-                if (player.PL2times.lt(10)) player.PL1xiaopengyouPoints = player.PL1xiaopengyouPoints.sub(getBuyableCost(2))
+            if (player.PL1buyable2.lt(player.PL1xiaopengyouPoints.logarithm(12).ceil())){
+                player.PL1buyable2 = player.PL1xiaopengyouPoints.logarithm(12).floor();
+                if (player.PL2times.lt(10)) player.PL1points = player.PL1points.sub(getBuyableCost(2))
                 player.PL1buyable2 = player.PL1buyable2.add(1);
-                
+
             }
             break;
     }
@@ -192,12 +197,28 @@ function getXiaopengyouGain(){
     if (player.PL2isunlockedCompress){
         temp1 = temp1.pow(xiaopengyouExponentMore())
     }
+
+    
+
+    let o = temp1.clone();
+    let os = PowiainaNum(tmp.mm3.xiaopengyouOverflow1Position);
+    let op = E(tmp.mm3.xiaopengyouOverflow1Power);
+
+
+    temp1 = overflow(temp1, os, op);
+
+    tmp.overflowBefore.xiaopengyou = o;
+    tmp.overflow.xiaopengyou = calcOverflow(o,temp1,os);
+    tmp.overflow_start.xiaopengyou = [os];
+    tmp.overflow_power.xiaopengyou = [op];
+
+
     return temp1
 }
+/*setTimeout(()=>{console.log(player.volumes.format())},1000);console.log(player.volumes.format());*/
 function xiaopengyouLoop(){
     if (player.PL1xiaopengyouUnl){
-        // globalDiff
-        player.PL1xiaopengyouPoints = player.PL1xiaopengyouPoints.add(getXiaopengyouGain().mul(globalDiff))
+        player.PL1xiaopengyouPoints = player.PL1xiaopengyouPoints.add(getXiaopengyouGain().mul(timeDifferences[0]))
         if (player.PL1xiaopengyouPoints.gte(tmp.mm3.xiaopengyouCap())){
             player.PL1xiaopengyouPoints = E(tmp.mm3.xiaopengyouCap());
         }

@@ -16,7 +16,7 @@ async function loadI18N(){
 }
 
 function getI18Ntext(id){
-    if (Object.hasOwn(I18Ntext[currentLanguage],id)) return I18Ntext[currentLanguage][id]
+    if (Object.hasOwn(I18Ntext[window.currentLanguage],id)) return I18Ntext[window.currentLanguage][id]
     else return id
 }
 function glt(){

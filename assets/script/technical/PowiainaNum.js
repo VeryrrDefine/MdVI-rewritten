@@ -212,7 +212,7 @@
     //#endregion
     //#endregion
 
-    //#region power, root, logarithm, iteratedlog, iteratedexp, iterated slog
+    //#region power, root, logarithm, iteratedlog, iteratedexp, iteratedslog
     P.toPower = P.pow = function (other) {
         other = new PowiainaNum(other);
         if (PowiainaNum.debug >= PowiainaNum.NORMAL) console.log(this + "^" + other);
@@ -312,6 +312,12 @@
     Q.iteratedexp = function (x, other, payload) {
         return new PowiainaNum(x).iteratedexp(other, payload);
     };
+    
+
+
+
+
+
     //This implementation is highly inaccurate and slow, and probably be given custom code
     P.iteratedlog = function (base, other) {
         if (base === undefined) base = 10;
@@ -334,6 +340,15 @@
         if (other.eq(PowiainaNum.ONE)) return t.slog();
         return E(10).pent(t.mlog().sub(other))
     };
+
+    //Implementation of functions from break_eternity.js
+    P.iteratedexp = function(other, payload) {
+      return this.tetr(other, payload);
+    };
+    Q.iteratedexp = function(x, y, payload) {
+      return new ExpantaNum(x).iteratedexp(y, payload);
+    };
+
     //#endregion
 
     //#region lambertw

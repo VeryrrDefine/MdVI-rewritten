@@ -305,3 +305,121 @@ a:-webkit-any-link{
     width: 150px;
     height: 150px;
 }
+
+
+
+
+
+.corrupted {
+    animation: corrupted_text 4s cubic-bezier(0.37, 0, 0.63, 1) infinite
+  }
+  
+  @keyframes corrupted_text {
+  
+    0%,
+    100% {
+      text-shadow: -4px -4px 4px #5555ff, 4px 4px 4px #ff5555;
+      color: white;
+    }
+  
+    25% {
+      text-shadow: -4px 4px 4px #5555ff, 4px -4px 4px #ff5555;
+      color: #eeddff;
+    }
+  
+    50% {
+      text-shadow: 4px 4px 4px #5555ff, -4px -4px 4px #ff5555;
+      color: white;
+    }
+  
+    75% {
+      text-shadow: 4px -4px 4px #5555ff, -4px 4px 4px #ff5555;
+      color: #ffddee;
+    }
+  }
+  
+  .charged_text {
+    color: cyan;
+    text-shadow: -1px -1px 3px lightskyblue, 0px 0px 5px #878ffa, 1px 1px 3px blue;
+  }
+
+  
+.saved_text {
+    color: #bfb;
+    text-shadow: 1px 1px 3px #0f0, -1px -1px 3px #7f0, 0 0 24px #0f0
+  }
+  
+  @keyframes quark_color {
+  
+    0%,
+    100% {
+      color: #f77;
+    }
+  
+    16.7% {
+      color: #f7f;
+    }
+  
+    33.3% {
+      color: #77f;
+    }
+  
+    50% {
+      color: #7ff;
+    }
+  
+    66.7% {
+      color: #7f7;
+    }
+  
+    83.3% {
+      color: #ff7;
+    }
+  }
+  
+  .quark_color {
+    animation: quark_color 6s cubic-bezier(0.37, 0, 0.63, 1) infinite
+  }
+  
+  .f_quark_color {
+    animation: quark_color 1s cubic-bezier(0.37, 0, 0.63, 1) infinite
+  }
+  
+  .ff_quark_color {
+    animation: s_quark_color 0.8s cubic-bezier(0.37, 0, 0.63, 1) infinite
+  }
+  
+  @keyframes s_quark_color {
+  
+    0%,
+    100% {
+      color: #f77;
+      text-shadow: 1px 1px 3px #f77, -1px -1px 3px #f77, 0 0 24px #f77
+    }
+  
+    16.7% {
+      color: #f7f;
+      text-shadow: 1px 1px 3px #f7f, -1px -1px 3px #f7f, 0 0 24px #f7f
+    }
+  
+    33.3% {
+      color: #77f;
+      text-shadow: 1px 1px 3px #77f, -1px -1px 3px #77f, 0 0 24px #77f
+    }
+  
+    50% {
+      color: #7ff;
+      text-shadow: 1px 1px 3px #7ff, -1px -1px 3px #7ff, 0 0 24px #7ff
+    }
+  
+    66.7% {
+      color: #7f7;
+      text-shadow: 1px 1px 3px #7f7, -1px -1px 3px #7f7, 0 0 24px #7f7
+    }
+  
+    83.3% {
+      color: #ff7;
+      text-shadow: 1px 1px 3px #ff7, -1px -1px 3px #ff7, 0 0 24px #ff7
+    }
+  }
+  

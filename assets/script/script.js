@@ -1,14 +1,21 @@
+
+
 var player = {};
 var thisFrame = Date.now();
 var lastFrame = Date.now();
 var isHoldMax = false;
 var globalDiff = 0;
 var realityDiff = 0;
+var timeDifferences = [PowiainaNum(0)];
 function loop(){
     thisFrame = Date.now();
     window.realityDiff = (thisFrame-lastFrame)/1000;
     window.globalDiff = realityDiff;
+    checkNaN();
     updateOffline();
+    updateTimeDifferences();
+
+
     updateDimensionData();
     calculateDimensions();
     calculatemm5Dimensions();
@@ -19,14 +26,43 @@ function loop(){
     xiaopengyouLoop();
     mm5Loop();
     updateTime();
-    battleLoop()
+    battleLoop();
+    mm6Loop();
+    ACHIEVEMENTS.loop();
+
+    checkNaN();
     player.time = thisFrame
     lastFrame = thisFrame;
 }
+function checkNaN(){
+    let nanList = findNaN(player);
+
+    for (nanNode of nanList){
+        let nanObject = window;
+        for (nanPropertyPos of nanNode){
+            nanObject = nanObject[nanPropertyPos];
+        }
+        if (nanObject instanceof PowiainaNum || nanObject == "NaN"){
+            var runcode = "window";
+            for (nanPropertyPos of nanNode){
+                runcode = runcode+`["${nanPropertyPos}"]`;
+            }
+            //console.warn("NaN in " + runcode +", fixed to 0")
+            runcode = runcode.concat(" = PowiainaNum.ZERO.clone()")
+            eval(runcode)
+        }
+        
+    }
+}
+function updateTimeDifferences(){
+    timeDifferences[0] = PowiainaNum(window.globalDiff);
+
+}
 function updateTime(){
-    player.dimBoostTimespent = player.dimBoostTimespent+globalDiff;
-    player.PL1Timespent = player.PL1Timespent+globalDiff;
-    player.PL2Timespent = player.PL2Timespent+globalDiff;
+    player.dimBoostTimespent = player.dimBoostTimespent+timeDifferences[0].toNumber();
+    player.PL1Timespent = player.PL1Timespent+timeDifferences[0].toNumber();
+    player.PL2Timespent = player.PL2Timespent+timeDifferences[0].toNumber();
+    player.PL3Timespent = player.PL3Timespent+timeDifferences[0].toNumber();
 }
 /*
 function updateAuto() {
@@ -73,7 +109,7 @@ function calculateDimensions() {
                 player.dimensions[DIMENSIONS_POINTS][i + 1]
                     .mul(player.dimensions[DIMENSIONS_MULTI][i + 1])
                     .pow(player.dimensions[DIMENSIONS_EXPONENT][i + 1])
-                    .mul(globalDiff)
+                    .mul(timeDifferences[0])
             );
         if (player.dimensions[DIMENSIONS_POINTS][i].isNaN()) {
             player.dimensions[DIMENSIONS_POINTS][i] = E(0);
@@ -105,8 +141,8 @@ function calc_cost(dimid, count) {
     return temp1;
 }
 function updateVolumes() {
-    player.volumes = player.volumes.add(tmp.mm4.gain.mul(globalDiff))
-    player.volumesTotal = player.volumesTotal.add(tmp.mm4.gain.mul(globalDiff))
+    player.volumes = player.volumes.add(tmp.mm4.gain.mul(timeDifferences[0]))
+    player.volumesTotal = player.volumesTotal.add(tmp.mm4.gain.mul(timeDifferences[0]))
 }
 function buydim(dim, single = false) {
     if (player.PL1breakedPL1limit && (player.PL1inchal!=1)){
@@ -193,14 +229,22 @@ function enterFinalChallenge(){
                 console.log("QqQe308粉丝量: "+QqQe308Fans)
             }
         })*/.then(function(){
+            ACHIEVEMENTS.init();
             load(e);
-            window.loopVal = setInterval(loop, 1000/30)
+            window.loopVal = setInterval(loop, 35)
             window.saveVal = setInterval(save, 1000);
 
         });
     });
 })();
-
+console.log("%c灰"+"羊是傻逼", "color: #000000; font-size: 30px;")
+console.log("%c我们也吃金拱门，汉堡贼鸡\u5df4大", "color: #000000; font-size: 60px;")
+console.log("♪I just wanna jump♪ ♪Jump♪ ♪Jump♪ ♪Jump♪ ♪Jump♪ ♪Jump♪ ♪Jump♪ ♪Jump♪ ♪Jump♪ ♪Jump♪ ♪Jump♪ ♪Jump♪ ♪Jump♪ ♪Jump♪♪I just wanna jump♪♪Jump♪ ♪Jump♪ ♪Jump♪ ♪Jump♪ ♪Jump♪ ♪Jump♪ ♪Jump♪ ♪Jump♪ ♪Jump♪ ♪Jump♪ ♪Jump♪ ♪Jump♪ ♪Jump♪")
+console.log("%cVeryrrDefine",
+    `background: rgba(252,234,187,1);
+    background: -moz-linear-gradient(left, rgba(252,234,187,1) 0%, rgba(175,250,77,1) 12%, rgba(0,247,49,1) 28%, rgba(0,210,247,1) 39%,rgba(0,189,247,1) 51%, rgba(133,108,217,1) 64%, rgba(177,0,247,1) 78%, rgba(247,0,189,1) 87%, rgba(245,22,52,1) 100%);background: -webkit-gradient(left top, right top, color-stop(0%, rgba(252,234,187,1)), color-stop(12%, rgba(175,250,77,1)), color-stop(28%, rgba(0,247,49,1)), color-stop(39%, rgba(0,210,247,1)), color-stop(51%, rgba(0,189,247,1)), color-stop(64%, rgba(133,108,217,1)), color-stop(78%, rgba(177,0,247,1)), color-stop(87%, rgba(247,0,189,1)), color-stop(100%, rgba(245,22,52,1)));background: -webkit-linear-gradient(left, rgba(252,234,187,1) 0%, rgba(175,250,77,1) 12%, rgba(0,247,49,1) 28%, rgba(0,210,247,1) 39%, rgba(0,189,247,1) 51%, rgba(133,108,217,1) 64%, rgba(177,0,247,1) 78%, rgba(247,0,189,1) 87%, rgba(245,22,52,1) 100%);background: -o-linear-gradient(left, rgba(252,234,187,1) 0%, rgba(175,250,77,1) 12%, rgba(0,247,49,1) 28%, rgba(0,210,247,1) 39%, rgba(0,189,247,1) 51%, rgba(133,108,217,1) 64%, rgba(177,0,247,1) 78%, rgba(247,0,189,1) 87%, rgba(245,22,52,1) 100%);background: -ms-linear-gradient(left, rgba(252,234,187,1) 0%, rgba(175,250,77,1) 12%, rgba(0,247,49,1) 28%, rgba(0,210,247,1) 39%, rgba(0,189,247,1) 51%, rgba(133,108,217,1) 64%, rgba(177,0,247,1) 78%, rgba(247,0,189,1) 87%, rgba(245,22,52,1) 100%);background: linear-gradient(to right, rgba(252,234,187,1) 0%, rgba(175,250,77,1) 12%, rgba(0,247,49,1) 28%, rgba(0,210,247,1) 39%, rgba(0,189,247,1) 51%, rgba(133,108,217,1) 64%, rgba(177,0,247,1) 78%, rgba(247,0,189,1) 87%, rgba(245,22,52,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fceabb', endColorstr='#f51634', GradientType=1 );
+    font-size:5em`.replaceAll(/\s/g,""))
 var showAllPrestigeLayers = false;
 /*
 if (location.host.includes("127.0.0.1")){
@@ -209,3 +253,91 @@ if (location.host.includes("127.0.0.1")){
 
 var A1to8 = [1,2,3,4,5,6,7,8];
 var A9to16 = [9,10,11,12,13,14,15,16]
+
+
+function get_pts_volume(x) {
+    const meter_cubed = 2.3687253991903575e104
+    if (x.gte(mlt(1))) return `如果你的每4次方毫米4维体积相当于1g，你的4维体积相当的质量足以制造${formatMass(x)}`
+    if(x.gte("1e785")) return `如果你每秒写3个数字，那么把你的4维体积写下来需要${formatTime.fromSeconds(x.log10().floor().add(1).div(3)).toString(true)}`
+    if(x.gte(Number.MAX_VALUE)) return `如果你的每个4维体积被3维化成一个普朗克单位，你的4维体积足以制造${x.div(Number.MAX_VALUE).format()}个无限`
+    const prefixes = [
+      { value: 1e113, name: "维度", verb: "制造" },
+      { value: 3.4e80, name: "可观测宇宙", verb: "制造" },
+      { value: 1e73, name: "玉夫座空洞", verb: "制造" },
+      { value: 5e68, name: "本星系团", verb: "制造" },
+      { value: 3.3e61, name: "星系", verb: "制造" },
+      { value: 3.3e55, name: "本地泡", verb: "制造" },
+      { value: 1.7e48, name: "奥尔特云", verb: "制造" },
+      { value: 1.7e45, name: "星云", verb: "制造" },
+      { value: 8e36, name: "超巨星", verb: "制造" },
+      { value: 5e32, name: "红巨星", verb: "制造" },
+      { value: 1.41e27, name: "太阳", verb: "制造" },
+      { value: 1.53e24, name: "木星", verb: "制造" },
+      { value: 1.08e21, name: "地球", verb: "制造" },
+      { value: 4.5e17, name: "矮行星", verb: "制造" },
+      { value: 5e12, name: "大型小行星", verb: "制造" },
+      { value: 3.3e8, name: "万里长城", verb: "填满" },
+      { value: 2.6006e6, name: "吉萨大金字塔", verb: "填满" },
+      { value: 2.5e3, name: "奥运规模的游泳池", verb: "填满" },
+      { value: 1, name: "冰箱", verb: "填满" },
+      { value: 7.5e-4, name: "酒瓶", verb: "填满" },
+      { value: 3.555e-6, name: "茶匙", verb: "填满" },
+      { value: 5e-8, name: "米", verb: "制造" },
+      { value: 6.2e-11, name: "沙子", verb: "制造" },
+      { value: 9e-17, name: "红细胞", verb: "制造" },
+      { value: 5e-21, name: "病毒", verb: "制造" },
+      { value: 7.23e-30, name: "氢原子", verb: "制造" },
+      { value: 1e-42, name: "原子核", verb: "制造" },
+      { value: 2.82e-45, name: "质子", verb: "制造" },
+      { value: 1e-54, name: "立方阿米", verb: "占据" },
+      { value: 1e-63, name: "立方仄米", verb: "占据" },
+      { value: 1e-72, name: "立方幺米", verb: "占据" },
+      { value: 1e-81, name: "立方柔米", verb: "占据" },
+      { value: 1e-90, name: "立方亏米", verb: "占据" },
+    ]
+    for (let prefix of prefixes) {
+      if (x.gte(prefix.value * meter_cubed)) {
+        return `如果你的每个4维体积被3维化成一个普朗克单位，你的4维体积足以${prefix.verb}${x.div(prefix.value * meter_cubed).format()}个${prefix.name}`
+      }
+    }
+    return `如果你的每个4维体积被3维化成一个普朗克单位，你的4维体积足以占据${formatWhole(x)}个普朗克单位`
+  }
+function choiceFromList/*不重复*/(list, amount){
+    if (amount > list.length){
+        throw Error("cannot select more than "+list.length.toString());
+    }
+    var result = [];
+    var resultIndex = [];
+    while (result.length < amount){
+        j = Math.floor(Math.random()*list.length);
+        if (resultIndex.includes(j)){
+            continue;
+        }
+        result.push(list[j]);
+        resultIndex.push(j);
+    
+    }
+    return result
+
+}
+
+function overflow(number, start, power, meta=1) {
+	start = PowiainaNum(start)
+
+	if (number.gt(start)) {
+		if (meta == 1) {
+			let s = start.log10()
+			number = number.log10().div(s).pow(power).mul(s).pow10()
+		} else {
+			let s = start.iteratedlog(10,meta)
+			number = PowiainaNum.iteratedexp(10,meta,number.iteratedlog(10,meta).div(s).pow(power).mul(s));
+		}
+	}
+	return number;
+}
+function calcOverflow(x,y,s,height=1) {
+    return x.gte(s) ? x.max(1).iteratedlog(10,height).div(y.max(1).iteratedlog(10,height)) : E(1) 
+}
+
+PowiainaNum.prototype.overflow = function (start, power, meta) { return overflow(this.clone(), start, power, meta) }
+PowiainaNum.prototype.pow10 = function (){ return PowiainaNum.pow(10,this)}

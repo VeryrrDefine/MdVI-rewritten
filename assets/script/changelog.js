@@ -1,5 +1,13 @@
 const changelog = [
     {
+        version: "2.3", title: "PL3 update",
+        changes: [
+            "Done all content of third prestige layer",
+            "Add overflow",
+            "不是哥们你一个更新就把第三层重置所有内容更新了"
+        ]
+    },
+    {
         version: "2.2.4", title: "Rebalance-2",
         changes: [
             "Balance the content before the third prestige layer reset.",

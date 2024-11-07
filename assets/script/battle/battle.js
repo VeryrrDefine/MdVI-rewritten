@@ -129,10 +129,10 @@ function battleLoop(){
             let id = player.currentBattlingEnemyId;
             let enemy = enemies[id];
             player.currentHP = player.currentHP.sub(
-                enemy.aps.mul(globalDiff).mul(enemy.atk.sub(player.currentDEF)).max(0)
+                enemy.aps.mul(timeDifferences[0]).mul(enemy.atk.sub(player.currentDEF)).max(0)
             );
             player.currentEnemyHP = player.currentEnemyHP.sub(
-                player.currentAPS.mul(globalDiff).mul(player.currentATK.sub(enemy.def)).max(0)
+                player.currentAPS.mul(timeDifferences[0]).mul(player.currentATK.sub(enemy.def)).max(0)
             );
 
             if (player.currentEnemyHP.lte(0)){
@@ -161,7 +161,7 @@ function battleLoop(){
         }
         if (player.currentBattlingEnemyId == -1){
             if (player.currentHP.lt(getCurrentHPCap())){
-                player.currentHP = player.currentHP.mul(PowiainaNum.pow(5,globalDiff));
+                player.currentHP = player.currentHP.mul(PowiainaNum.pow(5,timeDifferences[0]));
             }
             player.currentEnemyHP = PowiainaNum.ZERO.clone();
         }

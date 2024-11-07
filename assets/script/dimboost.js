@@ -23,7 +23,7 @@ function getRealDimBoost(){
     if (player.PL1inchal==2){
         temp1 = temp1.mul(0.1)
     }
-    temp1 = softcap(temp1,5e4,hasTheorie(21) ? (hasTheorie(81)? 0.9 :0.7):0.5,"pow")
+    if (player.PL3xpyrep.lt(28)) temp1 = softcap(temp1,5e4,hasTheorie(21) ? (hasTheorie(81)? 0.9 :0.7):0.5,"pow")
 
     if (player.PL2times.gte(400)) temp1 = temp1.mul(1.05)
     if (hasTheorie(31)) temp1 = temp1.mul(1.5)
@@ -240,6 +240,9 @@ function dimBoost2(){
         }
 
     }
+    if (player.dimBoost2.gte(tmp.dimensionBoost.DB2cap())){
+        player.dimBoost2 = tmp.dimensionBoost.DB2cap()
+    }
 
 }
 
@@ -287,10 +290,16 @@ function dimBoost3Description(){
 
 function dimBoost3(){
     if (player.dimBoost2.gte(tmp.dimensionBoost.require3())){
-        player.dimBoost3 = player.dimBoost3.add(1)
-        if (!player.PL2reaUpg.includes(1)){
-            player.dimBoostTimespent = 0;
-            doMM5reset();
+        if (player.PL2reaUpg.includes(1)){
+            if (player.dimBoost3.lt(tmp.dimensionBoost.bulkDB3())){
+                player.dimBoost3 = tmp.dimensionBoost.bulkDB3()
+            }
+        } else{
+            player.dimBoost3 = player.dimBoost3.add(1)
+            if (!player.PL2reaUpg.includes(1)){
+                player.dimBoostTimespent = 0;
+                doMM5reset();
+            }
         }
     }
 

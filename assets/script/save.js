@@ -28,7 +28,7 @@ function hardReset() {
         currentPage: 1,
         time: Date.now(),
 
-        dimBoost: ExpantaNum.ZERO,
+        dimBoost: PowiainaNum.ZERO,
         dimBoostTimespent: 0,
 
         auto: [],
@@ -39,12 +39,14 @@ function hardReset() {
         timeSpeed: 0,
         optHotkey: true,
 
+        achievements: [],
+
         //#region PL1
         isPL1unlocked: false,
         PL1Timespent: 0,
-        PL1points: ExpantaNum.ZERO,
-        PL1times: ExpantaNum.ZERO,
-        PL1total: ExpantaNum.ZERO,
+        PL1points: PowiainaNum.ZERO,
+        PL1times: PowiainaNum.ZERO,
+        PL1total: PowiainaNum.ZERO,
         PL1upgrades: [],
         PL1chal: [],
         PL1inchal: 0,
@@ -54,23 +56,23 @@ function hardReset() {
         PL1autoupgDIMBOOST:0,
         PL1autoupgMM3RESET: 0,
 
-        PL1buyable1: ExpantaNum.ZERO,
+        PL1buyable1: PowiainaNum.ZERO,
 
         PL1breakedPL1limit: false,
 
         PL1xiaopengyouUnl: false,
 
-        PL1xiaopengyouPoints: ExpantaNum.ZERO,
-        PL1buyable2: ExpantaNum.ZERO,
+        PL1xiaopengyouPoints: PowiainaNum.ZERO,
+        PL1buyable2: PowiainaNum.ZERO,
 
-        dimBoost2: ExpantaNum.ZERO,
+        dimBoost2: PowiainaNum.ZERO,
         PL1dimensions: [
-            [ExpantaNum.ZERO, ExpantaNum.ZERO, ExpantaNum.ZERO, ExpantaNum.ZERO, ExpantaNum.ZERO, ExpantaNum.ZERO, ExpantaNum.ZERO, ExpantaNum.ZERO], //dimensions
-            [ExpantaNum.ONE, ExpantaNum.ONE, ExpantaNum.ONE, ExpantaNum.ONE, ExpantaNum.ONE, ExpantaNum.ONE, ExpantaNum.ONE, ExpantaNum.ONE], //dimensions_multi
-            [ExpantaNum.ZERO, ExpantaNum.ZERO, ExpantaNum.ZERO, ExpantaNum.ZERO, ExpantaNum.ZERO, ExpantaNum.ZERO, ExpantaNum.ZERO, ExpantaNum.ZERO], // dimensions_bought
+            [PowiainaNum.ZERO, PowiainaNum.ZERO, PowiainaNum.ZERO, PowiainaNum.ZERO, PowiainaNum.ZERO, PowiainaNum.ZERO, PowiainaNum.ZERO, PowiainaNum.ZERO], //dimensions
+            [PowiainaNum.ONE, PowiainaNum.ONE, PowiainaNum.ONE, PowiainaNum.ONE, PowiainaNum.ONE, PowiainaNum.ONE, PowiainaNum.ONE, PowiainaNum.ONE], //dimensions_multi
+            [PowiainaNum.ZERO, PowiainaNum.ZERO, PowiainaNum.ZERO, PowiainaNum.ZERO, PowiainaNum.ZERO, PowiainaNum.ZERO, PowiainaNum.ZERO, PowiainaNum.ZERO], // dimensions_bought
             [E(10), E(100), E(1000), E(1e4), E(1e5), E(1e6), E(1e7), E(1e8)],// dim_cost
-            [ExpantaNum.ONE, ExpantaNum.ONE, ExpantaNum.ONE, ExpantaNum.ONE, ExpantaNum.ONE, ExpantaNum.ONE, ExpantaNum.ONE, ExpantaNum.ONE], //dim_exponent
-            [ExpantaNum.ONE, ExpantaNum.ONE, ExpantaNum.ONE, ExpantaNum.ONE, ExpantaNum.ONE, ExpantaNum.ONE, ExpantaNum.ONE, ExpantaNum.ONE], //dim_doubleexponent
+            [PowiainaNum.ONE, PowiainaNum.ONE, PowiainaNum.ONE, PowiainaNum.ONE, PowiainaNum.ONE, PowiainaNum.ONE, PowiainaNum.ONE, PowiainaNum.ONE], //dim_exponent
+            [PowiainaNum.ONE, PowiainaNum.ONE, PowiainaNum.ONE, PowiainaNum.ONE, PowiainaNum.ONE, PowiainaNum.ONE, PowiainaNum.ONE, PowiainaNum.ONE], //dim_doubleexponent
         ],
         automationState: {
             
@@ -78,10 +80,10 @@ function hardReset() {
         //#endregion
         
         //#region PL2
-        PL2points: ExpantaNum.ZERO,
+        PL2points: PowiainaNum.ZERO,
         isPL2unlocked: false,
-        PL2times: ExpantaNum.ZERO,
-        PL2total: ExpantaNum.ZERO,
+        PL2times: PowiainaNum.ZERO,
+        PL2total: PowiainaNum.ZERO,
         PL2Timespent: 0, // 时间流逝
 
 
@@ -127,19 +129,93 @@ function hardReset() {
         PL2xiaopengyouMK2milestone1Reached: false,
 
         PL2moreRPgenerated: PowiainaNum.ZERO.clone(),
+
+
         //#endregion
+        //#region PL3
+
+        
+        PL3points: PowiainaNum.ZERO,
+        isPL3unlocked: false,
+        PL3times: PowiainaNum.ZERO,
+        PL3total: PowiainaNum.ZERO,
+        PL3Timespent: 0,
+
+
+        PL3currentResearching: 0,
+        PL3researchedDisposable: [],
+        PL3researchedReresearchable: {
+
+        },
+        PL3researchesProgress:{
+
+        },
+
+
+        PL3elements: {
+            
+        },
+        PL3pickingTime: PowiainaNum.ZERO.clone(),
+        PL3ispicking: false,
+        PL3materials: {
+
+        },
+
+        PL3materialupg1: PowiainaNum.ZERO.clone(),
+        PL3materialupg2: PowiainaNum.ZERO.clone(),
+        PL3materialupg3: PowiainaNum.ZERO.clone(),
+        PL3materialupg4: PowiainaNum.ZERO.clone(),
+        PL3materialupg5: PowiainaNum.ZERO.clone(),
+        PL3materialupg6: PowiainaNum.ZERO.clone(),
+        PL3materialupg7: PowiainaNum.ZERO.clone(),
+
+        PL3xpyrep: PowiainaNum.ZERO.clone(),
+
+        PL3xpybuyable1: PowiainaNum.ZERO.clone(),
+        PL3xpybuyable2: PowiainaNum.ZERO.clone(),
+        PL3xpybuyable3: PowiainaNum.ZERO.clone(),
+
+
+        //#endregion
+        boughttheorie91: false,
+        reached3e156xpyrepl: false,
+
+        PL4points: PowiainaNum.ZERO,
+        isPL4unlocked: false,
+        PL4times: PowiainaNum.ZERO,
+        PL4total: PowiainaNum.ZERO,
+        PL4Timespent: 0,
+
+        PL5points: PowiainaNum.ZERO,
+        isPL5unlocked: false,
+        PL5times: PowiainaNum.ZERO,
+        PL5total: PowiainaNum.ZERO,
+        PL5Timespent: 0,
+
+        PL6points: PowiainaNum.ZERO,
+        isPL6unlocked: false,
+        PL6times: PowiainaNum.ZERO,
+        PL6total: PowiainaNum.ZERO,
+        PL6Timespent: 0,
+
+        PL7points: PowiainaNum.ZERO,
+        isPL7unlocked: false,
+        PL7times: PowiainaNum.ZERO,
+        PL7total: PowiainaNum.ZERO,
+        PL7Timespent: 0,
+
 
         //#region Battle
 
-        currentHP: ExpantaNum.ONE.clone(),
-        currentMP: ExpantaNum.ZERO.clone(),
-        currentDEF: ExpantaNum.ZERO.clone(),
-        currentATK: ExpantaNum.ONE.clone(),
-        currentAPS: ExpantaNum.ONE.clone(),
+        currentHP: PowiainaNum.ONE.clone(),
+        currentMP: PowiainaNum.ZERO.clone(),
+        currentDEF: PowiainaNum.ZERO.clone(),
+        currentATK: PowiainaNum.ONE.clone(),
+        currentAPS: PowiainaNum.ONE.clone(),
 
-        currentEnemyHP: ExpantaNum.ZERO.clone(),
+        currentEnemyHP: PowiainaNum.ZERO.clone(),
 
-        XP: ExpantaNum.ZERO.clone(),
+        XP: PowiainaNum.ZERO.clone(),
 
         currentFilling: [],
 
@@ -147,7 +223,7 @@ function hardReset() {
         fillFeatureProgress2: PowiainaNum.ZERO.clone(),
         fillFeatureProgress3: PowiainaNum.ZERO.clone(),
 
-        enemyHPspent: ExpantaNum.ZERO.clone(),
+        enemyHPspent: PowiainaNum.ZERO.clone(),
         currentBattlingEnemyId: -1,
         
         battleUpgrade: [],
@@ -162,7 +238,7 @@ function deepCopyProps(source,target) {
     for (let key in source) {  
         if (source.hasOwnProperty(key)) {  
             // 如果源对象的属性是对象或数组，则递归复制  
-            if ((typeof source[key] === 'object' && !(source[key] instanceof ExpantaNum)) && source[key] !== null) {  
+            if ((typeof source[key] === 'object' && !(source[key] instanceof PowiainaNum)) && source[key] !== null) {  
                 // 如果目标对象没有这个属性，或者属性是null，则创建一个新的  
                 if (!target.hasOwnProperty(key) || target[key] == null || Array.isArray(source[key]) !== Array.isArray(target[key])) {  
                     target[key] = Array.isArray(source[key]) ? [] : {};  
@@ -287,6 +363,7 @@ function importFile() {
         fr.onload = () => {
             let save = fr.result
             importing_player = formatsave.decode(save)
+            hardReset();
             transformToE(importing_player);
             deepCopyProps(importing_player, player)
             console.clear()
@@ -348,3 +425,23 @@ function getCurrentBeijingTime() {
     return o < 0 && (t.setUTCDate(t.getUTCDate() + 1), o += 24), `${e}-${r}-${a} ${o.toString().padStart(2,"0")}:${g.toString().padStart(2,"0")}:${i.toString().padStart(2,"0")}.${S.toString().padStart(3,"0")}`
 }
   
+
+function findNaN(object,node=["player"]) {
+    let nanNodes = [];
+    for(let key in object) {
+        if (object[key]=="NaN"){
+            nanNodes.push([...node,key])
+        }
+        if(typeof object[key] === "object") {
+            if (object[key] instanceof PowiainaNum){
+                if (object[key].isNaN()){
+                    nanNodes.push([...node,key])
+                }
+            } else{
+                nanNodes.push(...findNaN(object[key], [...node,key]))
+
+            }
+        }
+    }
+    return nanNodes;
+}

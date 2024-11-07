@@ -120,7 +120,7 @@
             text: "我在一个小游戏开挂被误封了"
         },
         {
-            text: "国内玩家遇到的第一道墙： <span style=\"color: rgb(28,253,253)\">Anti</span><span style=\"color: rgb(255,255,9)\">matter</span> Dimensions, The <span style=\"color: rgb(11,96,14)\">Reality</span> Update"
+            text: "中国玩家遇到的第一道墙： <span style=\"color: rgb(28,253,253)\">Anti</span><span style=\"color: rgb(255,255,9)\">matter</span> Dimensions, The <span style=\"color: rgb(11,96,14)\">Reality</span> Update"
         },
         {
             text: "Phigros联动无穷了！！！！！！！！！以后打歌前要开启无穷无尽，刷100000大嘎吱次数，存储1.79e308复制人，买321个穷尽升级，打8次我明白了，刷1e308网络地址，还要没完没了的重置！！"
@@ -183,15 +183,15 @@
             text: `<a href="https://b23.tv/BV1GJ411x7h7" target="_blank">点我立即到达Endgame</a>`
         },
         {
-            text: `大型纪录片《质量增量重制版 0.8天价虫洞卖出了1024 archverses》给他一个时间速度加成，他敢把价格卖到<del>11
-4514 lodeverses</del>114514 archs-metaverse. 近日有网友表示，在某增量游戏新闻播放器上看到一则重要到有时间旅行者提醒的新闻，
+            text: `大型纪录片《质量增量重制版 0.8天价虫洞卖出了1024 archverses(ee1.7177e6 gramm of mass)》给他一个时间速度加成，他敢把价格卖到<del>11
+4514 lodeverses(f114,516 gramm of mass)</del>114514 archs-metaverse(6.2349f4 gramm of mass). 近日有网友表示，在某增量游戏新闻播放器上看到一则重要到有时间旅行者提醒的新闻，
 由于虫洞质量不断扩大，粒子物理学研究员Pollux和粒子超理学研究员天才俱乐部#83黑塔通过虫洞在反物质宇宙相遇，物理学家建议创造更大的虫洞
-。某一数学家兼物理学家利用伽罗瓦理论庞加莱猜想的庞加莱回归定理和伽马函数算出了天价虫洞已经来到了1024 archverses，不过我们还是不知道
+。某一数学家兼物理学家利用伽罗瓦理论庞加莱猜想的庞加莱回归定理和伽马函数算出了天价虫洞已经来到了1024 archverses(ee1.7177e6 gramm of mass)，不过我们还是不知道
 他们两个是怎么掉进这么大的虫洞的，可能是被自动幽灵一脚踢进虫洞。据研究员Pollux报告，他先前由于某个由于机密不能披露的异常影响导致视觉
 能力严重下降，来到反物质宇宙后因为反物质的时间效应迅速恢复，他表示以后天体物理学研究要加紧研究虫洞。为此五星上将麦克阿瑟表示，要是我有
 这么大的虫洞，我当年的军衔一定不止五星，至少也得有50星，就连SCP-CN-1630都表示，这43年来，我天天被人注射记忆删除药剂，没得睡过一次好
 觉，要是我有这么大的虫洞一定得进去放个C类通道，然后在里面睡一觉，不仅可以体验相对论时间膨胀，还可以带薪休假。大型纪录片之《质量增量重制
-版 0.8天价虫洞卖出了1024 archverses》持续为您播放`
+版 0.8天价虫洞卖出了1024 archverses(ee1.7177e6 gramm of mass)》持续为您播放`
         },
         {
             text: `0+0是宇宙万法的那个源头`
@@ -241,7 +241,7 @@
             get text(){
                 let a = Math.floor(Math.random()*10)
                 let b = Math.floor(Math.random()*10)
-                let c = a+b+Math.floor(Math.random()*10)
+                let c = a+b+Math.floor(Math.random()*10)+1
                 return `${a}+${b}=${c}，这显然是错误的`
             }
         },

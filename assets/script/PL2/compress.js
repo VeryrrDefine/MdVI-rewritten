@@ -16,11 +16,11 @@ function handleCompress(){
 function xiaopengyouMK2gain(){
     return tmp.mm5.getMM59count().pow(1.3).mul(
         PowiainaNum.pow(2,player.PL2buyable1)
-    );
+    ).mul(researchLevel(9) ? 1e7 : 1);
 }
 function xiaopengyouMK2loop(){
     if (player.PL2isunlockedCompress){
-        player.PL2xiaopengyouMK2 = player.PL2xiaopengyouMK2.add(xiaopengyouMK2gain().mul(globalDiff))
+        player.PL2xiaopengyouMK2 = player.PL2xiaopengyouMK2.add(xiaopengyouMK2gain().mul(timeDifferences[0]))
     }
     if (player.PL2points.gte("1e1100")){
         player.PL2isunlockedCompress = true;
@@ -29,7 +29,7 @@ function xiaopengyouMK2loop(){
         }
     }
     if (player.PL2xiaopengyouMK2.gte("1e11")){
-        player.PL2moreRPgenerated = player.PL2moreRPgenerated.add(PowiainaNum(player.PL2xiaopengyouMK2.max(0).root(2).mul(globalDiff)))
+        player.PL2moreRPgenerated = player.PL2moreRPgenerated.add(PowiainaNum(player.PL2xiaopengyouMK2.max(0).root(2).mul(timeDifferences[0])))
     }
 }
 function xiaopengyouMK2exponent(){

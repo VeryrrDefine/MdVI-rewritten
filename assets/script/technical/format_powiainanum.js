@@ -87,7 +87,7 @@ function format(num, precision=4, small=false){
       return regularFormat(num, precision + 2)
     }
     else if (num.lt(1000)) return regularFormat(num, precision)
-    else if (num.lt(1e9)) return commaFormat(num)
+    else if (num.lt(1e6)) return commaFormat(num)
     else if (num.lt("9007199254740991")) {
         a = num.log10().floor().toNumber();
         b = num.div(10**a).toNumber();
@@ -119,7 +119,7 @@ function format(num, precision=4, small=false){
         let pol = polarizeE(array)
         return regularFormat(pol.bottom, precision3) + "f" + commaFormat(pol.top)
     }
-    else if (num.lt("10^^10^^10^^10^10^10^10^9")) { // F1,000,000 ~ 1G5
+    else if (num.lt("10^^10^^10^^10^10^10^10^6")) { // F1,000,000 ~ 1G5
         let rep = arraySearch(array, 2)
         if (rep >= 1) {
             setToZero(array, 2)

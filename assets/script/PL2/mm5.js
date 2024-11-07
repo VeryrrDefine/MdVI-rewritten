@@ -39,7 +39,11 @@ function norewardMM5reset(isenteringCompress=false){
     }
 }
 function calcGetPL2resetTimes(){
-    return PL2UpgEffect2()
+    let temp1 = PL2UpgEffect2();
+    if (player.PL3times.gte(1)){
+        temp1 = temp1.mul(getCurrentPL3toPL2resetTimes())
+    }
+    return temp1
 }
 function doMM5reset() {
     player.PL2points = player.PL2points.add(tmp.mm5.gain);
@@ -47,7 +51,7 @@ function doMM5reset() {
     player.PL2times = player.PL2times.add(calcGetPL2resetTimes());
     player.isPL2unlocked = true;
     norewardMM5reset();
-    if (player.PL2times.lt(2)){
+    if (player.PL2times.lt(2) && !player.isPL3unlocked){
         alert("目前你已经解锁了mm^5。");
         alert("但是你真的解锁了吗？");
     }
@@ -93,13 +97,13 @@ function PL2UpgEffect2(){
 
 function mm5Loop(){
     if (player.PL2times.gte(7000)){
-        player.PL2points = player.PL2points.add(tmp.mm5.gain.mul(globalDiff))
+        player.PL2points = player.PL2points.add(tmp.mm5.gain.mul(timeDifferences[0]))
     }
     if (player.PL2times.gte(250000)){
-        player.XP = player.XP.add(PowiainaNum.mul(10,globalDiff))
+        player.XP = player.XP.add(PowiainaNum.mul(10,timeDifferences[0]))
     }
     if (player.PL2times.gte(8)){
-        player.XP = player.XP.add(PowiainaNum.mul(0.1,globalDiff))
+        player.XP = player.XP.add(PowiainaNum.mul(0.1,timeDifferences[0]))
     }
     player.PL2theoChoose = [...(new Set(player.PL2theoChoose))];
     if (hasTheorie(31) && hasTheorie(32)){

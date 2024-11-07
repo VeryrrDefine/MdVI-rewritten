@@ -8,7 +8,6 @@
     <title>M-dimensional Volume Incremental Rewritten</title>
     <link href="./assets/style/core.css" rel="stylesheet">
     <link href="icon.png" rel="shortcut icon" type="image/x-icon">
-
     
     <script src="./assets/script/loader.js" defer></script>
     <script src="./assets/script/i18n.js" defer></script>
@@ -43,15 +42,20 @@
     <script src="./assets/script/PL2/mm5.js" defer></script>
     <script src="./assets/script/battle/battle.js" defer></script>
 
+    <script src="./assets/script/PL3/mm6.js" defer></script>
+    <script src="./assets/script/achievements.js" defer></script>
+    <script src="./assets/script/PLw/mm11.js" defer></script>
+
 </head>
 
-<body>
+<body style="margin-top: 0px;">
     <div id="app">
-        <div>
+        <div style="padding-top: 8px; top: 0;" class="sticky">
             <newsticker></newsticker>
             <div class="text-center">
                 {{glt("youhave")}} <span class="vol-dis">{{formatWhole(player.volumes)}}</span> mm<sup>4</sup> {{glt("4dvolumes")}}
             </div>
+            <div class="text-center" v-html="get_pts_volume(player.volumes)"></div>
             <div v-if="player.timeSpeed != 1" class="text-center">{{glt("currentglobalspeed")+format(player.timeSpeed)}}</div>
             <div v-if="player.volumes.gte('1e200') && !player.isPL1unlocked" class="text-center">{{glt("youneedsomethingtogofurther")}}</div>
             <div class="text-center"></div>
@@ -60,32 +64,34 @@
             </div>
             <div v-if="player.isPL1unlocked" class="mm3text text-center">{{glt("youhave")}} {{format(player.PL1points)}} mm<sup>3</sup> {{glt("3dvolumes")}}</div>
             <div v-if="player.isPL2unlocked" class="mm5text text-center">{{glt("youhave")}} {{format(player.PL2points)}} mm<sup>5</sup> {{glt("5dvolumes")}}</div>
+            <div v-if="player.isPL3unlocked" class="mm6text text-center">{{glt("youhave")}} {{format(player.PL3points)}} mm<sup>6</sup> 6维体积</div>
+            <div class="text-center">{{formatGain(player.volumes,tmp.mm4.gain.mul(globalDiff))}}</div>
             <div v-if="showAllPrestigeLayers">
-                <div class="mm6text text-center">{{glt("youhave")}}0.00 mm<sup>6</sup> 6维体积</div>
-                <div class="mm7text text-center">{{glt("youhave")}}0.00 mm<sup>7</sup> 7维体积</div>
-                <div class="mm8text text-center">{{glt("youhave")}}0.00 mm<sup>8</sup> 8维体积</div>
-                <div class="mm9text text-center">{{glt("youhave")}}0.00 mm<sup>9</sup> 9维体积</div>
-                <div class="mm10text text-center">{{glt("youhave")}}0.00 mm<sup>10</sup> 10维体积</div>
+                <div class="mm7text text-center">{{glt("youhave")}} {{format(player.PL4points)}} mm<sup>7</sup> 7维体积</div>
+                <div class="mm8text text-center">{{glt("youhave")}} {{format(player.PL5points)}} mm<sup>8</sup> 8维体积</div>
+                <div class="mm9text text-center">{{glt("youhave")}} {{format(player.PL6points)}} mm<sup>9</sup> 9维体积</div>
+                <div class="mm10text text-center">{{glt("youhave")}} {{format(player.PL7points)}} mm<sup>10</sup> 10维体积</div>
                 
             </div>
             <div v-if="isEndgame()" :style="{color: getUndulatingColor()}" class="text-center">{{glt("reachedCurrentEndgame")}}</div>
-        </div>
-        <div class="main-line"></div>
-        <div class="text-center">
-            <button v-for="tab in primaryTabSort()" :class="getTabClass(tab.name)" :style="tab.style" v-html="tab.text"
-                :disabled="tabShow.inPrimaryTab(tab.name)" @click="player.currentPage = tab.id">
+        
+            <div class="main-line"></div>
+            <div class="text-center">
+                <button v-for="tab in primaryTabSort()" :class="getTabClass(tab.name)" :style="tab.style" v-html="tab.text"
+                    :disabled="tabShow.inPrimaryTab(tab.name)" @click="player.currentPage = tab.id">
 
-            </button>
-        </div>
-        <div class="main-line"></div>
-        <div class="text-center">
-            <button v-for="tab in secondaryTabSort()" :class="getSubTabClass(tab.parentTab,tab.name)" :style="tab.style"
-                v-html="tab.text" :disabled="tabShow.inSecondaryTab(tab.parentTab,tab.name)"
-                @click="player.currentPage = tab.id">
+                </button>
+            </div>
+            <div class="main-line"></div>
+            <div class="text-center">
+                <button v-for="tab in secondaryTabSort()" :class="getSubTabClass(tab.parentTab,tab.name)" :style="tab.style"
+                    v-html="tab.text" :disabled="tabShow.inSecondaryTab(tab.parentTab,tab.name)"
+                    @click="player.currentPage = tab.id">
 
-            </button>
+                </button>
+            </div>
+            <div class="main-line"></div>
         </div>
-        <div class="main-line"></div>
         <!-- <div v-if="player.currentPage == 14112">
             <div class="text-center" v-for="const enemy in enemies" v-if="enemy.unlocked">
                 hp: {{format(enemy.hp)}}<br>
@@ -94,6 +100,239 @@
                 aps: {{format(enemy.aps)}}<br>
             </div>
         </div> -->
+        <div>
+            <div v-if="player.currentPage == 23 || player.currentPage == 24" class="text-center">
+                你有<span class="mm6text">{{format(PowiainaNum.tetr(10,player.PL3xpyrep))}}</span>小朋友复读机，
+                它的slog每秒增加{{format(xpyRepSpeed())}}<span v-html="xpyRepSpeedSoftcappedText()"></span><br>
+                小朋友复读机星系({{formatWhole(getxpyrepgalcount())}})<br>
+                每个星系将{{glt("dimensionBoost2")}}硬上限+5.000e13<br>
+                下一个复读机星系在<span class="mm6text">{{format(getnextxpyrepgal())}}</span>小朋友复读机<br>
+               
+            </div>
+
+        </div>
+        <div v-if="player.currentPage == 24 && player.PL3xpyrep.gte(2085.31910605931)" class="text-center">
+             <table>
+                <tr>
+                    <td>
+                        <button class="mm6upg" @click="buymm6buyable(1)">
+                            提升小朋友复读机获取({{formatWhole(player.PL3xpybuyable1)}}<span v-if="player.PL3xpybuyable3.gt(0)">+{{formatWhole(player.PL3xpybuyable3.mul(3))}}</span>)<br>
+                            当前: {{formatMult(mm6buyableEffect(1))}}<br>
+                            价格: {{format(PowiainaNum.tetr(10,mm6buyableCost(1)))}}小朋友复读机
+                        </button>
+                        <button class="mm6upg" @click="buymm6buyable(2)">
+                            每级使4维体积获取{{formatPow(mm6buyableEffect2Base())}}({{formatWhole(player.PL3xpybuyable2)}}/526<span v-if="player.PL3xpybuyable3.gt(0)">+{{formatWhole(player.PL3xpybuyable3.mul(2))}}</span>)<br>
+                            当前: {{formatPow(mm6buyableEffect(2))}}<br>
+                            价格: {{format(PowiainaNum.tetr(10,mm6buyableCost(2)))}}小朋友复读机
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button class="mm6upg" @click="buymm6buyable(3)" style="width: 368px">
+                            每级使"每级使4维体积获取"底数+~0.026并获得3个"提升小朋友复读机获取"和2个"每级使4维体积获取"({{formatWhole(player.PL3xpybuyable3)}}/50)<br>
+                            当前: +{{format(mm6buyableEffect(3))}}<br>
+                            价格: {{format(PowiainaNum.tetr(10,mm6buyableCost(3)))}}小朋友复读机
+                        </button>
+                    </td>
+                </tr>
+            </table>
+            <span>提升小朋友复读机获取在前10次购买会提供{{formatMult(2)}}的加成（每次购买），在后面会提供{{formatMult(1.75)}}的加成（每次购买）,<br>
+                4维体积获取{{formatPow(1.1)}}的效果会在超过{{formatPow(1e100)}}后受软上限限制。</span>
+            
+        </div>
+        <div v-if="player.currentPage == 23 && player.PL3materialupg7.eq(PowiainaNum.ONE)" class="text-center">
+            <br>
+            
+            <div class="milestone">
+                <div class="milestone-goal">1.0000f18 小朋友复读机</div>
+                <div class="milestone-description">基于小朋友复读机数量提升小朋友复读机获取</div>
+            </div>
+            <div class="milestone">
+                <div class="milestone-goal">1.0000f23 小朋友复读机</div>
+                <div class="milestone-description">基于小朋友复读机数量提升4维体积获取（溢出前，{{formatPow(getxpyrepto4dv())}}）</div>
+            </div>
+            <div class="milestone">
+                <div class="milestone-goal">1.0000f28 小朋友复读机</div>
+                <div class="milestone-description">移除维度提升软上限</div>
+            </div>
+            <div class="milestone">
+                <div class="milestone-goal">1.0000f34 小朋友复读机</div>
+                <div class="milestone-description">小朋友复读机速度×3</div>
+            </div>
+            <div class="milestone">
+                <div class="milestone-goal">1.0000f40 小朋友复读机</div>
+                <div class="milestone-description">小朋友复读机速度×2</div>
+            </div>
+            <div class="milestone">
+                <div class="milestone-goal">1.0000f150 小朋友复读机</div>
+                <div class="milestone-description">1-16维度指数+0.05</div>
+            </div>
+            <div class="milestone">
+                <div class="milestone-goal">1.0000f160 小朋友复读机</div>
+                <div class="milestone-description">基于小朋友复读机数量提升1-16维度指数（当前: +{{format(getxpyrepEff1())}}）</div>
+            </div>
+            <div class="milestone">
+                <div class="milestone-goal">1.0000f180 小朋友复读机</div>
+                <div class="milestone-description">基于4维体积提升小朋友复读机获取</div>
+            </div>
+            <div class="milestone">
+                <div class="milestone-goal">2.0850f2085 小朋友复读机</div>
+                <div class="milestone-description">解锁购买项</div>
+            </div>
+            <div class="milestone">
+                <div class="milestone-goal">f1.0000e6 小朋友复读机</div>
+                <div class="milestone-description">自动购买购买项</div>
+            </div>
+            <div class="milestone">
+                <div class="milestone-goal">f1.5000e156 小朋友复读机</div>
+                <div class="milestone-description">4维体积获取{{formatPow(1e16)}}</div>
+            </div>
+            <div class="milestone">
+                <div class="milestone-goal">f3.0000e156 小朋友复读机</div>
+                <div class="milestone-description">解锁下一个声望层</div>
+            </div>
+            <br>
+        </div>
+        <div v-if="player.currentPage == 22 && researchLevel(10)" class="text-center">
+            <div class="mm6text">
+                将元素合成以获取效果<br><br>
+                局部时间变慢|{{formatMass(materialCount(1))}} of {{getElementId(120)}}{{getElementId(135)}}{{getElementId(160)}}<br>
+                将衰变速度{{formatMult(materialEffect(1), 4, true)}}<br>
+                <button class="btn mm6btn" @click="craftMaterial(1)">合成</button><br><br>
+                中微子结合|{{formatMass(materialCount(2))}} of {{getElementId(120)}}{{getElementId(135)}}<sup>μ</sup>{{getElementId(135)}}<br>
+                使挖矿获取资源{{formatPow(materialEffect(2))}}<br>
+                <button class="btn mm6btn" @click="craftMaterial(2)">合成</button><br><br>
+
+                <br><br>
+                <h1>材料升级</h1>
+                需要{{formatMass(material3Need()[0])}}材料1和{{formatMass(material3Need()[1])}}材料2<br>
+                获得+{{formatWhole(player.PL3materialupg1.mul(2).min(7))}}多可以获取的元素|下一级: +{{formatWhole(player.PL3materialupg1.add(1).mul(2).min(7))}}<br>
+                <button class="btn mm6btn" @click="craftMaterial(3)">升级</button>
+                <br><br>
+                需{{formatMass(uni('e133000'))}}材料1<span v-if="player.PL3materialupg2.eq(PowiainaNum.ONE)">已购买</span><br>
+                衰变速度/9，基于4维体积增加获取资源，重置时保留体积压缩内容<br>
+                当前: {{formatPow(materialEffect(4))}}<br>
+                <button class="btn mm6btn" @click="craftMaterial(4)">升级</button>
+                <br><br>
+                需{{formatMass(uni('e504500'))}}材料1<span v-if="player.PL3materialupg3.eq(PowiainaNum.ONE)">已购买</span><br>
+                基于6维重置数量提升获取资源<br>
+                当前: {{formatPow(materialEffect(5))}}<br>
+                <button class="btn mm6btn" @click="craftMaterial(5)">升级</button>
+                <br><br>
+                需{{formatMass(uni('e1.33e7'))}}材料1<span v-if="player.PL3materialupg4.eq(PowiainaNum.ONE)">已购买</span><br>
+                自动挖矿，减少挖矿需要进度 by 4.6<br>
+                <button class="btn mm6btn" @click="craftMaterial(6)">升级</button>
+                <br><br>
+                需{{formatMass(uni('e1.39e7'))}}材料1<span v-if="player.PL3materialupg5.eq(PowiainaNum.ONE)">已购买</span><br>
+                材料1和材料2提升4维体积和获取资源<br>
+                当前: {{formatPow(materialEffect(7))}}<br>
+                <button class="btn mm6btn" @click="craftMaterial(7)">升级</button>
+                <br><br>
+
+                需{{formatMass(uni('e4.7070e7'))}}材料1<span v-if="player.PL3materialupg6.eq(PowiainaNum.ONE)">已购买</span><br>
+                每秒获得1000%重置时的mm<sup>6</sup>和10次mm<sup>6</sup>重置次数，获取资源^60<br>
+                <button class="btn mm6btn" @click="craftMaterial(8)">升级</button>
+                <br><br>
+                
+                需{{formatMass(mlt(40))}}材料1<span v-if="player.PL3materialupg7.eq(PowiainaNum.ONE)">已购买</span><br>
+                自动合成材料1和材料2，解锁小朋友复读机<br>
+                <button class="btn mm6btn" @click="craftMaterial(9)">升级</button>
+                <br><br>
+                
+            </div>
+        </div>
+        <div v-if="player.currentPage == 21 && researchLevel(10)" class="text-center">
+            <div class="mm6text">
+                元素周期表挖矿需要时间，会随机获得元素，<br>这些元素结合可以合成材料以获取增益（或者减益），<br>但是元素会衰变（84号元素以后），<br>使其变得无效果。<br>
+                <br><br>
+                当前挖矿需要进度{{pickingMax().format()}}<br>一次获取{{formatMass(pickingAmount())}}，获取{{displayElementGain()}}种不同的元素
+                <br>
+                <div class="probarcon">
+                    <div class="probar" :style="{width: (PowiainaNum.div(player.PL3pickingTime,pickingMax()).toNumber()*100).toString()+'%'}">当前进度：{{(PowiainaNum.div(player.PL3pickingTime,pickingMax()).toNumber()*100).toString()}}%</div>
+                </div>
+                <br>
+                <p v-for="id in currentElements">
+                    你有{{formatMass(elementCount(id))}} 
+                    <sup v-if="id.toString().indexOf('muonic') != -1">μ</sup>{{getElementId(id)}} 
+                    <span v-if="getElementDivSpeed(id).gt(1)">({{formatMult(getElementDivSpeed(id),4,1)}} per second)</span>
+                    <br>
+                
+                </p>
+            </div>
+            <button class="btn mm6btn" @click="picking()">挖矿</button>
+            
+        </div>
+        <div v-if="player.currentPage == 19" class="text-center">
+            <div class="mm6text">
+                进度升级需要进度达到一个上限值才能获得。<br>
+                你有{{format(player.PL3times)}}重置次数，它增加进度速度，将mm<sup>5</sup>重置次数{{formatMult(getCurrentPL3toPL2resetTimes())}}<br>
+                你当前的进度每秒增加{{format(getCurrentResearchSpeed())}}<br>
+                <span v-if="player.PL3currentResearching">你当前进行进度升级{{player.PL3currentResearching.toFixed(0)}}</span>
+            </div>
+            <div class="probarcon">
+                <div class="probar" :style="{width: getProgressWidth()}">{{getProgressWidth()}}</div>
+            </div>
+            <table>
+                <!-- <tr>
+                    <td><button class="resupg">
+                        (需要5重置次数解锁)
+                        增加1-8维度每次购买指数((1e-12)*(x)**0.5)<br>
+                        进度: 114514/1919810<br>
+                        当前: +0<br>
+                        等级: 0<br>
+                    </button></td>
+                    <td><button class="resupg">
+                        (未解锁)
+                    </button></td>
+                    <td><button class="resupg">
+                        (未解锁)
+                    </button></td>
+                    <td><button class="resupg">
+                        (未解锁)
+                    </button></td>
+                </tr> -->
+                <tr>
+                    <td><button class="resupg" @click="research(5)">
+                        使1-9 mm<sup>3</sup>升级的价格变为0<br>
+                        进度: {{format(researchProgress(5))}}/10<br>
+                        <br>
+                        等级: {{researchLevel(5)}}<br>
+                    </button></td>
+                    <td><button class="resupg" @click="research(6)">
+                        重置时保留3维声望层内容，160mm<sup>5</sup>重置次数<br>
+                        进度: {{format(researchProgress(6))}}/100<br>
+                        <br>
+                        等级: {{researchLevel(6)}}<br>
+                    </button></td>
+                    <td><button class="resupg" @click="research(7)">
+                        重置时保留研究升级，反应堆，1600mm<sup>5</sup>重置次数<br>
+                        进度: {{format(researchProgress(7))}}/400<br>
+                        <br>
+                        等级: {{researchLevel(7)}}<br>
+                    </button></td>
+                    <td><button class="resupg" @click="research(8)">
+                        重置时保留第三层重置之前的自动<br>
+                        进度: {{format(researchProgress(8))}}/1600<br>
+                        <br>
+                        等级: {{researchLevel(8)}}<br>
+                    </button></td>
+                </tr>
+                <tr>
+                    <td><button class="resupg" @click="research(9)">
+                        重置时保留重置次数，且获取的mm<sup>5.9</sup>硬下限为1.000e20，二阶小朋友获取×1.000e7<br>
+                        进度: {{format(researchProgress(9))}}/6400<br>
+                        等级: {{researchLevel(9)}}<br>
+                    </button></td>
+                    <td><button class="resupg" @click="research(10)">
+                        解锁元素挖矿<br>
+                        进度: {{format(researchProgress(10))}}/1.000e11<br>
+                        等级: {{researchLevel(10)}}<br>
+                    </button></td>
+
+                </tr>
+            </table>
+        </div>
         <div v-if="player.currentPage == 13">
             <div class="text-center">
                 <div class="battle">
@@ -148,14 +387,14 @@
                 <br>
                 技能:<br>
                 攻击: 使对方的生命值减少atk<br>
-                恢复：每秒生命×5（战斗时无效）
+                恢复：每秒生命{{formatMult(5)}}（战斗时无效）
                 <br>
                 <br>
                 升级<br>
                 <table class="text-center">
                     <tr>
                         <td>
-                            <button class="mm5upg" :class="{unlocked: hasBattleUpgrade(1)}"@click="buyBattleUpgrade(1)">基于经验提升小朋友上限和小朋友获取<br>当前: ×{{format(getBattleUpgradeEffect(1))}}<br>需要20经验</button>
+                            <button class="mm5upg" :class="{unlocked: hasBattleUpgrade(1)}"@click="buyBattleUpgrade(1)">基于经验提升小朋友上限和小朋友获取<br>当前: {{formatMult(getBattleUpgradeEffect(1))}}<br>需要20经验</button>
                         </td>
                     </tr>
                 </table>
@@ -212,12 +451,12 @@
                 <div class="milestone-description" title="风灵作成: ？">解锁次数商店，自动购买小朋友×2和{{glt("3dvolumes")}}获取×2购买项,且这两个购买项不会消耗任何东西</div>
             </div>
             <div v-if="player.PL2times.gte(10)">
-                <p class="text-center">Because of rebalance, buying upgrade doesn't cost anything.</p>
+                <p class="text-center">Because of reb我是alance, buying upgrade doesn't cost anything.</p>
                 <p class="text-center">你当前有{{format(getRealPL2resetTimes())}}可用mm<sup>5</sup>重置次数</p>
-                <table align="center">
+                <table align="center">我是🐶
                     <tr>
-                        <td><button class="mm5upg" onclick="buyPL2Upg(1)" style="font-size: 80%">基于重置次数提升1-8维度购买数量<br>当前等级: {{format(player.PL2RTupgrade1)}} 效果：×{{format(PL2UpgEffect1())}}<br>花费:{{format(PL2UpgCost(1))}}<span style="font-size:75%">mm<sup>5</sup>可用重置次数</span></td>
-                        <td><button class="mm5upg" onclick="buyPL2Upg(2)" style="font-size: 80%">翻倍重置次数获取<br>当前: ×{{format(PL2UpgEffect2())}}<br>花费:{{format(PL2UpgCost(2))}}<span style="font-size:75%">mm<sup>5</sup>可用重置次数</span></td>
+                        <td><button class="mm5upg" onclick="buyPL2Upg(1)" style="font-size: 80%">基于重置次数提升1-8维度购买数量<br>当前等级: {{format(player.PL2RTupgrade1)}} 效果：{{formatMult(PL2UpgEffect1())}}<br>花费:{{format(PL2UpgCost(1))}}<span style="font-size:75%">mm<sup>5</sup>可用重置次数</span></td>
+                        <td><button class="mm5upg" onclick="buyPL2Upg(2)" style="font-size: 80%">翻倍重置次数获取<br>当前: {{formatMult(PL2UpgEffect2())}}<br>花费:{{format(PL2UpgCost(2))}}<span style="font-size:75%">mm<sup>5</sup>可用重置次数</span></td>
                     </tr>
                 </table>
             </div>
@@ -270,7 +509,7 @@
                 <div class="milestone-description">小朋友硬上限推迟^2</div>
             </div>
         </div>
-
+        <achievements v-if="player.currentPage == 20"></achievements>
         <div v-if="player.currentPage == 10">
             <div class="text-center" v-if="!player.PL1xiaopengyouUnl"><button class="btn mm3btn" @click="unlockXiaopengyou()">
                 解锁小朋友<br>
@@ -278,13 +517,20 @@
             </button></div>
             <div v-else>
                 <div class="text-center">
-                    <p>你有<span class="mm3text">{{format(player.PL1xiaopengyouPoints)}}/{{format(tmp.mm3.xiaopengyouCap())}}(+{{format(getXiaopengyouGain())}}/s)</span>小朋友，他们使每次购买的乘数×{{format(xiaopengyouEffect1())}}</p>
+                    <p>你有<span class="mm3text">{{format(player.PL1xiaopengyouPoints)}}/{{format(tmp.mm3.xiaopengyouCap())}}(+{{format(getXiaopengyouGain())}}/s)</span>小朋友，他们使每次购买的乘数{{formatMult(xiaopengyouEffect1())}}</p>
                     <p>已解锁一个新的购买项在"升级"选项卡</p>
                 </div>
                 <p class="mm3text text-center">
                     在500小朋友，基于小朋友数量获得额外的{{glt("dimensionBoost")}}<br>
                     当前：+{{format(xiaopengyouEffect2())}}
                 </p>
+                
+                <div v-if="tmp.mm3.xiaopengyouinOverflow" class="tooltipBox text-center">
+                    由于小朋友在<b>{{format(tmp.overflow_start.xiaopengyou[0])}}</b>溢出，因此小朋友获取<span v-html="overflowFormat(tmp.overflow.xiaopengyou)"></span>!
+                    <span class="tooltip">
+                        溢出前: {{format(tmp.overflowBefore.xiaopengyou)}} 小朋友
+                    </span>
+                </div>
             </div>
         </div>
         <div v-if="player.currentPage == 7 && hasMM3Upg(4)">
@@ -301,7 +547,9 @@
         <div v-if="player.currentPage == 9" class="text-center">
             <button class="btn mm3btn" @click="doMM3resetManmade()">{{glt("resetPL1layer")}} {{format(tmp.mm3.gain)}} mm<sup>3</sup> 3维体积<br>需要 1.000e200 mm<sup>4</sup></button>
             <button class="btn mm5btn" @click="doMM5resetManmade()" v-if="hasMM3Upg(20)">重置4维和3维的所有资源和升级，获得{{format(tmp.mm5.gain)}} mm<sup>5</sup> 5维体积<br>需要 1.000e50000 mm<sup>4</sup></button>
-            <br><button class="btn mm6btn" @click="doMM6resetManmade()" v-if="hasTheorie(91)">重置3,4,5维的所有资源和升级，获得??? mm<sup>6</sup> 6维体积<br>需要 e1.300e12 mm<sup>4</sup></button>
+            <br>
+            <button class="btn mm6btn" @click="doMM6resetManmade()" v-if="player.boughttheorie91">重置3,4,5维的所有资源和升级，获得{{format(tmp.mm6.gain)}} mm<sup>6</sup> 6维体积<br>需要 e1.300e12 mm<sup>4</sup></button>
+            <button class="btn mm7btn" v-if="player.reached3e156xpyrepl">重置3,4,5,6维内容，获得??? mm<sup>7</sup> 7维体积<br>需要 e1.797e308 mm<sup>4</sup></button>
             
             
         </div>
@@ -364,10 +612,10 @@
                 </tr>
                 <tr>
                     <td><button class="mm3upg" style="border: var(--color-text-invert)"></button></td>
-                    <td v-if="hasMM3Upg(8)"><button class="mm3upg" @click="buyBuyable(1)">双倍mm<sup>3</sup>获取({{ formatWhole(player.PL1buyable1) }})<br>花费：{{format(getBuyableCost(1))}} mm<sup>3</sup><br>效果: ×{{format(getBuyableEffect(1))}}</button></td>
+                    <td v-if="hasMM3Upg(8)"><button class="mm3upg" @click="buyBuyable(1)">双倍mm<sup>3</sup>获取({{ formatWhole(player.PL1buyable1) }})<br>花费：{{format(getBuyableCost(1))}} mm<sup>3</sup><br>效果: {{formatMult(getBuyableEffect(1))}}</button></td>
                     <td v-else><button class="mm3upg" style="border: var(--color-text-invert)"></button></td>
                     <td v-if="player.PL1xiaopengyouUnl"><button class="mm3upg" @click="buyBuyable(2)">
-                        双倍小朋友获取({{ formatWhole(player.PL1buyable2) }})<br>花费：{{format(getBuyableCost(2))}} 小朋友<br>效果: ×{{format(getBuyableEffect(2))}}</button>
+                        双倍小朋友v$@)%*(u&@$bn#){^njp()bn$p(获取({{ formatWhole(player.PL1buyable2) }})<br>花费：{{format(getBuyableCost(2))}} 小朋友<br>效果: {{formatMult(getBuyableEffect(2))}}</button>
                     </td>
                     <td v-else><button class="mm3upg" style="border: var(--color-text-invert)"></button></td>
 
@@ -385,17 +633,17 @@
             <br>
             <p>{{glt("此种类维度每次购买乘数")}}{{format(tmp.dimension.getBoughtMultiplier())}}</p>
             <div v-for="dim in dimensions" :key="dim.id" class="text-center">
-                {{ dimensionsLabel(dim.id) }}
+                <span style="color: red">{{ tmp.dimension.getSuperDimState(dim.id)}}</span>{{ dimensionsLabel(dim.id) }}
                 +<span>{{
                     format(player.dimensions[DIMENSIONS_POINTS][dim.id
                     - 1]) }}
                 </span>
-                x<span>{{
-                    format(player.dimensions[DIMENSIONS_MULTI][dim.id
+                <span>{{
+                    formatMult(player.dimensions[DIMENSIONS_MULTI][dim.id
                     - 1]) }}
                 </span>
-                ^<span>{{
-                    format(player.dimensions[DIMENSIONS_EXPONENT][dim.id
+                <span>{{
+                    formatPow(player.dimensions[DIMENSIONS_EXPONENT][dim.id
                     - 1]) }}
                 </span>
                 <span>{{
@@ -422,6 +670,18 @@
                 After <b v-html="format(tmp.mm4.softcap1start)"></b>
                 of 4D volumes gain, 4D volumes gain will be softcapped!(软上限限时回归!!!)
             </div>
+            <br>
+            <div v-if="tmp.mm4.inOverflow" class="tooltipBox">
+                由于4维体积在<b>{{format(tmp.overflow_start.mm4[0])}}</b> mm<sup>4</sup> 溢出，因此4维体积获取的指数<span v-html="overflowFormat(tmp.overflow.mm4)"></span>!
+                <span class="tooltip">
+                    溢出前: {{format(tmp.overflowBefore.mm4)}} mm<sup>4</sup>
+                </span>
+            </div>
+            <div v-if="tmp.mm4.inOverflow2">
+                由于4维体积在<b>{{format(tmp.overflow_start.mm4[1])}}</b> mm<sup>4</sup> 二重溢出，溢出效果严重地增强!
+                
+            </div>
+
         </div>
         <div v-if="player.currentPage == 18" class="text-center">
             <div v-if="player.PL2isunlockedCompress">
@@ -511,7 +771,7 @@
                         <td>
                             <div class="rea" :class="{rea_active: player.PL2reaUpg.includes(2)}"style="font-size: 50%" @click="buyReacUpg(2)">
                                 基于mm<sup>5.5</sup>增益小朋友获取<br>
-                                当前: ×{{format(getReacUpgEffect2())}}<br>
+                                当前: {{formatMult(getReacUpgEffect2())}}<br>
                                 <br>
                                 需要256 mm<sup>5.5</sup>
                             </div>
@@ -591,7 +851,7 @@
                 </table>
                 <table>
                     <tr>
-                        <td class="upgtow" :class="{unlocked: hasTheorie(91)}" @click="buyTheorie(91)" v-if="hasTheorie(81)">解锁下一个声望层<br>需要:1.000e9研究点</td>
+                        <td class="upgtow" :class="{unlocked: hasTheorie(91)}" @click="buyTheorie(91)" v-if="hasTheorie(81)">解锁下一个声望层（永久保留）<br>需要:1.000e9研究点</td>
                     </tr>
                 </table>
             </div>
@@ -608,7 +868,7 @@
                 style="color:#00ffff; font-size: 40px;" v-html="format(player.PL2dimensionalEnergy)"></span>
             5维维度维度能量</p>
             <p>在<span
-                style="color:#00ffff; font-size: 40px;">^{{format(tmp.mm5.energyeffectExponent())}}</span>后给予<span style="color:#00ffff; font-size: 40px;">×{{format(tmp.mm5.energyTo4DDimensions())}}</span>
+                style="color:#00ffff; font-size: 40px;">^{{format(tmp.mm5.energyeffectExponent())}}</span>后给予<span style="color:#00ffff; font-size: 40px;">{{formatMult(tmp.mm5.energyTo4DDimensions())}}</span>
                 到4维维度</p>
             <p>{{glt("此种类维度每次购买乘数")}}{{format(tmp.mm5.getBoughtMultiplierafter8())}}</p>
             <div v-for="dim in dimensions" :key="dim.id" class="text-center">
@@ -717,7 +977,7 @@
 
         </div>
         <div v-if="player.currentPage == 11870903" class="text-center">
-            <br>
+            <br>&<*684+67/0.*+6785T
             <br>
             <button style="
             background: #eeeeee;
@@ -728,15 +988,33 @@
             ">You have enough Infinity Points to buy a Tesseract</button><br><br><br>
             <div  style="
             animation: bigcrunch 2s infinite;">啊，我被大嘎吱嘎吱了，功力只剩一成</div>
-            
+            <span class="red">After <b id="massSoftStart1">1.500e156 g</b> of mass gain, mass gain will be softcapped!<br></span>
+            <span style="color: rgb(121, 0, 0)">After <b id="massSoftStart3">1.500e1000056 g</b> of mass gain will softcap^2 mass gain!<br></span>
+            <span style="color: rgb(122, 0, 86)">After <b id="massSoftStart4">e1.0000e8 g</b> of mass gain will softcap^3 mass gain!<br></span>
+            <span style="color: rgb(255, 94, 0)">After <b id="massSoftStart5">e1.0000e13 g</b> of mass gain will softcap^4 mass gain!<br></span>
+            <span style="color: rgb(255, 238, 0)">After <b id="massSoftStart6">e1.0000e21 g</b> of mass gain will softcap^5 mass gain!<br></span>
+            <span style="color: rgb(166, 255, 0)">After <b id="massSoftStart7">e1.0000e31 g</b> of mass gain will softcap^6 mass gain!<br></span>
+            <span style="color: rgb(0, 255, 149)">After <b id="massSoftStart8">e1.0000e45 g</b> of mass gain will softcap^7 mass gain!<br></span>
+            <span style="color: rgb(0, 225, 255)">After <b id="massSoftStart9">e1.0000e72 g</b> of mass gain will softcap^8 mass gain!</span>
+            <div>Because of mass overflow at <b>1,919 arvs</b>, your mass gain is rooted by <b>1.000f32050</b>!</div>
+            <div style="color: rgb(255, 197, 215)">Because of mass overflow^2 at <b>9,810 arvs</b>, your mass overflow is even stronger!</div>
+            <div style="color: rgb(197, 255, 242)">Because of mass overflow^3 at <b>66,668 arvs</b>, your mass overflow is even stronger!</div>
+            <div style="color: rgb(194, 177, 255)">Because of mass siltation at <b>我不到啊</b>, the exponent of mass gain is rooted by <b>我不到啊</b>!</div><br>
+            <div class="corrupted"                  >Because of mass siltation^2 at <b>1.0000F5</b>, the mass gain is 10^^(slog(x)/<b>1919810</b>) instead of x!</div>
+            <div class="charged_text"               >Because of mass siltation^3 at <b>1.0000F10</b>, the mass siltation^2 is even stronger!</div>
+            <div class="saved_text"                 >Because of v(*%jvb(@#&g)u%#%nj|%}#mass siltation^4 at <b>1.0000F1000</b>, the mass siltation^2 is even stronger!</div>
+            <div class="quark_color"                >Because of mass siltation^5 at <b>F1.000e10</b>, the mass siltation^2 is even stronger!</div>
+            <div class="f_quark_color"              >Because of mass siltation^6 at <b>F1.000e25</b>, the mass gain is 10^^(slog(x)<sup><b>1919810</b><sup>-1</sup></sup>) instead of x!</div>
+            <div class="ff_quark_color"             >Because of mass siltation^7 at <b>F1.000e100</b>, the mass siltation^6 is even stronger!</div>
             <hr>
-            <p>支持所有序数增量吧吧友，点击下面玩吧友们制作的游戏</p>
-            <a href="https://seanxlx2011.github.io/" target="_blank">数据增量重置版</a>,<br>
-            <a href="https://0i00000000a7.github.io/points-incremental-rewritten/" target="_blank">点数增量重置版</a>,<br>
-            <a href="https://aster131072.github.io/incremental_evolution/" target="_blank">增量进化</a>,<br>
-            <a href="https://dlsdl.github.io/wind_spirit_creation/" target="_blank">风灵作成</a>,<br>
-            <a href="https://qqqe308.github.io/The-Rhythm-Game-Tree/" target="_blank">音乐游戏树</a>,<br>
-            <a href="https://a262537412640768744.github.io/homework-incremental/main.html" target="_blank">作业增量</a>,<br>
+              <span class="corrupted">
+                超过 10^^5 点数后，点数获取速度将二重淤积!</span><br>
+              <span class="charged_text">
+                超过 10^^10 点数后，点数获取速度将三重淤积!</span><br>
+              <span class="saved_text">
+                超过 10^^1000 点数后，点数获取速度将四重淤积!</span><br>
+              <span class="quark_color">n^$)wmjut()m$u)btu)$tv)
+                超过 10^^1.00e10 点数后，点数获取速度将五重淤积!</span><br>/mank">作业增量</a>,<br>
             <a href="https://goldenapple125.github.io/RBN/" target="_blank">大数之路</a>,<br>
             <a href="https://qqqe308.github.io/Anti-Anti-Softcap-Tree/111/" target="_blank">反-反软上限树</a>,<br>
             <br>
@@ -765,18 +1043,7 @@
             </div><br>
         </div>
         <div v-if="player.currentPage == 11870502" class="text-center">
-            <p>当你第一次达到break-eternity极限时，会发生某些意想不到的事...</p>
-            <p>你最高的mm<sup>4</sup>为114514mm<sup>4</sup></p>
-            计划目标<br>
-            mm3before: 0<br>
-            mm3: e200<br>
-            mm5: e100000<br>
-            mm6: e1.3e12<br>
-            mm7: e1.7e723<br>
-            mm8: ee9.25e9<br>
-            mm9: ee1e8000<br>
-            mm10: 1f7<br>
-            mm11: f1.797e308<br>
+            2哦ijw8f59'vf74953g9583gh-0g[btygdfy=083jer0uU%#0[^($k}_)b%nm$i^#h_w%}v#np()$BP(u)$b^{yn*($@%&ju*)*uv%m($)$^*nmju^n%#}]
         </div>
         <div v-if="player.currentPage == 9006">
 第一章 反问题尺寸<br>
@@ -809,6 +1076,12 @@
 第五章 预订实际<br>
 解锁皮肤后，我预订了我的实际，这使我之前的实际层内容几乎全部被禁用了。但解锁了一种新重置：世界末日。此重置可获取残余，残余会生成实际碎片。实际碎片可以购买皮肤提升。在达到一定进度后，我还解锁了五个罢工条，最终，我重新得到了1e4000永远指画，解锁银河系生成器，获得了末日即将来临毁灭即将来临帮助我们永远再见个反问题，击败了皮肤。<br>
 
+        </div>
+        <div v-if="player.currentPage == 11870904">
+            
+        </div>
+        <div v-if="player.currentPage == 1898180914" class="text-center">
+            {{get_pts_volume(player.volumes)}}
         </div>
     </div>
 </body>

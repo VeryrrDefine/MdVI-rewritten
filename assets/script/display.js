@@ -172,15 +172,35 @@ var tabShow = {
     },
     mm6: {
         text: "6维体积",
-        firstTabID: -999,
-        "6dfractal": {
-            id: -999,
-            text: "6D分型",
+        firstTabID: 19,
+        progress_upgrades: {
+            id: 19,
+            text: "进度升级",
             class: "mm6btn"
+        },
+        element_picking: {
+            id: 21,
+            text: "元素挖矿",
+            class: "mm6btn"
+        },
+        materialCrafting: {
+            id: 22,
+            text: "材料合成",
+            class: "mm6btn"
+        },
+        xiaopengyouReplicanti: {
+            id: 23,
+            text: "小朋友复读机",
+            class: "mm6btn"
+        },
+        xpyrepBuyables: {
+            id: 24,
+            text: "购买项",
+            class: 'mm6btn'
         },
         class: "mm6btn",
         unlocked() {
-            return showAllPrestigeLayers
+            return showAllPrestigeLayers || player.isPL3unlocked
         }
     },
     mm7: {
@@ -220,30 +240,16 @@ var tabShow = {
         }
     },
     mm11evolution: {
-        get text() {
-            let progress = Math.min(player.volumes.slog(10).log10().sub(
-                Math.log10(Number.MAX_SAFE_INTEGER)
-            ).div(Math.log10(Number.MAX_VALUE)-Math.log10(Number.MAX_SAFE_INTEGER)).toNumber(),1)
-            return progress >= 1 ? "11维体积" : ""
-        },
+        text: "11维体积",
         firstTabID: 999999999-11870502,
         /*evolue:{
             id: 9999999999-11870502,
             text: "商店",
             class: "evolue",
         },*/
-        get style(){
-            if (player.volumes.lt(PowiainaNum.TETRATED_MAX_SAFE_INTEGER)){
-                return "display: none;"
-            }
-            let progress = Math.min(player.volumes.slog(10).log10().sub(
-                Math.log10(Number.MAX_SAFE_INTEGER)
-            ).div(Math.log10(Number.MAX_VALUE)-Math.log10(Number.MAX_SAFE_INTEGER)).toNumber(),1)
-            return `opacity: ${progress}; width: ${progress*69.132}px; white-space: nowarp;`
-        },
         class: "evolue",
         unlocked() {
-            return true;
+            return showAllPrestigeLayers;
         }
     },
     settings: {
@@ -260,6 +266,14 @@ var tabShow = {
         backgroundSettings: {
             id: 11,
             text: "概要"
+        },
+        achievements:{
+            id: 20,
+            text: "成就"
+        },
+        stats: {
+            id: 1898180914,
+            text: "统计"
         }
     },
     test: {
@@ -268,6 +282,10 @@ var tabShow = {
         test: {
             id: 11870903,
             text: "测试"
+        },
+        elementTest: {
+            id: 11870904,
+            text: "elementtest"
         },
         unlocked(){
             return location.host.includes("127.0.0.1")
@@ -381,4 +399,31 @@ function dimensionsLabel(dimid){
         return `${getEnglishNumberOrdinal(+dimid)} Dimension`
     }
     return `第${dimid}维度`
+}
+function formatReduction(ex,acc) { ex = E(ex); return format(E(1).sub(ex).mul(100),acc)+"%" }
+
+function formatPercent(ex,acc) { ex = E(ex); return format(ex.mul(100),acc)+"%" }
+
+function formatMult(ex,acc=4,inv=false) { 
+    ex = E(ex); 
+    if (!inv)
+        return ex.gte(1)?"×"+ex.format(acc):"/"+ex.pow(-1).format(acc)
+    if (inv)
+        return ex.gte(1)?"/"+ex.format(acc):"×"+ex.pow(-1).format(acc)
+}
+
+function formatPow(ex,acc=4) { return "^"+format(ex,acc) }
+
+function expMult(a,b,base=10) { return Decimal.gte(a,10) ? Decimal.pow(base,Decimal.log(a,base).pow(b)) : E(a) }
+
+function overflowFormat(x,inv=false) { return "为原来的<b>"+format(x)+"</b>"+(inv?"次方":"次根") }
+
+
+
+const DT = PowiainaNum.tetrate(10,6)
+
+function formatGain(a,e) {
+
+
+    return ""
 }
