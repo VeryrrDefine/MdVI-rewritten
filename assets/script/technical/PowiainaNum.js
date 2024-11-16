@@ -1460,6 +1460,25 @@
         return PowiainaNum(num).overflow(start, power, meta)
     }
 
+//these are from break_eternity.js as well
+    P.toExponential = function(places, applyToOpNums) {
+        if(this.array.length == 1) return (this.sign * this.array[0]).toExponential(places);
+        return this.toStringWithDecimalPlaces(places, applyToOpNums);
+    };
+    P.toFixed = function(places, applyToOpNums) {
+        if(this.array.length == 1) return (this.sign * this.array[0]).toFixed(places);
+        return this.toStringWithDecimalPlaces(places, applyToOpNums);
+    };
+    P.toPrecision = function(places, applyToOpNums) {
+        if(this.array[0] === 0) return (this.sign * this.array[0]).toFixed(places - 1, applyToOpNums);
+        if(this.array.length == 1 && this.array[0] < 1e-6) return this.toExponential(places - 1, applyToOpNums);
+        if(this.array.length == 1 && places > Math.log10(this.array[0])) return this.toFixed(places - Math.floor(Math.log10(this.array[0])) - 1, applyToOpNums);
+        return this.toExponential(places - 1, applyToOpNums);
+    };
+    P.valueOf = function() {
+        return this.toString();
+    };
+
     P.toJSON = function () {
         if (PowiainaNum.serializeMode == PowiainaNum.JSON) {
             var a = [];

@@ -22,7 +22,7 @@ function norewardMM6reset(){
     reset4DDimensions();
     reset5DDimensions();
     Object.assign(player, {
-        volumes: E(7),
+        volumes: PowiainaNum(7),
 
         currentHP: ExpantaNum.ONE.clone(),
         currentMP: ExpantaNum.ZERO.clone(),
@@ -72,10 +72,6 @@ function norewardMM6reset(){
         dimBoost: ExpantaNum.ZERO,
         dimBoostTimespent: 0,
 
-        auto: [],
-        automationState: {
-            
-        },
         dimBoost2: ExpantaNum.ZERO,
         isPL1unlocked: true,
         PL1breakedPL1limit: true,
@@ -150,11 +146,11 @@ function norewardMM6reset(){
         if (!researchLevel(9)) player.PL2times = PowiainaNum(1600)
 
     }
-    if (researchLevel(8 )==1){
-        player.auto = [1, 2, 3, 4, 6, 5, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-    }
 }
 function doMM6reset() {
+    if (player.PL2times.lte(2)){
+        player.PL4treeUpgradeRequirements.push(1)
+    }
     player.PL3points = player.PL3points.add(tmp.mm6.gain);
     player.PL3total = player.PL3total.add(tmp.mm6.gain);
     player.PL3times = player.PL3times.add(1);

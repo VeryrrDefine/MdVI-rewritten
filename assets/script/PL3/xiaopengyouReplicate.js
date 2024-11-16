@@ -11,6 +11,7 @@ function xpyrepLoop(){if(player.PL3materialupg7.eq(PowiainaNum.ONE)){
 }}
 
 function xpyRepSpeed(nosoftcap = false){
+    if (!player.PL3materialupg7.eq(PowiainaNum.ONE)) return PowiainaNum.ZERO.clone()
     let temp1 = PowiainaNum(0.03);
     if (player.PL3xpyrep.gte(18)){
         temp1 = temp1.add(player.PL3xpyrep.sub(18).root(2).mul(0.005))
@@ -19,6 +20,9 @@ function xpyRepSpeed(nosoftcap = false){
     if (player.PL3xpyrep.gte(40)) temp1 = temp1.mul(2)
     temp1 = temp1.mul(mm6buyableEffect(1))
     if (player.PL3xpyrep.gte(180)) temp1 = temp1.add(player.volumes.max(1).log10().max(1).log10().mul(0.05))
+    
+    if (hasTreeUpgrade("xpyrep1")) temp1 = temp1.mul(72);
+    
     temp1 = softcap(temp1, 1e32, 0.7, "pow", nosoftcap);
     return temp1;
 }

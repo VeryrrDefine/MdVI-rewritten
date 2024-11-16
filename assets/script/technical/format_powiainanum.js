@@ -69,7 +69,7 @@ function polarizeE(array, smallTop=false) {
     
     return {bottom: bottom, top: top, height: height}
 }
-function format(num, precision=4, small=false){
+function formatFP(num, precision=4, small=false, maxDigit = 6){
     if (PowiainaNum.isNaN(num)) return "NaN"
     let precision2 = Math.max(3, precision) // for e
     let precision3 = Math.max(4, precision) // for F, G, H
@@ -77,62 +77,62 @@ function format(num, precision=4, small=false){
     num = new PowiainaNum(num)
     let array = num.array
     if (num.abs().lt(1e-308)) return (0).toFixed(precision)
-    if (num.sign < 0) return "-" + format(num.neg(), precision)
+    if (num.sign < 0) return "-" + formatFP(num.neg(), precision)
     if (num.isInfinite()) return "Infinity"
     if (num.lt("0.001")) {
-        return "("+format(num.rec())+")e-1"
+        return "("+formatFP(num.rec())+")e-1"
     }
     else if (num.lt(1)) {
       if (precision == 0) return '0'
       return regularFormat(num, precision + 2)
     }
     else if (num.lt(1000)) return regularFormat(num, precision)
-    else if (num.lt(1e6)) return commaFormat(num)
+    else if (num.lt(10 ** maxDigit)) return commaFormat(num)
     else if (num.lt("9007199254740991")) {
         a = num.log10().floor().toNumber();
         b = num.div(10**a).toNumber();
-        return `${format(b,precision2)}e${a}`;
-    }else if (num.lt("1e1e6")){
+        return `${formatFP(b,precision2)}e${a}`;
+    }else if (num.lt("1e1e"+maxDigit)){
         let a = Math.floor(num.array[0])
         let b = 10**(num.array[0]-a)
-        return `${format(b,precision2)}e${a}`;
+        return `${formatFP(b,precision2)}e${a}`;
     }
     else if (num.lt(E.E_MAX_SAFE_INTEGER)) {
         a = num.log10().log10().floor().toNumber();
         b = num.log10().div(10**a).toNumber();
-        return `e${format(b,precision2)}e${a}`;
-    }else if (num.lt("ee1e6")){
+        return `e${formatFP(b,precision2)}e${a}`;
+    }else if (num.lt("ee1e"+maxDigit)){
         let a = Math.floor(num.array[0])
         let b = 10**(num.array[0]-a)
-        return `e${format(b,precision2)}e${a}`;
+        return `e${formatFP(b,precision2)}e${a}`;
     }
     else if (num.lt(E.EE_MAX_SAFE_INTEGER)) {
         a = num.log10().log10().log10().floor().toNumber();
         b = num.log10().log10().div(10**a).toNumber();
-        return `ee${format(b,precision2)}e${a}`;
-    }else if (num.lt("eee1e6")){
+        return `ee${formatFP(b,precision2)}e${a}`;
+    }else if (num.lt("eee1e"+maxDigit)){
         let a = Math.floor(num.array[0])
         let b = 10**(num.array[0]-a)
-        return `ee${format(b,precision2)}e${a}`;
+        return `ee${formatFP(b,precision2)}e${a}`;
     }
-    else if (num.lt("10^^1000000")) { // 1F5 ~ F1,000,000
+    else if (num.lt("10^^1e"+maxDigit)) { // 1F5 ~ F1,000,000
         let pol = polarizeE(array)
         return regularFormat(pol.bottom, precision3) + "f" + commaFormat(pol.top)
     }
-    else if (num.lt("10^^10^^10^^10^10^10^10^6")) { // F1,000,000 ~ 1G5
+    else if (num.lt("10^^10^^10^^10^10^10^10^"+maxDigit)) { // F1,000,000 ~ 1G5
         let rep = arraySearch(array, 2)
         if (rep >= 1) {
             setToZero(array, 2)
             let x = new PowiainaNum();
             x.array = array;
             x.normalize();
-            return "f".repeat(rep) + format(x, precision2)
+            return "f".repeat(rep) + formatFP(x, precision2)
         }
         let n = arraySearch(array, 1) + 1
         if (num.gte("10^^" + (n + 1))) n += 1
-        return "f" + format(n, precision2)
+        return "f" + formatFP(n, precision2)
     }
-    else if (num.lt("10^^^1000000")) { // 1G5 ~ G1,000,000
+    else if (num.lt("10^^^1e"+maxDigit)) { // 1G5 ~ G1,000,000
         let pol = polarizeE(array)
         return regularFormat(pol.bottom, precision3) + "g" + commaFormat(pol.top)
     }
@@ -143,12 +143,12 @@ function format(num, precision=4, small=false){
             let x = new PowiainaNum();
             x.array = array;
             x.normalize();
-            return "g".repeat(rep) + format(x, precision2)
+            return "g".repeat(rep) + formatFP(x, precision2)
         }
         let n = arraySearch(array, 2) + 1
         if (num.gte("10^^^" + (n + 1))) n += 1
-        return "g" + format(n, precision)
-    }else if (num.lt("10^^^^1000000")) { // 1H5 ~ H1,000,000
+        return "g" + formatFP(n, precision)
+    }else if (num.lt("10^^^^1e"+maxDigit)) { // 1H5 ~ H1,000,000
         let pol = polarizeE(array)
         return regularFormat(pol.bottom, precision3) + "h" + commaFormat(pol.top)
     }
@@ -159,11 +159,11 @@ function format(num, precision=4, small=false){
             let x = new PowiainaNum();
             x.array = array;
             x.normalize();
-            return "h".repeat(rep) + format(x, precision2)
+            return "h".repeat(rep) + formatFP(x, precision2)
         }
         let n = arraySearch(array, 3) + 1
         if (num.gte("10^^^^" + (n + 1))) n += 1
-        return "h" + format(n, precision)
+        return "h" + formatFP(n, precision)
     }else if (num.lt("l0 s1 a[10,[1000000,1,1,1]]")){
         /*
         xJy = 10{y}x
@@ -177,11 +177,11 @@ function format(num, precision=4, small=false){
         let rep = num.operator("x")
         if (rep >= 1) {
             num.operatorE("x", 0);
-            return "J".repeat(rep) + format(num, precision2)
+            return "J".repeat(rep) + formatFP(num, precision2)
         }
         let n = array[array.length-1][num.getMaxFirstOperatorIndex()];
         if (num.gte("J" + (n + 1))) n += 1
-        return "J" + format(n, precision)
+        return "J" + formatFP(n, precision)
         
     }else if (num.lt("l0 s1 a[10,[\"x\",1000000,1,1]]")){ // 1K5 ~ K1000000
         
@@ -189,36 +189,36 @@ function format(num, precision=4, small=false){
     }else if (num.lt("l0 s1 a[10,[1,4,2,1]]")){ // K1000000 ~ 1L5
 
         if (num.lt(`l0 s1 a[10,["x",${Number.MAX_SAFE_INTEGER},1,1]]`)){
-            return "K" + format(num.operator("x"))
+            return "K" + formatFP(num.operator("x"))
         }else{
             let rep = num.operator(1,2);
             num.operator(1,2,1,0);
-            return "K".repeat(rep) + format(num);
+            return "K".repeat(rep) + formatFP(num);
 
         }
         
     }else if (num.lt("l0 s1 a[10,[1,999999,2,1]]")){ // 1L5 ~ L1000000
-        return "我不到啊#(1,2)" + format(num.operator(1,2))
+        return "我不到啊#(1,2)" + formatFP(num.operator(1,2))
 
     }else if (num.lt("l0 s1 a[10,[2,5,2,1]]")){ // 1L5 ~ L^5 10
         if (num.lt(`l0 s1 a[10,[1,${Number.MAX_SAFE_INTEGER},2,1]]`)){
-            return "#(1,2)" + format(num.operator(1,2))
+            return "#(1,2)" + formatFP(num.operator(1,2))
         }else{
             let rep = num.operator(2,2);
             num.operator(2,2,1,0);
-            return "#(1,2)".repeat(rep) + format(num);
+            return "#(1,2)".repeat(rep) + formatFP(num);
 
         }
     }else if (num.lt("l0 s1 a[10,[1,999999,3,1]]")){
-        return "我不到啊#(1,3)" + format(num.operator(1,3))
+        return "我不到啊#(1,3)" + formatFP(num.operator(1,3))
 
     }else if (num.lt("l0 s1 a[10,[2,5,3,1]]")){ 
         if (num.lt(`l0 s1 a[10,[1,${Number.MAX_SAFE_INTEGER},3,1]]`)){
-            return "#(1,3)" + format(num.operator(1,3))
+            return "#(1,3)" + formatFP(num.operator(1,3))
         }else{
             let rep = num.operator(2,3);
             num.operator(2,3,1,0);
-            return "#(1,3)".repeat(rep) + format(num);
+            return "#(1,3)".repeat(rep) + formatFP(num);
 
         }
     } // beyond L^5 10
@@ -256,7 +256,7 @@ function format(num, precision=4, small=false){
 
 }
 /*
-function format(num, precision=4, small=false){
+function formatFP(num, precision=4, small=false){
     if (PowiainaNum.isNaN(num)) return "NaN"
     let precision2 = Math.max(3, precision) // for e
     let precision3 = Math.max(4, precision) // for F, G, H
@@ -264,7 +264,7 @@ function format(num, precision=4, small=false){
     num = new PowiainaNum(num)
     let array = num.array
     if (num.abs().lt(1e-308)) return (0).toFixed(precision)
-    if (num.sign < 0) return "-" + format(num.neg(), precision)
+    if (num.sign < 0) return "-" + formatFP(num.neg(), precision)
     if (num.isInfinite()) return "Infinity"
     if (num.lt("0.001")) {
       let exponent = num.log10().floor()
@@ -319,11 +319,11 @@ function format(num, precision=4, small=false){
         
         if (repeater >= 1) { 
             num.operatorE(2,0); // set no ^^;
-            return "f".repeat(repeater) + format(num, precision)
+            return "f".repeat(repeater) + formatFP(num, precision)
         }
         let n = num.operatorE(1) + 1
         if (num.gte("10^^" + (n + 1))) n += 1
-        return "f" + format(n, precision)
+        return "f" + formatFP(n, precision)
     }
 }*/
 function arraySearch(array, height, j=1, k= 1) {
@@ -341,12 +341,12 @@ function setToZero(array, height, j=1, k= 1) {
 }
 
 
-function formatWhole(num) {
-    return format(num, 0)
+function formatWholeFP(num) {
+    return formatFP(num, 0)
 }
 
-function formatSmall(num, precision=2) { 
-    return format(num, precision, true)    
+function formatSmallFP(num, precision=2) { 
+    return formatFP(num, precision, true)    
 }
 
 

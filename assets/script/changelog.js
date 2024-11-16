@@ -1,5 +1,12 @@
 const changelog = [
     {
+        version: "2.4.0", title: "PL4 update",
+        changes: [
+            "添加了节点升级，二阶挑战，17-24维度，时间加速",
+            "添加了一部分因子空间内容"
+        ]
+    },
+    {
         version: "2.3", title: "PL3 update",
         changes: [
             "Done all content of third prestige layer",

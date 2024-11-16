@@ -6,10 +6,10 @@ const VERSES = {
     standard: [
         [
             // Pre-Archverse Verses
-            'multi',  'mega',   'giga'   ,'tera'  ,'peta'   ,'exa'   ,'zetta'   ,'yotta' ,'ronna'   ,'quetta',
+            'multi',  'mega',   'giga'   ,'tera'  ,'peta'   ,'exa'   ,'zetta'   ,'yotta' ,/*'ronna'   ,'quetta',
             'xenna',  'weka',   'vendeka','uda'   ,'tradaka','sorta' ,'quexa'   ,'pepta' ,'ocha'    ,'nena',
             'minga',  'luma',   'kema'   ,'jretta','iqatta' ,'huitta','gatextta','feqesa','enscenda','desyta',
-            'ceanata','bevvgta','avta'
+            'ceanata','bevvgta','avta'*/
         ],[
             // Pre-Lodeverse Verses
             'multi','meta','xeno','hyper','ultra','omni'
@@ -18,10 +18,10 @@ const VERSES = {
     short: [
         [
             // Pre-Archverse Verses
-            'mlt','mg','gi','te','pe','ex','ze','yo','rn','qu',
+            'mlt','mg','gi','te','pe','ex','ze','yo',/*'rn','qu',
              'xn','wk','ve','ud','tr','sr','qx','pp','oc','ne',
              'mi','lu','ke','jr','iq','hu','ga','fe','en','ds',
-             'ce','be','av'
+             'ce','be','av'*/
         ],[
             // Pre-Lodeverse Verses
             'mlt','met','xen','hyp','ult','omv'

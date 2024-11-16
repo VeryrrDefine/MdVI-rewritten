@@ -62,9 +62,12 @@ function pickingAmount() {
     if (player.PL3materialupg3.eq(PowiainaNum.ONE)) result = result.pow(materialEffect(5))
     if (player.PL3materialupg5.eq(PowiainaNum.ONE)) result = result.pow(materialEffect(7))
     if (player.PL3materialupg6.eq(PowiainaNum.ONE)) result = result.pow(60)
+
+    if (hasTreeUpgrade("qol3")) { result = result.log10().log10().mul(10).pow10().pow10()}
     return result;
 }
 function pickingMax() {
+    if (hasTreeUpgrade("qol2")) return PowiainaNum(1e-200)
     return PowiainaNum(5).sub(player.PL3materialupg4.eq(PowiainaNum.ONE) ? 4.6 : 0);
 }
 function pickingLoop() {

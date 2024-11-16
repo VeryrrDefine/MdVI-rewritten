@@ -4,24 +4,24 @@ var hasLoaded = {
 }
 function resetDimensions() {
     player.dimensions = [
-        new Array(16).fill(PowiainaNum.ZERO.clone()), //dimensions
-        new Array(16).fill(PowiainaNum.ONE.clone()), //dimensions_multi
-        new Array(16).fill(PowiainaNum.ZERO.clone()), // dimensions_bought
-        new Array(16).fill(PowiainaNum.POSITIVE_INFINITY.clone()),// dim_cost
-        new Array(16).fill(PowiainaNum.ONE.clone()), //dim_exponent
-        new Array(16).fill(PowiainaNum.ONE.clone()), //dim_doubleexponent
+        new Array(24).fill(PowiainaNum.ZERO.clone()), //dimensions
+        new Array(24).fill(PowiainaNum.ONE.clone()), //dimensions_multi
+        new Array(24).fill(PowiainaNum.ZERO.clone()), // dimensions_bought
+        new Array(24).fill(PowiainaNum.POSITIVE_INFINITY.clone()),// dim_cost
+        new Array(24).fill(PowiainaNum.ONE.clone()), //dim_exponent
+        new Array(24).fill(PowiainaNum.ONE.clone()), //dim_doubleexponent
     ]
 }
 function hardReset() {
     player = {
         version: 1,
         dimensions: [
-            new Array(16).fill(PowiainaNum.ZERO.clone()), //dimensions
-            new Array(16).fill(PowiainaNum.ONE.clone()), //dimensions_multi
-            new Array(16).fill(PowiainaNum.ZERO.clone()), // dimensions_bought
-            new Array(16).fill(PowiainaNum.POSITIVE_INFINITY.clone()),// dim_cost
-            new Array(16).fill(PowiainaNum.ONE.clone()), //dim_exponent
-            new Array(16).fill(PowiainaNum.ONE.clone()), //dim_doubleexponent
+            new Array(24).fill(PowiainaNum.ZERO.clone()), //dimensions
+            new Array(24).fill(PowiainaNum.ONE.clone()), //dimensions_multi
+            new Array(24).fill(PowiainaNum.ZERO.clone()), // dimensions_bought
+            new Array(24).fill(PowiainaNum.POSITIVE_INFINITY.clone()),// dim_cost
+            new Array(24).fill(PowiainaNum.ONE.clone()), //dim_exponent
+            new Array(24).fill(PowiainaNum.ONE.clone()), //dim_doubleexponent
         ],
         volumes: E(7),
         volumesTotal: PowiainaNum.ZERO.clone(),
@@ -186,6 +186,27 @@ function hardReset() {
         PL4total: PowiainaNum.ZERO,
         PL4Timespent: 0,
 
+        PL4mm702: PowiainaNum.ZERO,
+        PL4treeUpgradesBought: [],
+
+        PL4treeUpgradeRequirements:[], 
+
+        chalchoosed: 0, //二阶挑战
+        chalactive: 0,
+        chalcomps: {
+            
+        },
+        PL4buyable1: PowiainaNum.ZERO.clone(),
+        PL4buyable2: PowiainaNum.ZERO.clone(),
+        
+        PL4dimensionalEnergy: PowiainaNum.ZERO,
+
+        PL4factorspace: {
+            points: [PowiainaNum(0), PowiainaNum(0)],
+            tiers: [[PowiainaNum(0),PowiainaNum(0),PowiainaNum(0),PowiainaNum(0),PowiainaNum(0),PowiainaNum(0),PowiainaNum(0)],[PowiainaNum(0),PowiainaNum(0),PowiainaNum(0),PowiainaNum(0),PowiainaNum(0),PowiainaNum(0),PowiainaNum(0)]],
+            choosed: [-1, -1],
+        },
+        
         PL5points: PowiainaNum.ZERO,
         isPL5unlocked: false,
         PL5times: PowiainaNum.ZERO,
@@ -203,7 +224,10 @@ function hardReset() {
         PL7times: PowiainaNum.ZERO,
         PL7total: PowiainaNum.ZERO,
         PL7Timespent: 0,
-
+        
+        
+        
+        format_mode: 0,
 
         //#region Battle
 
@@ -332,14 +356,20 @@ function exportFile() {
 }
 async function importText(){
     let save2 = prompt("输入存档");
-    
-    importing_player = formatsave.decode(save2)
-    hardReset();
-    transformToE(importing_player);
-    deepCopyProps(importing_player, player)
-    save()
+    let a = ssf[0](save2);
 
-    location.href = location.href;
+    if (a) {
+        a();
+    }
+    else{
+        importing_player = formatsave.decode(save2)
+        hardReset();
+        transformToE(importing_player);
+        deepCopyProps(importing_player, player)
+        save()
+
+        location.href = location.href;
+    }
 }
 function formattedHardReset() {
     confirms = 3
@@ -360,13 +390,16 @@ function importFile() {
     a.click()
     a.onchange = () => {
         let fr = new FileReader();
-        fr.onload = () => {
+        fr.onload = function () {
             let save = fr.result
             importing_player = formatsave.decode(save)
             hardReset();
             transformToE(importing_player);
             deepCopyProps(importing_player, player)
+            
+            save();
             console.clear()
+            location.href = location.href;
         }
         fr.readAsText(a.files[0]);
     }

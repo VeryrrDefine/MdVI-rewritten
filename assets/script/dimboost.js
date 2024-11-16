@@ -27,6 +27,9 @@ function getRealDimBoost(){
 
     if (player.PL2times.gte(400)) temp1 = temp1.mul(1.05)
     if (hasTheorie(31)) temp1 = temp1.mul(1.5)
+    temp1 = softcap(temp1,"1e1644",0.5,"pow")
+
+    if (FACTORSPACES.onActive(1,0)) temp1 = temp1.DEmul(0.3)
     return temp1
 }
 function getDimBoughts() {
@@ -108,6 +111,12 @@ const dimBoostReward=[
             let base = E(1.3);
             if (hasMM3Upg(17)) base=base.mul(player.PL1xiaopengyouPoints.logarithm(7).logarithm(7).mul(1.3).max(1));
             return base;
+        }
+    },
+    {
+        req :E("1e500"),
+        get desc(){
+            return "1-8维度双指数+0.5"
         }
     }
 ]

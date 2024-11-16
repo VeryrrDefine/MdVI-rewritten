@@ -1,3 +1,5 @@
+
+
 .mm6btn {
     background-color: #404;
     border-color: #808;
@@ -75,8 +77,6 @@
     cursor: pointer;
 }
 
-
-
 .mm7btn{
     background-color: #004;
     border-color: #008;
@@ -94,6 +94,80 @@
     color: #00d
 }
 
+.tree_table_column {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;
+    margin-bottom: 5px;
+}
+.btn_tree {
+    background-color: black;
+    border: solid 2px #888;
+    margin: 15px;
+    width: 54px;
+    height: 54px;
+    padding: 0;
+    z-index: 1;
+    font-size: 40px;
+}
+.btn_tree {
+    cursor: pointer;
+}
+.btn_tree.unused{
+    cursor: inherit;
+    opacity: 0;
+}
+
+
+.chalPL4 {
+    width: 6em;
+    height: 3em;
+    background-color: #000000;
+    color: #ffffff;
+    border: 2px solid #00A;
+    font-size: 16px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.factorspace {
+    font-size: 18px;
+}
+
+.f_upperFactor {
+    min-height: 290px;
+    
+    background-color: rgba(255, 145, 0, 0.25);
+}
+.f_lowerFactor {
+    min-height: 290px;
+    
+    background-color: rgba(0,255,34,0.25);
+}
+
+.fs_btn {
+	padding: 3px;
+	width: 240px;
+	height: 240px;
+	font-size: 11px;
+	margin: 5px;
+    border: 2px solid;
+    background-color: #0005;
+}
+
+.fs_btn > b {
+	font-size: 15px;
+}
+.fs_btn.choosed {
+	background: repeating-linear-gradient(135deg, #0005 0%, #0005 1%, #888 5%, #0005 9%, #0005 10%);
+	animation: f_spin 1s linear infinite;
+	cursor: default;
+}
+
+.fs_btn {
+    cursor: pointer;
+}
 
 
 
@@ -164,4 +238,83 @@
 .evolue[disabled]{
     background-image: linear-gradient(to right, #000,#444, #000);
     border: var(--text-color-invert) 2px solid;
+}
+
+
+
+
+
+
+
+
+
+
+
+.fermions {
+	font-size: 18px;
+}
+
+.sub_f {
+	padding: 15px;
+	width: calc(100% - 30px);
+}
+
+.f_quark {
+	min-height: 290px;
+	background-color: rgba(255, 145, 0, 0.25);
+}
+
+.f_lepton {
+	min-height: 290px;
+	background-color: rgba(0, 255, 34, 0.25);
+}
+
+.fermion_btn {
+	padding: 3px;
+	width: 240px;
+	height: 240px;
+	font-size: 11px;
+	margin: 5px;
+    border: 2px solid;
+    background-color: #444;
+}
+
+.fermion_btn > b {
+	font-size: 15px;
+}
+
+.fermion_btn.quark {
+	border-color: orange;
+}
+
+.fermion_btn.quark:hover {
+	background-color: hsl(39, 100%, 6%);
+}
+
+.fermion_btn.quark.choosed {
+	background: repeating-linear-gradient(45deg, #0005 0%, #0005 1%, hsl(39, 100%, 21%) 5%, #0005 9%, #0005 10%);
+	animation: f_spin 2s linear infinite;
+	cursor: default;
+}
+
+.fermion_btn.lepton {
+	border-color: lime;
+}
+
+.fermion_btn.lepton:hover {
+	background-color: hsl(120, 100%, 6%);
+}
+
+.fermion_btn.lepton.choosed {
+	background: repeating-linear-gradient(45deg, #0005 0%, #0005 1%, hsl(120, 100%, 21%) 5%, #0005 9%, #0005 10%);
+	animation: f_spin 2s linear infinite;
+	cursor: default;
+}
+@keyframes f_spin {
+	0% {
+		background-position-x: 0px;
+	}
+	100% {
+		background-position-x: -48px;
+	}
 }

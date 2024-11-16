@@ -70,6 +70,12 @@ var tabShow = {
                 return player.PL2times.gte(1500)    
             }
         },
+        sevendimensiondimensions: {
+            id: 28,
+            class: "mm7btn",
+            text: "17-24维度",
+            unlocked() { return player.chalcomps[1].gte(15) }
+        },
         text: "tabMain",
         firstTabID: 1
     },
@@ -205,11 +211,31 @@ var tabShow = {
     },
     mm7: {
         text: "7维体积",
-        firstTabID: -998,
-        
+        firstTabID: 25,
+        treeupgrade: {
+            id: 25,
+            text: "节点升级",
+            class: "mm7btn",
+
+        },
+        secondchallenge:{
+            id : 26,
+            text: "二阶挑战",
+            class: "mm7btn"
+        },
+        timespeeding: {
+            id: 27,
+            text: "时间加速",
+            class: "mm7btn"
+        },
+        factorSPACE: {
+            id: 29,
+            text: "因子空间",
+            class: "mm7btn"
+        },
         class: "mm7btn",
         unlocked() {
-            return showAllPrestigeLayers
+            return showAllPrestigeLayers || player.isPL4unlocked
         }
     },
     mm8: {
@@ -400,12 +426,12 @@ function dimensionsLabel(dimid){
     }
     return `第${dimid}维度`
 }
-function formatReduction(ex,acc) { ex = E(ex); return format(E(1).sub(ex).mul(100),acc)+"%" }
+function formatReduction(ex,acc) { ex = PowiainaNum(ex); return format(PowiainaNum(1).sub(ex).mul(100),acc)+"%" }
 
-function formatPercent(ex,acc) { ex = E(ex); return format(ex.mul(100),acc)+"%" }
+function formatPercent(ex,acc) { ex = PowiainaNum(ex); return format(ex.mul(100),acc)+"%" }
 
 function formatMult(ex,acc=4,inv=false) { 
-    ex = E(ex); 
+    ex = PowiainaNum(ex); 
     if (!inv)
         return ex.gte(1)?"×"+ex.format(acc):"/"+ex.pow(-1).format(acc)
     if (inv)
@@ -414,16 +440,19 @@ function formatMult(ex,acc=4,inv=false) {
 
 function formatPow(ex,acc=4) { return "^"+format(ex,acc) }
 
-function expMult(a,b,base=10) { return Decimal.gte(a,10) ? Decimal.pow(base,Decimal.log(a,base).pow(b)) : E(a) }
+function expMult(a,b,base=10) { return Decimal.gte(a,10) ? Decimal.pow(base,Decimal.log(a,base).pow(b)) : PowiainaNum(a) }
 
 function overflowFormat(x,inv=false) { return "为原来的<b>"+format(x)+"</b>"+(inv?"次方":"次根") }
 
 
 
 const DT = PowiainaNum.tetrate(10,6)
+/*
+function format() {}
 
-function formatGain(a,e) {
+function formatWhole() {}
+
+function formatSmall() {}
 
 
-    return ""
-}
+*/

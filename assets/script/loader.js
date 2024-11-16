@@ -8,7 +8,7 @@ function loadScriptFile(filename){
 
 }
 
-
+loadScriptFile("secret.js")
 /*
 
 

@@ -90,3 +90,51 @@ table{
     position: sticky; 
     background: var(--color-text-invert)
   }
+  
+.light_red {
+	color: #f55;
+}
+
+.red {
+	color: red;
+}
+
+.orange {
+	color: #f50;
+}
+
+.yellow {
+	color: #fb0;
+}
+
+.gold {
+	color: #fe0;
+}
+
+.limegreen {
+	color: #00ff00;
+}
+
+.green {
+	color: #00bb00;
+}
+
+.light_green {
+	color: lightgreen;
+}
+
+.sky {
+	color: skyblue;
+}
+
+.cyan {
+	color: #07f;
+}
+
+.magenta {
+	color: #f08;
+}
+
+.gray {
+	color: gray
+}

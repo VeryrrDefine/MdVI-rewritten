@@ -6,12 +6,13 @@ var lastFrame = Date.now();
 var isHoldMax = false;
 var globalDiff = 0;
 var realityDiff = 0;
-var timeDifferences = [PowiainaNum(0)];
+var timeDifferences = [PowiainaNum(0), PowiainaNum(0)];
 function loop(){
     thisFrame = Date.now();
     window.realityDiff = (thisFrame-lastFrame)/1000;
     window.globalDiff = realityDiff;
     checkNaN();
+    CHALS.updateTemp();
     updateOffline();
     updateTimeDifferences();
 
@@ -28,12 +29,57 @@ function loop(){
     updateTime();
     battleLoop();
     mm6Loop();
+    mm7Loop();
     ACHIEVEMENTS.loop();
 
     checkNaN();
     player.time = thisFrame
     lastFrame = thisFrame;
 }
+/*
+    今天是dygm在灰羊服务器偷家第2/3周年。
+
+    dygm偷的谁的家呢？ 偷的Easten_Nolan的家。
+    啥时候呢？ 2024年3月8日22时30分 UTC+0800。
+
+    我就是通过知道了dygm在灰羊服务器偷家这个事才知道灰羊服务器的。
+    dygm认为我会告诉别人而不会告诉群号。
+
+    不过后面fy告诉我了。
+
+    但是呢？ 2024年3月27日 21时26分12秒附近 
+    dygm以违禁词测试为由给我发了一个病毒程序（实际上这个作者打基岩版+PCL的操作我早看出不对劲了）
+    后续就把我顺带大约6.604×10¹¹字节（约61.5GB)的数据清除了。
+
+    在2024年3月30日，由于[数据删除]，我被《请》出灰羊群了，理由是偷家。
+
+    2024年5月末，我突然想起了序数增量吧，然后2024年6月5日开始制作多维体积增量， HVI。
+
+    dygm还在告诉我灰羊群内的情况。
+    fy也告诉我他还有一个小号，[数据删除]
+
+    直到2024年7月15日， 我不小心在里面有dygm和[数据删除]群里发了多维体积增量v1.0.3时期的图片。
+    然后呢？ 
+    首先[数据删除]发了“又骗谁的”， 后dygm说，[数据删除]。
+    后[数据删除]扬言要开我的Household Register。
+    至此，我与dygm&[数据删除]的友谊关系下降到我无法描述出来。
+
+
+    2024年8月9日，我[数据删除]。
+
+    2024年9月15日，我[数据删除]。
+
+
+
+    2024年11月2日，我加入了破碎千秋create服务器。
+
+    2024年11月7日，我开发完了多维体积增量重制版第三层重置所有内容。
+
+    FIN 2024/11/08
+
+                                                            VeryrrDefine(yireojegren)
+                                                                     2024/11/08
+*/
 function checkNaN(){
     let nanList = findNaN(player);
 
@@ -55,14 +101,16 @@ function checkNaN(){
     }
 }
 function updateTimeDifferences(){
-    timeDifferences[0] = PowiainaNum(window.globalDiff);
+    timeDifferences[0] = PowiainaNum(window.globalDiff).mul(tmp.mm7.prePL4speed);
+    timeDifferences[1] = PowiainaNum(window.globalDiff);
 
 }
 function updateTime(){
-    player.dimBoostTimespent = player.dimBoostTimespent+timeDifferences[0].toNumber();
-    player.PL1Timespent = player.PL1Timespent+timeDifferences[0].toNumber();
-    player.PL2Timespent = player.PL2Timespent+timeDifferences[0].toNumber();
-    player.PL3Timespent = player.PL3Timespent+timeDifferences[0].toNumber();
+    player.dimBoostTimespent = Math.min(player.dimBoostTimespent+timeDifferences[0].toNumber(),1e300);
+    player.PL1Timespent = Math.min(player.PL1Timespent+timeDifferences[0].toNumber(),1e300);
+    player.PL2Timespent = Math.min(player.PL2Timespent+timeDifferences[0].toNumber(),1e300);
+    player.PL3Timespent = Math.min(player.PL3Timespent+timeDifferences[0].toNumber(),1e300);
+    player.PL4Timespent = Math.min(player.PL4Timespent+timeDifferences[1].toNumber(),1e300);
 }
 /*
 function updateAuto() {
@@ -109,10 +157,11 @@ function calculateDimensions() {
                 player.dimensions[DIMENSIONS_POINTS][i + 1]
                     .mul(player.dimensions[DIMENSIONS_MULTI][i + 1])
                     .pow(player.dimensions[DIMENSIONS_EXPONENT][i + 1])
+                    .DEmul(player.dimensions[DIMENSIONS_DBEXPONENT][i + 1])
                     .mul(timeDifferences[0])
             );
         if (player.dimensions[DIMENSIONS_POINTS][i].isNaN()) {
-            player.dimensions[DIMENSIONS_POINTS][i] = E(0);
+            player.dimensions[DIMENSIONS_POINTS][i] =PowiainaNum(0);
         }
     }
 }
@@ -124,6 +173,7 @@ function updateDimensionData() {
     for (let i = 0; i < 8; i++) {
         player.dimensions[DIMENSIONS_MULTI][i] = tmp.dimension.getDimMultiplier(i);
         player.dimensions[DIMENSIONS_EXPONENT][i] = tmp.dimension.getDimExponentplier(i);
+        player.dimensions[DIMENSIONS_DBEXPONENT][i] = tmp.dimension.getDimDoubleExponentplier(i);
         player.dimensions[DIMENSIONS_COST][i] = calc_cost(i, player.dimensions[DIMENSIONS_BOUGHT][i])
     }
 
@@ -164,11 +214,11 @@ function buydim(dim, single = false) {
         let temp3 = buycount.clone();
 
         if (buycount.lt(1)) {
-            buycount = E(1)
+            buycount =PowiainaNum(1)
         }
         
         if (single) {
-            buycount = E(1)
+            buycount =PowiainaNum(1)
         }
         player.dimensions[DIMENSIONS_BOUGHT][dim - 1] = player.dimensions[DIMENSIONS_BOUGHT][dim - 1].add(buycount);
         player.dimensions[DIMENSIONS_POINTS][dim - 1] = player.dimensions[DIMENSIONS_POINTS][dim - 1].add(buycount.mul(10)); //     player.volumes = player.volumes.sub(E.pow(10,temp1.mul(dim).ceil()))
@@ -195,17 +245,6 @@ function toggleAutobuyer(i) {
 function isEndgame(){
     return player.volumes.gt(Endgame)
 }
-
-function softcap(value,start,power,mode,dis=false){
-    var x = new PowiainaNum(value);
-    if (!dis&&x.gte(start)) {
-        if ([0, "pow"].includes(mode)) x = x.div(start).max(1).pow(power).mul(start)
-        if ([1, "mul"].includes(mode)) x = x.sub(start).div(power).add(start)
-        if ([2, "log"].includes(mode)) x = x.div(start).log(power).add(1).mul(start)
-    }
-    return x
-}
-
 function enterFinalChallenge(){
     alert("经过推测，进入最终挑战所需的某个数值超过了Infinity，现在你还没有能力到达\n但是请等待游戏更新")
     
@@ -231,9 +270,9 @@ function enterFinalChallenge(){
         })*/.then(function(){
             ACHIEVEMENTS.init();
             load(e);
-            window.loopVal = setInterval(loop, 35)
+            window.loopVal = setInterval(loop, 60)
             window.saveVal = setInterval(save, 1000);
-
+            window.displayformatgainVal = setInterval(formatGainLoop, 1000)
         });
     });
 })();
@@ -321,23 +360,50 @@ function choiceFromList/*不重复*/(list, amount){
 
 }
 
-function overflow(number, start, power, meta=1) {
-	start = PowiainaNum(start)
 
-	if (number.gt(start)) {
-		if (meta == 1) {
-			let s = start.log10()
-			number = number.log10().div(s).pow(power).mul(s).pow10()
-		} else {
-			let s = start.iteratedlog(10,meta)
-			number = PowiainaNum.iteratedexp(10,meta,number.iteratedlog(10,meta).div(s).pow(power).mul(s));
-		}
-	}
-	return number;
-}
-function calcOverflow(x,y,s,height=1) {
-    return x.gte(s) ? x.max(1).iteratedlog(10,height).div(y.max(1).iteratedlog(10,height)) : E(1) 
+var lastgain = PowiainaNum(0);
+var thisgain = PowiainaNum(0);
+
+var currentGainText = "";
+
+function formatGain(a,e,res="") {
+    const g = PowiainaNum.add(a,e)
+    const DT = PowiainaNum("10^^6")
+
+    if (g.neq(a)) {
+        if (a.gte(DT)) {
+            var oom =PowiainaNum(g).slog(10).sub(PowiainaNum(a).slog(10))
+            if (oom.gte(1e-3)) return oom.format() + " 数量级^^2"
+        }
+
+        if (a.gte('ee100')) {
+            var tower = PowiainaNum(a).slog(10).sub(1.3010299956639813).floor();
+    
+            var oom =PowiainaNum(g).iteratedlog(10,tower).sub(PowiainaNum(a).iteratedlog(10,tower)), rated = false;
+    
+            if (oom.gte(1)) rated = true
+            else if (tower > 2) {
+                tower--
+                oom =PowiainaNum(g).iteratedlog(10,tower).sub(PowiainaNum(a).iteratedlog(10,tower))
+                if (oom.gte(1)) rated = true
+            }
+    
+            if (rated) return oom.format() + " 数量级^"+tower
+        }
+    
+        if (a.gte(1e100)) {
+            const oom = g.div(a).log10()
+            if (oom.gte(1)) return oom.format() + " 数量级"
+        }
+    }
+
+    return format(e) + res
 }
 
-PowiainaNum.prototype.overflow = function (start, power, meta) { return overflow(this.clone(), start, power, meta) }
-PowiainaNum.prototype.pow10 = function (){ return PowiainaNum.pow(10,this)}
+function formatGainLoop(){
+    thisgain = player.volumes.clone();
+
+    currentGainText = formatGain(lastgain, thisgain.sub(lastgain), "mm<sup>4</sup>")
+
+    lastgain = thisgain.clone();
+}

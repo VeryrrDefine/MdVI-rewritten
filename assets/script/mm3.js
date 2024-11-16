@@ -199,6 +199,7 @@ function getXiaopengyouGain(){
     }
 
     
+    if (FACTORSPACES.onActive(0,0)) temp1 = temp1.DEmul(0.6)
 
     let o = temp1.clone();
     let os = PowiainaNum(tmp.mm3.xiaopengyouOverflow1Position);
@@ -206,6 +207,7 @@ function getXiaopengyouGain(){
 
 
     temp1 = overflow(temp1, os, op);
+
 
     tmp.overflowBefore.xiaopengyou = o;
     tmp.overflow.xiaopengyou = calcOverflow(o,temp1,os);

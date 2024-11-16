@@ -23,6 +23,7 @@
         }*/
         </script>
     <script src="./assets/script/technical/hotkeys.js" defer></script>
+    <script src="./assets/script/calculate.js" defer></script>
     <script src="./assets/script/formatTime.js" defer></script>
     <script src="./assets/script/display.js" defer></script>
     <script src="./assets/script/constants.js" defer></script>
@@ -44,7 +45,9 @@
 
     <script src="./assets/script/PL3/mm6.js" defer></script>
     <script src="./assets/script/achievements.js" defer></script>
+    <script src="./assets/script/PL4/mm7.js" defer></script>
     <script src="./assets/script/PLw/mm11.js" defer></script>
+    <script src="./assets/script/formats.js" defer></script>
 
 </head>
 
@@ -53,20 +56,20 @@
         <div style="padding-top: 8px; top: 0;" class="sticky">
             <newsticker></newsticker>
             <div class="text-center">
-                {{glt("youhave")}} <span class="vol-dis">{{formatWhole(player.volumes)}}</span> mm<sup>4</sup> {{glt("4dvolumes")}}
+                {{glt("youhave")}} <span class="vol-dis">{{format(player.volumes)}}</span> mm<sup>4</sup> {{glt("4dvolumes")}}
             </div>
             <div v-if="player.timeSpeed != 1" class="text-center">{{glt("currentglobalspeed")+format(player.timeSpeed)}}</div>
             <div v-if="player.volumes.gte('1e200') && !player.isPL1unlocked" class="text-center">{{glt("youneedsomethingtogofurther")}}</div>
-            <div class="text-center"></div>
+            <div class="text-center" v-html="get_pts_volume(player.volumes)"></div>
             <div v-if="player.volumes.gte(mm3ChallengeGoal[player.PL1inchal]) && !player.PL1breakedPL1limit" class="text-center">
                 <button class="btn mm3btn" @click="doMM3resetManmade()">{{glt("resetPL1layer")+format(tmp.mm3.gain)}} mm<sup>3</sup> {{glt("3dvolumes")}}</button>
             </div>
+            <div class="text-center" v-html="currentGainText"></div>
             <div v-if="player.isPL1unlocked" class="mm3text text-center">{{glt("youhave")}} {{format(player.PL1points)}} mm<sup>3</sup> {{glt("3dvolumes")}}</div>
             <div v-if="player.isPL2unlocked" class="mm5text text-center">{{glt("youhave")}} {{format(player.PL2points)}} mm<sup>5</sup> {{glt("5dvolumes")}}</div>
             <div v-if="player.isPL3unlocked" class="mm6text text-center">{{glt("youhave")}} {{format(player.PL3points)}} mm<sup>6</sup> 6维体积</div>
-            <div class="text-center">{{formatGain(player.volumes,tmp.mm4.gain.mul(globalDiff))}}</div>
+            <div v-if="player.isPL4unlocked" class="mm7text text-center">{{glt("youhave")}} {{format(player.PL4points)}} mm<sup>7</sup> 7维体积</div>
             <div v-if="showAllPrestigeLayers">
-                <div class="mm7text text-center">{{glt("youhave")}} {{format(player.PL4points)}} mm<sup>7</sup> 7维体积</div>
                 <div class="mm8text text-center">{{glt("youhave")}} {{format(player.PL5points)}} mm<sup>8</sup> 8维体积</div>
                 <div class="mm9text text-center">{{glt("youhave")}} {{format(player.PL6points)}} mm<sup>9</sup> 9维体积</div>
                 <div class="mm10text text-center">{{glt("youhave")}} {{format(player.PL7points)}} mm<sup>10</sup> 10维体积</div>
@@ -99,10 +102,156 @@
                 aps: {{format(enemy.aps)}}<br>
             </div>
         </div> -->
+        <div v-if="player.currentPage == 29 && hasTreeUpgrade('unlfactorspace')" class="text-center">
+            αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ
+            ϝϛͱϻϙͳϸ ☿♀♁♂♃♄♅♆♇<br>
+            以下是一些因子空间，进入时会重置mm<sup>3</sup>到mm<sup>6</sup>的部分资源<br>
+            STILL DEVELOPING
+            <button class="btn mm7btn" @click="FACTORSPACES.backNormal()">返回正常空间</button>
+            <div class="factorspace">
+                <div class="f_upperFactor">
+                    你有0.0000 Ω因子
+                    <div class="table_center">
+                        <button class="fs_btn upperfactor" 
+                        v-for="id in [0]" @click="FACTORSPACES.choose(0, id)"
+                        :class="{choosed: FACTORSPACES.onActive(0, id)}"
+                        v-if="(id<=FACTORSPACES.getUnlLength()[0]) && (typeof FACTORSPACES.types[0][id].unl === 'function' ? FACTORSPACES.types[0][id].unl() : true)"
+                        >
+                            <b>[{{id}}]</b><br>[<span ></span>Tier <span v-html="format(player.PL4factorspace.tiers[0][id],0)"></span>]<br>
+                            <span>Currently: NaN</span><br>
+                            Next Tier at: <span>NaN</span><br>
+                            (Increased by <span v-html="FACTORSPACES.types[0][id].inc"></span>)<br><br>
+                            Effect: <span >NaN</span><br>
+                            On Active: <span v-html="FACTORSPACES.types[0][id].cons"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="f_lowerFactor">
+                    你有0.0000 ω因子
+                    <div class="table_center">
+                        <button class="fs_btn lowerfactor" 
+                        v-for="id in [0]" @click="FACTORSPACES.choose(1, id)"
+                        :class="{choosed: FACTORSPACES.onActive(1, id)}"
+                        v-if="(id<=FACTORSPACES.getUnlLength()[1]) && (typeof FACTORSPACES.types[1][id].unl === 'function' ? FACTORSPACES.types[1][id].unl() : true)"
+                        >
+                            <b>[{{id}}]</b><br>[<span ></span>Tier <span v-html="format(player.PL4factorspace.tiers[1][id],0)"></span>]<br>
+                            <span>Currently: NaN</span><br>
+                            Next Tier at: <span>NaN</span><br>
+                            (Increased by <span v-html="FACTORSPACES.types[1][id].inc"></span>)<br><br>
+                            Effect: <span >NaN</span><br>
+                            On Active: <span v-html="FACTORSPACES.types[1][id].cons"></span>
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <div v-if="player.currentPage == 28 && player.chalcomps[1].gte(15)" class="text-center">
+            <button class="btn mm7btn" @click="buymm7all()">
+                购买最大
+            </button>
+            <br>
+            
+            <p>你有<span
+                style="color:#0000ff; font-size: 40px;" v-html="format(player.PL4dimensionalEnergy)"></span>
+            7维维度维度能量</p>
+            <p>获得一个对mm<sup>7</sup>前速度<span style="color:#0000ff; font-size: 40px;">{{formatMult(tmp.mm7.energyToPrePL4GameSpeed())}}</span>的效果</p>
+            <p v-if="false">使{{glt("tabDimensionsonetoeight")}}双指数<span style="color:#0000ff; font-size: 40px;">+{{format()}}</span></p>
+            <p>{{glt("此种类维度每次购买乘数")}}{{format(10000)}}</p>
+            <div v-for="dim in dimensions" :key="dim.id" class="text-center">
+                {{ dimensionsLabel(dim.id+16) }}
+                +<span>{{
+                    format(player.dimensions[DIMENSIONS_POINTS][+dim.id+15]) }}
+                </span>
+                ×<span>{{
+                    format(player.dimensions[DIMENSIONS_MULTI][+dim.id+15]) }}
+                </span>
+                ^<span>{{
+                    format(player.dimensions[DIMENSIONS_EXPONENT][+dim.id+15]) }}
+                </span>
+                <span>{{
+                    format(player.dimensions[DIMENSIONS_BOUGHT][+dim.id+15]) }}
+                </span>
+                <button class="btn mm7btn" @click="buymm7dim(+dim.id+16)" :disabled="!mm7dimbuyable(+dim.id+16)">{{ glt("pricecolon")}} {{format(player.dimensions[DIMENSIONS_COST][+dim.id + 15])}} mm<sup>7</sup></button>
+                
+            </div>
+        </div>
+    
+        <div v-if="player.currentPage == 27 && player.chalcomps[2].gte(100)" class="text-center">
+            <p>时间加速器可以加速时间</p>
+            <br>
+            <p>当前时间加速倍率: {{formatMult(tmp.mm7.prePL4speed)}}（影响mm<sup>6</sup>及之前的速度，部分速度不会被赋予）</p>
+            <br>
+            <p>
+                升级1({{format(player.PL4buyable1)}}) 使时间加速倍率每级{{formatMult(10)}} <span class="green">当前: {{formatMult(getPL4buyableeffect(1))}}</span><button class="btn mm7btn" @click="buyPL4buyable(1)">花费：{{format(getBuyable1Cost())}} mm<sup>7</sup></button>
+            </p>
+            <p>
+                升级2({{format(player.PL4buyable2)}}) 使7维体积获取{{formatMult(2)}} <span class="green">当前: {{formatMult(getPL4buyableeffect(2))}}</span><button class="btn mm7btn" @click="buyPL4buyable(2)">花费：{{format(getBuyable2Cost())}} mm<sup>7</sup></button>
+            </p>
+        </div>
+        <div v-if="player.currentPage == 26 && hasTreeUpgrade('chal1')" class="text-center">
+            <p>二阶挑战在方式上类似于3维内容的挑战，但它们可完成多次。</p>
+            <p class="text-center">
+                <button class="btn mm7btn" @click="CHALS.enter()" v-if="player.chalchoosed != 0">进入挑战</button>
+                <button class="btn mm7btn" @click="CHALS.exit()" v-if="player.chalactive != 0">退出挑战</button>
+            </p>
+            <p class="text-center" v-if="player.chalactive != 0">你当前正在进行二阶挑战{{player.chalchoosed}}，完成挑战后获得{{format(tmp.chal.gain)}}挑战次数</p>
+            <div v-if="player.chalchoosed != 0">
+                {{CHALS[player.chalchoosed].title}}({{format(player.chalcomps[player.chalchoosed])}})
+                <div v-html="CHALS[player.chalchoosed].desc"></div>
+                目标：{{CHALS.getFormat(player.chalchoosed)(tmp.chal.goal[player.chalchoosed])}} <span v-html="CHALS.getResName(player.chalchoosed)"></span><br>
+                奖励：<span v-html="CHALS[player.chalchoosed].reward"></span><br>
+                <span v-if="CHALS[player.chalchoosed].effDesc" class="green">当前: <span v-html="CHALS[player.chalchoosed].effDesc(tmp.chal.eff[player.chalchoosed])"></span></span>
+            </div>
+            <table>
+                <tr>
+                    <td v-for="id in [1, 2]"><button class="chalPL4" @click="CHALS.choose(id)" v-if="!CHALS[id].unl || CHALS[id].unl()">
+                        二阶挑战{{id}}
+                    </button></td>
+                    
+                </tr>
+            </table>
+        </div>
+        <div v-if="player.currentPage == 25">
+            <div class="text-center">
+                <span>你重置了{{format(player.PL4times)}}次。你有<span class="mm7text">{{format(player.PL4mm702)}}</span>mm<sup>7.02</sup></span>
+
+            </div>
+            <div class="text-center" v-html="getDescHTML()"></div>
+            <div>
+                <div  v-for="group in treeUpgrades">
+                    <div v-if="group.name == 'main'" v-for="row in group" class="tree_table_column">
+                        <button v-for="upg in row" 
+                        :class="{btn_tree: true, unused: upg.unl && !upg.unl()}"
+                        :style="getTreeUpgradeStyle(upg.position)" 
+                        v-html="upg.content" 
+                        @click="handleTreeUpgrade(upg.position)">
+    
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+            <div>
+            </div>
+            <!--
+            <div>
+                <div class="tree_table_column">
+                    <button class="btn_tree">广州A</button>
+                </div>
+                <div class="tree_table_column">
+                    <button class="btn_tree">深圳B</button>
+                    <button class="btn_tree unused"></button>
+                    <button class="btn_tree">珠海C</button>
+                </div>
+            </div>-->
+
+        </div>
         <div>
             <div v-if="player.currentPage == 23 || player.currentPage == 24" class="text-center">
-                你有<span class="mm6text">{{format(PowiainaNum.tetr(10,player.PL3xpyrep))}}</span>小朋友复读机，
-                它的slog每秒增加{{format(xpyRepSpeed())}}<span v-html="xpyRepSpeedSoftcappedText()"></span><br>
+                你有<span class="mm6text">{{format(PowiainaNum.tetr(10,player.PL3xpyrep))}}</span>小朋友复读机
+                (+{{format(xpyRepSpeed())}} OoMs^^2/s<span v-html="xpyRepSpeedSoftcappedText()"></span>)<br>
                 小朋友复读机星系({{formatWhole(getxpyrepgalcount())}})<br>
                 每个星系将{{glt("dimensionBoost2")}}硬上限+5.000e13<br>
                 下一个复读机星系在<span class="mm6text">{{format(getnextxpyrepgal())}}</span>小朋友复读机<br>
@@ -450,9 +599,9 @@
                 <div class="milestone-description" title="风灵作成: ？">解锁次数商店，自动购买小朋友×2和{{glt("3dvolumes")}}获取×2购买项,且这两个购买项不会消耗任何东西</div>
             </div>
             <div v-if="player.PL2times.gte(10)">
-                <p class="text-center">Because of reb我是alance, buying upgrade doesn't cost anything.</p>
+                <p class="text-center">Because of rebalance, buying upgrade doesn't cost anything.</p>
                 <p class="text-center">你当前有{{format(getRealPL2resetTimes())}}可用mm<sup>5</sup>重置次数</p>
-                <table align="center">我是🐶
+                <table align="center">
                     <tr>
                         <td><button class="mm5upg" onclick="buyPL2Upg(1)" style="font-size: 80%">基于重置次数提升1-8维度购买数量<br>当前等级: {{format(player.PL2RTupgrade1)}} 效果：{{formatMult(PL2UpgEffect1())}}<br>花费:{{format(PL2UpgCost(1))}}<span style="font-size:75%">mm<sup>5</sup>可用重置次数</span></td>
                         <td><button class="mm5upg" onclick="buyPL2Upg(2)" style="font-size: 80%">翻倍重置次数获取<br>当前: {{formatMult(PL2UpgEffect2())}}<br>花费:{{format(PL2UpgCost(2))}}<span style="font-size:75%">mm<sup>5</sup>可用重置次数</span></td>
@@ -548,7 +697,7 @@
             <button class="btn mm5btn" @click="doMM5resetManmade()" v-if="hasMM3Upg(20)">重置4维和3维的所有资源和升级，获得{{format(tmp.mm5.gain)}} mm<sup>5</sup> 5维体积<br>需要 1.000e50000 mm<sup>4</sup></button>
             <br>
             <button class="btn mm6btn" @click="doMM6resetManmade()" v-if="player.boughttheorie91">重置3,4,5维的所有资源和升级，获得{{format(tmp.mm6.gain)}} mm<sup>6</sup> 6维体积<br>需要 e1.300e12 mm<sup>4</sup></button>
-            <button class="btn mm7btn" v-if="player.reached3e156xpyrepl">重置3,4,5,6维内容，获得??? mm<sup>7</sup> 7维体积<br>需要 e1.797e308 mm<sup>4</sup></button>
+            <button class="btn mm7btn" @click="doMM7resetManmade()" v-if="player.reached3e156xpyrepl">重置3,4,5,6维内容，获得{{format(tmp.mm7.gain)}} mm<sup>7</sup> 7维体积<br>需要 e1.797e308 mm<sup>4</sup></button>
             
             
         </div>
@@ -614,7 +763,7 @@
                     <td v-if="hasMM3Upg(8)"><button class="mm3upg" @click="buyBuyable(1)">双倍mm<sup>3</sup>获取({{ formatWhole(player.PL1buyable1) }})<br>花费：{{format(getBuyableCost(1))}} mm<sup>3</sup><br>效果: {{formatMult(getBuyableEffect(1))}}</button></td>
                     <td v-else><button class="mm3upg" style="border: var(--color-text-invert)"></button></td>
                     <td v-if="player.PL1xiaopengyouUnl"><button class="mm3upg" @click="buyBuyable(2)">
-                        双倍小朋友v$@)%*(u&@$bn#){^njp()bn$p(获取({{ formatWhole(player.PL1buyable2) }})<br>花费：{{format(getBuyableCost(2))}} 小朋友<br>效果: {{formatMult(getBuyableEffect(2))}}</button>
+                        双倍小朋友获取({{ formatWhole(player.PL1buyable2) }})<br>花费：{{format(getBuyableCost(2))}} 小朋友<br>效果: {{formatMult(getBuyableEffect(2))}}</button>
                     </td>
                     <td v-else><button class="mm3upg" style="border: var(--color-text-invert)"></button></td>
 
@@ -633,7 +782,7 @@
             <p>{{glt("此种类维度每次购买乘数")}}{{format(tmp.dimension.getBoughtMultiplier())}}</p>
             <div v-for="dim in dimensions" :key="dim.id" class="text-center">
                 <span style="color: red">{{ tmp.dimension.getSuperDimState(dim.id)}}</span>{{ dimensionsLabel(dim.id) }}
-                +<span>{{
+                <span >+{{
                     format(player.dimensions[DIMENSIONS_POINTS][dim.id
                     - 1]) }}
                 </span>
@@ -644,6 +793,10 @@
                 <span>{{
                     formatPow(player.dimensions[DIMENSIONS_EXPONENT][dim.id
                     - 1]) }}
+                </span>
+                <span v-if="player.chalcomps[1].gte(15)">
+                    DE{{formatMult(player.dimensions[DIMENSIONS_DBEXPONENT][dim.id
+                    - 1])}}
                 </span>
                 <span>{{
                     format(player.dimensions[DIMENSIONS_BOUGHT][dim.id
@@ -676,8 +829,12 @@
                     溢出前: {{format(tmp.overflowBefore.mm4)}} mm<sup>4</sup>
                 </span>
             </div>
-            <div v-if="tmp.mm4.inOverflow2">
+            <div v-if="tmp.mm4.inOverflow2" style="color: rgb(255, 197, 215);">
                 由于4维体积在<b>{{format(tmp.overflow_start.mm4[1])}}</b> mm<sup>4</sup> 二重溢出，溢出效果严重地增强!
+                
+            </div>
+            <div v-if="tmp.mm4.inOverflow3" style="color: rgb(197, 243, 255);">
+                由于4维体积在<b>{{format(tmp.overflow_start.mm4[2])}}</b> mm<sup>4</sup> 三重溢出，溢出效果严重地增强!（双指数的指数下降）
                 
             </div>
 
@@ -893,7 +1050,6 @@
                 <button class="btn" disabled>价格: 1.0000e500 mm<sup>3</sup></button>
             </div> -->
         </div>
-
         <div v-if="player.currentPage == 2" class="text-center">
             <button class="btn" @click="formattedHardReset">{{glt("hardReset")}}</button>
             <button class="btn" @click="exportCopy">{{glt("export")}}</button>
@@ -976,7 +1132,7 @@
 
         </div>
         <div v-if="player.currentPage == 11870903" class="text-center">
-            <br>&<*684+67/0.*+6785T
+            <br>&*684+67/0.*+6785T
             <br>
             <button style="
             background: #eeeeee;
@@ -987,6 +1143,114 @@
             ">You have enough Infinity Points to buy a Tesseract</button><br><br><br>
             <div  style="
             animation: bigcrunch 2s infinite;">啊，我被大嘎吱嘎吱了，功力只剩一成</div>
+            <div class="fermions">
+                <div class="f_quark sub_f">
+                    You have <span id="fquarkAmt">X</span> U-Quark<br><br>
+                    <div class="table_center">
+                        <button class="fermion_btn quark">
+                            <b>[TBD]</b><br>[<span ></span>Tier <span>NaN</span>]<br>
+                            <span>Currently: NaN</span><br>
+                            Next Tier at: <span>NaN</span><br>
+                            (Increased by TBD)<br><br>
+                            Effect: <span >NaN</span><br>
+                            On Active: TBD
+                        </button>
+                        <button class="fermion_btn quark">
+                            <b>[TBD]</b><br>[<span ></span>Tier <span>NaN</span>]<br>
+                            <span>Currently: NaN</span><br>
+                            Next Tier at: <span>NaN</span><br>
+                            (Increased by TBD)<br><br>
+                            Effect: <span >NaN</span><br>
+                            On Active: TBD
+                        </button>
+                        <button class="fermion_btn quark">
+                            <b>[TBD]</b><br>[<span ></span>Tier <span>NaN</span>]<br>
+                            <span>Currently: NaN</span><br>
+                            Next Tier at: <span>NaN</span><br>
+                            (Increased by TBD)<br><br>
+                            Effect: <span >NaN</span><br>
+                            On Active: TBD
+                        </button>
+                        <button class="fermion_btn quark">
+                            <b>[TBD]</b><br>[<span ></span>Tier <span>NaN</span>]<br>
+                            <span>Currently: NaN</span><br>
+                            Next Tier at: <span>NaN</span><br>
+                            (Increased by TBD)<br><br>
+                            Effect: <span >NaN</span><br>
+                            On Active: TBD
+                        </button>
+                        <button class="fermion_btn quark">
+                            <b>[TBD]</b><br>[<span ></span>Tier <span>NaN</span>]<br>
+                            <span>Currently: NaN</span><br>
+                            Next Tier at: <span>NaN</span><br>
+                            (Increased by TBD)<br><br>
+                            Effect: <span >NaN</span><br>
+                            On Active: TBD
+                        </button>
+                        <button class="fermion_btn quark">
+                            <b>[TBD]</b><br>[<span ></span>Tier <span>NaN</span>]<br>
+                            <span>Currently: NaN</span><br>
+                            Next Tier at: <span>NaN</span><br>
+                            (Increased by TBD)<br><br>
+                            Effect: <span >NaN</span><br>
+                            On Active: TBD
+                        </button>
+                    </div>
+                </div>
+                <div class="f_lepton sub_f">
+                    You have <span id="fleptonAmt">X</span> U-Lepton<br><br>
+                    <div  class="table_center">
+                        <button class="fermion_btn lepton">
+                            <b>[TBD]</b><br>[<span ></span>Tier <span>NaN</span>]<br>
+                            <span>Currently: NaN</span><br>
+                            Next Tier at: <span>NaN</span><br>
+                            (Increased by TBD)<br><br>
+                            Effect: <span >NaN</span><br>
+                            On Active: TBD
+                        </button>
+                        <button class="fermion_btn lepton">
+                            <b>[TBD]</b><br>[<span ></span>Tier <span>NaN</span>]<br>
+                            <span>Currently: NaN</span><br>
+                            Next Tier at: <span>NaN</span><br>
+                            (Increased by TBD)<br><br>
+                            Effect: <span >NaN</span><br>
+                            On Active: TBD
+                        </button>
+                        <button class="fermion_btn lepton">
+                            <b>[TBD]</b><br>[<span ></span>Tier <span>NaN</span>]<br>
+                            <span>Currently: NaN</span><br>
+                            Next Tier at: <span>NaN</span><br>
+                            (Increased by TBD)<br><br>
+                            Effect: <span >NaN</span><br>
+                            On Active: TBD
+                        </button>
+                        <button class="fermion_btn lepton">
+                            <b>[TBD]</b><br>[<span ></span>Tier <span>NaN</span>]<br>
+                            <span>Currently: NaN</span><br>
+                            Next Tier at: <span>NaN</span><br>
+                            (Increased by TBD)<br><br>
+                            Effect: <span >NaN</span><br>
+                            On Active: TBD
+                        </button>
+                        <button class="fermion_btn lepton">
+                            <b>[TBD]</b><br>[<span ></span>Tier <span>NaN</span>]<br>
+                            <span>Currently: NaN</span><br>
+                            Next Tier at: <span>NaN</span><br>
+                            (Increased by TBD)<br><br>
+                            Effect: <span >NaN</span><br>
+                            On Active: TBD
+                        </button>
+                        <button class="fermion_btn lepton">
+                            <b>[TBD]</b><br>[<span ></span>Tier <span>NaN</span>]<br>
+                            <span>Currently: NaN</span><br>
+                            Next Tier at: <span>NaN</span><br>
+                            (Increased by TBD)<br><br>
+                            Effect: <span >NaN</span><br>
+                            On Active: TBD
+                        </button>
+                    </div>
+                </div>
+            </div>
             <span class="red">After <b id="massSoftStart1">1.500e156 g</b> of mass gain, mass gain will be softcapped!<br></span>
             <span style="color: rgb(121, 0, 0)">After <b id="massSoftStart3">1.500e1000056 g</b> of mass gain will softcap^2 mass gain!<br></span>
             <span style="color: rgb(122, 0, 86)">After <b id="massSoftStart4">e1.0000e8 g</b> of mass gain will softcap^3 mass gain!<br></span>
@@ -1001,7 +1265,7 @@
             <div style="color: rgb(194, 177, 255)">Because of mass siltation at <b>我不到啊</b>, the exponent of mass gain is rooted by <b>我不到啊</b>!</div><br>
             <div class="corrupted"                  >Because of mass siltation^2 at <b>1.0000F5</b>, the mass gain is 10^^(slog(x)/<b>1919810</b>) instead of x!</div>
             <div class="charged_text"               >Because of mass siltation^3 at <b>1.0000F10</b>, the mass siltation^2 is even stronger!</div>
-            <div class="saved_text"                 >Because of v(*%jvb(@#&g)u%#%nj|%}#mass siltation^4 at <b>1.0000F1000</b>, the mass siltation^2 is even stronger!</div>
+            <div class="saved_text"                 >Because of mass siltation^4 at <b>1.0000F1000</b>, the mass siltation^2 is even stronger!</div>
             <div class="quark_color"                >Because of mass siltation^5 at <b>F1.000e10</b>, the mass siltation^2 is even stronger!</div>
             <div class="f_quark_color"              >Because of mass siltation^6 at <b>F1.000e25</b>, the mass gain is 10^^(slog(x)<sup><b>1919810</b><sup>-1</sup></sup>) instead of x!</div>
             <div class="ff_quark_color"             >Because of mass siltation^7 at <b>F1.000e100</b>, the mass siltation^6 is even stronger!</div>
@@ -1077,11 +1341,13 @@
 
         </div>
         <div v-if="player.currentPage == 11870904">
-            
         </div>
         <div v-if="player.currentPage == 1898180914" class="text-center">
             {{get_pts_volume(player.volumes)}}
         </div>
+    </div>
+    <div class="canvasDiv" style="display: none;">
+        <canvas id="nodeupgradecanvas"></canvas>
     </div>
 </body>
 

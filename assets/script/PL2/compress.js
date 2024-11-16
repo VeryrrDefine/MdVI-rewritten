@@ -22,6 +22,17 @@ function xiaopengyouMK2loop(){
     if (player.PL2isunlockedCompress){
         player.PL2xiaopengyouMK2 = player.PL2xiaopengyouMK2.add(xiaopengyouMK2gain().mul(timeDifferences[0]))
     }
+    if (player.chalcomps[1].gte(15)){
+        let bulk;
+        bulk = invScaleCost(1000, 10, player.PL2xiaopengyouMK2);
+        if (player.PL2buyable1.lt(bulk)) player.PL2buyable1 = bulk;
+        bulk = invScaleCost(1000, 100, player.PL2xiaopengyouMK2);
+        if (player.PL2buyable2.lt(bulk)) player.PL2buyable2 = bulk;
+        bulk = invScaleCost(1000, 1000, player.PL2xiaopengyouMK2);
+        if (player.PL2buyable3.lt(bulk)) player.PL2buyable3 = bulk;
+        bulk = invScaleCost(1000, 10000, player.PL2xiaopengyouMK2);
+        if (player.PL2buyable4.lt(bulk)) player.PL2buyable4 = bulk;
+    }
     if (player.PL2points.gte("1e1100")){
         player.PL2isunlockedCompress = true;
         if (!player.PL2xiaopengyouMK2milestone1Reached && player.PL2xiaopengyouMK2.gte(1e10)){
