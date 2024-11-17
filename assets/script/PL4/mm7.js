@@ -17,6 +17,8 @@ function mm7Loop(){
     if (hasTreeUpgrade("pasgen1")){
         player.PL4points = player.PL4points.add(tmp.mm7.gain.mul(timeDifferences[1]))
     }
+    FACTORSPACES.updateTemp();
+    FACTORSPACES.update();
 }
 function norewardMM7reset(isFactorSpace=false){
     reset4DDimensions();
@@ -247,7 +249,18 @@ function getPL4buyableeffect(id){
         return PowiainaNum.pow(10, player.PL4buyable1)
     }
     if (id == 2){
-        return PowiainaNum.pow(2, player.PL4buyable2)
+        return PowiainaNum.pow(2, player.PL4buyable2.add(
+            getPL4buyableFreeUpgrades(2)
+        ))
+    }
+
+}
+function getPL4buyableFreeUpgrades(id) {
+    if (id == 1){
+        return PowiainaNum(0)
+    }
+    if (id == 2){
+        return FACTORSPACES.facEff(0, 0).max(0)
     }
 
 }

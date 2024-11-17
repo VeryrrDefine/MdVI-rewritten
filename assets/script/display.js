@@ -440,7 +440,6 @@ function formatMult(ex,acc=4,inv=false) {
 
 function formatPow(ex,acc=4) { return "^"+format(ex,acc) }
 
-function expMult(a,b,base=10) { return Decimal.gte(a,10) ? Decimal.pow(base,Decimal.log(a,base).pow(b)) : PowiainaNum(a) }
 
 function overflowFormat(x,inv=false) { return "为原来的<b>"+format(x)+"</b>"+(inv?"次方":"次根") }
 

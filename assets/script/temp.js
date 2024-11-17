@@ -1,5 +1,3 @@
-
-
 var tmp = {
     dimension: {
         getDimScale(dim) {
@@ -275,7 +273,9 @@ var tmp = {
         },
 
         get overflow3Position(){
-            return PowiainaNum("ee500")
+            let temp1 = PowiainaNum("ee500")
+            temp1 = temp1.DEmul(FACTORSPACES.facEff(1, 0));
+            return temp1;
         },
         get overflow3Power(){
             let temp1 = PowiainaNum(".5")
@@ -425,6 +425,7 @@ var tmp = {
             gains: [PowiainaNum.ZERO.clone(), PowiainaNum.ZERO.clone()],
             tiers: [[], []],
             effs: [[], []],
+            maxTier: [[], []],
         }
     },
     battle: {

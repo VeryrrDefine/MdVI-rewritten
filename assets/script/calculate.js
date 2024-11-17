@@ -38,9 +38,12 @@ PowiainaNum.prototype.DEmul = function(other){
 function scaleCost(startcost, scaleperbought, boughtcount){
     return PowiainaNum.mul(startcost,PowiainaNum.pow(scaleperbought, boughtcount));
 }
+
+
 function invScaleCost(startcost, scaleperbought, resourcecount){
     return resourcecount.div(startcost).logBase(scaleperbought).ceil();
 }
+
 
 
 function softcap(value,start,power,mode,dis=false){
@@ -52,6 +55,7 @@ function softcap(value,start,power,mode,dis=false){
     }
     return x
 }
+
 
 /**
  * 反向软上限，一般的，antisoftcap(softcap(x,y,z,w),y,z,w)=x;
@@ -80,10 +84,26 @@ function antisoftcap(value,start,power,mode){
  * @param {*} start 
  * @param {*} power 
  */
-
 function scaleSuperCost(startcost, scaleperbought, boughtcount, superstart, superpower){
     return PowiainaNum.mul(startcost,PowiainaNum.pow(scaleperbought, softcap(boughtcount, superstart, superpower, 0)));
 }
 function invScaleSuperCost(startcost, scaleperbought, resourcecount, superstart, superpower){
     return antisoftcap(resourcecount.div(startcost).logBase(scaleperbought), superstart, superpower, 0).ceil();
+}
+
+
+/**
+ * 返回 base^(log_base(a)^b)
+ *
+ * @param {*} a 
+ * @param {*} b 
+ * @param {*} base 
+ * @returns 
+ */
+function expMult(a,b,base=10) { 
+    
+    return PowiainaNum.gte(a,10) ? 
+    PowiainaNum.pow(base,PowiainaNum.logBase(a,base).pow(b)) 
+    : 
+    PowiainaNum(a) 
 }

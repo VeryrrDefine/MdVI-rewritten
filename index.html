@@ -60,11 +60,11 @@
             </div>
             <div v-if="player.timeSpeed != 1" class="text-center">{{glt("currentglobalspeed")+format(player.timeSpeed)}}</div>
             <div v-if="player.volumes.gte('1e200') && !player.isPL1unlocked" class="text-center">{{glt("youneedsomethingtogofurther")}}</div>
-            <div class="text-center" v-html="get_pts_volume(player.volumes)"></div>
+            <div v-if="false" class="text-center" v-html="get_pts_volume(player.volumes)"></div>
             <div v-if="player.volumes.gte(mm3ChallengeGoal[player.PL1inchal]) && !player.PL1breakedPL1limit" class="text-center">
                 <button class="btn mm3btn" @click="doMM3resetManmade()">{{glt("resetPL1layer")+format(tmp.mm3.gain)}} mm<sup>3</sup> {{glt("3dvolumes")}}</button>
             </div>
-            <div class="text-center" v-html="currentGainText"></div>
+            <div v-if="false" class="text-center" v-html="currentGainText"></div>
             <div v-if="player.isPL1unlocked" class="mm3text text-center">{{glt("youhave")}} {{format(player.PL1points)}} mm<sup>3</sup> {{glt("3dvolumes")}}</div>
             <div v-if="player.isPL2unlocked" class="mm5text text-center">{{glt("youhave")}} {{format(player.PL2points)}} mm<sup>5</sup> {{glt("5dvolumes")}}</div>
             <div v-if="player.isPL3unlocked" class="mm6text text-center">{{glt("youhave")}} {{format(player.PL3points)}} mm<sup>6</sup> 6维体积</div>
@@ -102,6 +102,17 @@
                 aps: {{format(enemy.aps)}}<br>
             </div>
         </div> -->
+        
+        <div class="text-center" v-if="player.currentPage == 39"></div>
+        <div class="text-center" v-if="player.currentPage == 38"></div>
+        <div class="text-center" v-if="player.currentPage == 37"></div>
+        <div class="text-center" v-if="player.currentPage == 36"></div>
+        <div class="text-center" v-if="player.currentPage == 35"></div>
+        <div class="text-center" v-if="player.currentPage == 34"></div>
+        <div class="text-center" v-if="player.currentPage == 33"></div>
+        <div class="text-center" v-if="player.currentPage == 32"></div>
+        <div class="text-center" v-if="player.currentPage == 31"></div>
+        <div class="text-center" v-if="player.currentPage == 30"></div>
         <div v-if="player.currentPage == 29 && hasTreeUpgrade('unlfactorspace')" class="text-center">
             αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ
             ϝϛͱϻϙͳϸ ☿♀♁♂♃♄♅♆♇<br>
@@ -110,37 +121,27 @@
             <button class="btn mm7btn" @click="FACTORSPACES.backNormal()">返回正常空间</button>
             <div class="factorspace">
                 <div class="f_upperFactor">
-                    你有0.0000 Ω因子
+                    你有{{format(player.PL4factorspace.points[0])}} Ω因子
                     <div class="table_center">
-                        <button class="fs_btn upperfactor" 
-                        v-for="id in [0]" @click="FACTORSPACES.choose(0, id)"
-                        :class="{choosed: FACTORSPACES.onActive(0, id)}"
-                        v-if="(id<=FACTORSPACES.getUnlLength()[0]) && (typeof FACTORSPACES.types[0][id].unl === 'function' ? FACTORSPACES.types[0][id].unl() : true)"
-                        >
-                            <b>[{{id}}]</b><br>[<span ></span>Tier <span v-html="format(player.PL4factorspace.tiers[0][id],0)"></span>]<br>
-                            <span>Currently: NaN</span><br>
-                            Next Tier at: <span>NaN</span><br>
-                            (Increased by <span v-html="FACTORSPACES.types[0][id].inc"></span>)<br><br>
-                            Effect: <span >NaN</span><br>
-                            On Active: <span v-html="FACTORSPACES.types[0][id].cons"></span>
-                        </button>
+                        <fsbutton class="upperfactor" v-for="id in [0]" :x="0" :y="id" :z="FACTORSPACES.names[0][id]"></fsbutton>
                     </div>
                 </div>
                 <div class="f_lowerFactor">
-                    你有0.0000 ω因子
+                    你有{{format(player.PL4factorspace.points[1])}} ω因子
                     <div class="table_center">
-                        <button class="fs_btn lowerfactor" 
+                        <fsbutton class="lowerfactor" v-for="id in [0]" :x="1" :y="id" :z="FACTORSPACES.names[1][id]"></fsbutton>
+                        <!-- <button class="fs_btn lowerfactor" 
                         v-for="id in [0]" @click="FACTORSPACES.choose(1, id)"
                         :class="{choosed: FACTORSPACES.onActive(1, id)}"
                         v-if="(id<=FACTORSPACES.getUnlLength()[1]) && (typeof FACTORSPACES.types[1][id].unl === 'function' ? FACTORSPACES.types[1][id].unl() : true)"
                         >
                             <b>[{{id}}]</b><br>[<span ></span>Tier <span v-html="format(player.PL4factorspace.tiers[1][id],0)"></span>]<br>
-                            <span>Currently: NaN</span><br>
+                            <span v-if="FACTORSPACES.onActive(1, id)">Currently: {{format(FACTORSPACES.getRes(1, id))}}</span><br>
                             Next Tier at: <span>NaN</span><br>
                             (Increased by <span v-html="FACTORSPACES.types[1][id].inc"></span>)<br><br>
                             Effect: <span >NaN</span><br>
                             On Active: <span v-html="FACTORSPACES.types[1][id].cons"></span>
-                        </button>
+                        </button>-->
                     </div>
 
                 </div>
@@ -187,7 +188,7 @@
                 升级1({{format(player.PL4buyable1)}}) 使时间加速倍率每级{{formatMult(10)}} <span class="green">当前: {{formatMult(getPL4buyableeffect(1))}}</span><button class="btn mm7btn" @click="buyPL4buyable(1)">花费：{{format(getBuyable1Cost())}} mm<sup>7</sup></button>
             </p>
             <p>
-                升级2({{format(player.PL4buyable2)}}) 使7维体积获取{{formatMult(2)}} <span class="green">当前: {{formatMult(getPL4buyableeffect(2))}}</span><button class="btn mm7btn" @click="buyPL4buyable(2)">花费：{{format(getBuyable2Cost())}} mm<sup>7</sup></button>
+                升级2({{format(player.PL4buyable2)}}+{{format(getPL4buyableFreeUpgrades(2))}}) 使7维体积获取{{formatMult(2)}} <span class="green">当前: {{formatMult(getPL4buyableeffect(2))}}</span><button class="btn mm7btn" @click="buyPL4buyable(2)">花费：{{format(getBuyable2Cost())}} mm<sup>7</sup></button>
             </p>
         </div>
         <div v-if="player.currentPage == 26 && hasTreeUpgrade('chal1')" class="text-center">
@@ -1051,10 +1052,10 @@
             </div> -->
         </div>
         <div v-if="player.currentPage == 2" class="text-center">
-            <button class="btn" @click="formattedHardReset">{{glt("hardReset")}}</button>
+            <button class="btn" @click="importText">{{glt("hardReset")}}</button>
             <button class="btn" @click="exportCopy">{{glt("export")}}</button>
             <button class="btn" @click="exportFile">{{glt("exportToFile")}}</button>
-            <button class="btn" @click="importText">{{glt("import")}}</button>
+            <button class="btn" @click="formattedHardReset">{{glt("import")}}</button>
             <button class="btn" @click="importFile">{{glt("importFromFile")}}</button>
         </div>
         <div v-if="player.currentPage == 3" class="text-center">
@@ -1080,8 +1081,8 @@
                 <a href="https://ivark.github.io/AntimatterDimensions" target="_blank">反物质维度</a>,<br>
                 <a href="https://seanxlx2011.github.io/" target="_blank"><del>无限维度重置版</del></a>,
                 <a href="https://jacorb90.github.io/Prestige-Tree/" target="_blank">声望树</a>,
-                <a href="https://patcailmemer.github.io/Ordinal-Markup" target="_blank">序数增量</a><br><br>
-                
+                <a href="https://patcailmemer.github.io/Ordinal-Markup" target="_blank">序数增量</a>,
+                <a href="https://banana3864.github.io/Periodic-Elements-Incremental-Tree/" target="_blank">元素周期增量树</a><br><br>
                 <div class="main-line"></div>
                 <h1>---更新日志---</h1>
                 <changelog></changelog>

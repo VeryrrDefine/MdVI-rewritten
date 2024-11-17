@@ -182,7 +182,7 @@ var treeUpgrades = {
                 unl() {
                     return hasTreeUpgrade("chal1")
                 },
-                reqDesc: `获得${format("e3e380")} mm<sup>4</sup>`,
+                reqDesc: `获得${format("e3e385")} mm<sup>4</sup>`,
                 req() { return player.volumes.gte("e3e385")},
                 content: "N",
                 cost: PowiainaNum("1e384"),
